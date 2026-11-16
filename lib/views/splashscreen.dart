@@ -1,5 +1,4 @@
-
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 
 class Splashscreen extends StatelessWidget {
@@ -7,12 +6,6 @@ class Splashscreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      SafeArea(
-
-      );
-      appBar: text,
-    );
-
+    return Scaffold();
   }
 }

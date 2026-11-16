@@ -1,5 +1,10 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
-import 'package:tastetogether/views/splashscreen.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:tastetogether/theme/appcolors.dart';
+import 'package:tastetogether/views/main_application/bottom_navbar.dart';
+// import 'package:tastetogether/views/main_application/home_feed.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,33 +13,61 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'TasteTogether',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+        scaffoldBackgroundColor: AppColors.background, // #F8F7F4
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppColors.primary,
+          primary: AppColors.primary, // #B65C45
+          onPrimary: AppColors.surface, // #FFFFFF
+          secondary: AppColors.primaryDeep, // #9E4B36
+          surface: AppColors.surface, // #FFFFFF
+          onSurface: AppColors.textPrimary, // #292929
+          onSurfaceVariant: AppColors.textMuted, // #6B6560
+          outline: AppColors.fieldBorder, // #D2B7A3
+          outlineVariant: AppColors.border, // #E8D8CA
+          surfaceTint: Colors.transparent,
+        ),
+        textTheme: GoogleFonts.dmSansTextTheme(ThemeData.light().textTheme)
+            .apply(
+          bodyColor: AppColors.textPrimary,
+          displayColor: AppColors.textPrimary,
+        ),
+        dividerTheme: const DividerThemeData(
+          color: AppColors.border,
+          thickness: 1,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          hintStyle: const TextStyle(color: AppColors.textMuted),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: AppColors.fieldBorder),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+          ),
+        ),
+        filledButtonTheme: FilledButtonThemeData(
+          style: FilledButton.styleFrom(
+            backgroundColor: AppColors.primary,
+            foregroundColor: AppColors.surface,
+            minimumSize: const Size.fromHeight(52),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(foregroundColor: AppColors.primaryDeep),
+        ),
       ),
-      home: const Splashscreen(),
+    home: BottomNavbarScreen(),
     );
   }
 }
-
-
-
