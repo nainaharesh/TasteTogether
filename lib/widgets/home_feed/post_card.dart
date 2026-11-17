@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:tastetogether/theme/appcolors.dart';
+import 'package:tastetogether/widgets/home_feed/photo_placeholder.dart';
 
 class PostCard extends StatelessWidget {
   const PostCard({
@@ -60,6 +61,7 @@ class PostCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 12, 4, 0),
             child: Row(
+              spacing: 10,
               children: [
                 CircleAvatar(
                   radius: 20,
@@ -73,10 +75,10 @@ class PostCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 2,
                     children: [
                       Text(
                         username,
@@ -86,12 +88,14 @@ class PostCard extends StatelessWidget {
                           color: AppColors.textPrimary,
                         ),
                       ),
-                      const SizedBox(height: 2),
                       Row(
+                        spacing: 4,
                         children: [
-                          const Icon(Icons.location_on_outlined,
-                              size: 12, color: AppColors.primaryDeep),
-                          const SizedBox(width: 4),
+                          const Icon(
+                            Icons.location_on_outlined,
+                            size: 12,
+                            color: AppColors.primaryDeep,
+                          ),
                           Flexible(
                             child: Text(
                               restaurant,
@@ -104,7 +108,6 @@ class PostCard extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 4),
                           Text(
                             '· $timeAgo',
                             style: const TextStyle(
@@ -120,16 +123,21 @@ class PostCard extends StatelessWidget {
                 IconButton(
                   onPressed: onMore,
                   padding: EdgeInsets.zero,
-                  constraints:
-                      const BoxConstraints.tightFor(width: 44, height: 44),
-                  icon: const Icon(Icons.more_horiz,
-                      size: 22, color: AppColors.textPrimary),
+                  constraints: const BoxConstraints.tightFor(
+                    width: 44,
+                    height: 44,
+                  ),
+                  icon: const Icon(
+                    Icons.more_horiz,
+                    size: 22,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ],
             ),
           ),
 
-         
+          // 2. Photo + title + review (tap = detail)
           InkWell(
             onTap: onTap,
             child: Column(
@@ -139,17 +147,12 @@ class PostCard extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14),
-                    child: SizedBox(
-                      height: 210,
-                      width: double.infinity,
-                      child: imageUrl == null
-                          ? PhotoPlaceholder(label: dishName)
-                          : Image.network(
-                              imageUrl!,
-                              fit: BoxFit.cover,
-                              errorBuilder: (_, _, _) =>
-                                  PhotoPlaceholder(label: dishName),
-                            ),
+                    child: AspectRatio(
+                      aspectRatio: 337 / 210,
+                      child: PhotoPlaceholder(
+                        label: dishName,
+                        imageUrl: imageUrl,
+                      ),
                     ),
                   ),
                 ),
@@ -157,8 +160,10 @@ class PostCard extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(14, 12, 14, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 6,
                     children: [
                       Row(
+                        spacing: 8,
                         children: [
                           Expanded(
                             child: Text(
@@ -173,11 +178,9 @@ class PostCard extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 8),
                           Stars(rating: rating),
                         ],
                       ),
-                      const SizedBox(height: 6),
                       Text.rich(
                         TextSpan(
                           text: '$review ',
@@ -204,7 +207,7 @@ class PostCard extends StatelessWidget {
             ),
           ),
 
-          // 5. Actions
+          // 3. Actions
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 4, 6, 6),
             child: Row(
@@ -225,8 +228,10 @@ class PostCard extends StatelessWidget {
                 IconButton(
                   onPressed: onSave,
                   padding: EdgeInsets.zero,
-                  constraints:
-                      const BoxConstraints.tightFor(width: 44, height: 44),
+                  constraints: const BoxConstraints.tightFor(
+                    width: 44,
+                    height: 44,
+                  ),
                   icon: Icon(
                     isSaved ? Icons.bookmark : Icons.bookmark_border,
                     size: 22,
@@ -242,53 +247,28 @@ class PostCard extends StatelessWidget {
   }
 }
 
-class PhotoPlaceholder extends StatelessWidget {
-  const PhotoPlaceholder({required this.label});
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.photoPlaceholder2, // #DCC5B3
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.image_outlined,
-              size: 28, color: AppColors.textPrimary),
-          const SizedBox(height: 6),
-          Text(
-            'Photo · $label',
-            style: const TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w500,
-              color: AppColors.textPrimary,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class Stars extends StatelessWidget {
-  const Stars({required this.rating});
+  const Stars({super.key, required this.rating});
   final double rating;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
+      spacing: 6,
       children: [
-        for (var i = 1; i <= 5; i++)
-          Padding(
-            padding: EdgeInsets.only(right: i < 5 ? 2 : 0),
-            child: Icon(
-              rating >= i ? Icons.star_rounded : Icons.star_outline_rounded,
-              size: 14,
-              color: AppColors.primary,
-            ),
-          ),
-        const SizedBox(width: 6),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 2,
+          children: [
+            for (var i = 1; i <= 5; i++)
+              Icon(
+                rating >= i ? Icons.star_rounded : Icons.star_outline_rounded,
+                size: 14,
+                color: AppColors.primary,
+              ),
+          ],
+        ),
         Text(
           rating.toStringAsFixed(1),
           style: const TextStyle(
@@ -304,6 +284,7 @@ class Stars extends StatelessWidget {
 
 class ActionButton extends StatelessWidget {
   const ActionButton({
+    super.key,
     required this.icon,
     required this.color,
     required this.count,
@@ -320,28 +301,25 @@ class ActionButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(22),
-      child: SizedBox(
-        height: 44,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, size: 22, color: color),
-              const SizedBox(width: 6),
-              Text(
-                '$count',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textPrimary,
-                ),
+      child: Padding(
+        // 11 + icon 22 + 11 = 44 touch height
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 11),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 6,
+          children: [
+            Icon(icon, size: 22, color: color),
+            Text(
+              '$count',
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: AppColors.textPrimary,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-
