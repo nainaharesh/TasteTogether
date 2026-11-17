@@ -2,18 +2,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/viewmodels/bottomnavbar_controller.dart';
+import 'package:tastetogether/viewmodels/main_application_models/home_feed_viewmodel/bottomnavbar_view_model.dart';
 import 'package:tastetogether/views/main_application/create_review.dart';
+import 'package:tastetogether/views/main_application/explore.dart';
 import 'package:tastetogether/views/main_application/home_feed.dart';
 
 class BottomNavbarScreen extends StatelessWidget {
   BottomNavbarScreen({super.key});
 
-  final BottomNavbarController controller = Get.put(BottomNavbarController());
+  final BottomNavbarViewModel controller = Get.put(BottomNavbarViewModel());
 
   final List<Widget> pages = [
     HomeFeed(),
-    const Center(child: Text('Explore')),
+    Explore(),
     const SizedBox.shrink(),
     const Center(child: Text('Saved')),
     const Center(child: Text('Profile')),
@@ -27,6 +28,7 @@ class BottomNavbarScreen extends StatelessWidget {
             IndexedStack(index: controller.currentIndex.value, children: pages),
       ),
       bottomNavigationBar: Container(
+        height: 84,
         decoration: const BoxDecoration(
           border: Border(top: BorderSide(color: AppColors.border)),
         ),
@@ -58,14 +60,11 @@ class BottomNavbarScreen extends StatelessWidget {
                   child: OverflowBox(
                     maxHeight: 52,
                     child: Transform.translate(
-                      offset: const Offset(
-                        0,
-                        8,
-                      ), 
+                      offset: const Offset(0, 8),
                       child: GestureDetector(
                         onTap: () => Get.to(() => const CreateReview()),
                         child: Image.asset(
-                          'assets/icons/add.png', // apni PNG ka naam likhein
+                          'assets/icons/add.png',
                           width: 52,
                           height: 52,
                         ),
