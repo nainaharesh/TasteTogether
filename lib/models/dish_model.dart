@@ -11,5 +11,10 @@ class Dish {
     this.imageUrl,
   });
 
+<<<<<<< HEAD
   ////  later on API use here ////
 }
+=======
+////  later on API use here ////
+}
+>>>>>>> your-development

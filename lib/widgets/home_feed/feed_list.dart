@@ -1,8 +1,16 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+<<<<<<< HEAD
 import 'package:tastetogether/models/post_models.dart';
 import 'package:tastetogether/widgets/home_feed/post_card.dart';
 
+=======
+
+import 'package:tastetogether/widgets/home_feed/post_card.dart';
+
+import '../../models/post_model.dart';
+
+>>>>>>> your-development
 class FeedList extends StatelessWidget {
   const FeedList({super.key, required this.posts});
 

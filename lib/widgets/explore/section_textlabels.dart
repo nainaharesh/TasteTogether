@@ -50,4 +50,8 @@ class SectionTextlabels extends StatelessWidget {
       ),
     );
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> your-development

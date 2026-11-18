@@ -2,15 +2,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tastetogether/theme/appcolors.dart';
+<<<<<<< HEAD
 import 'package:tastetogether/viewmodels/main_application_models/explore_viewmodel/explore_view_model.dart';
 import 'package:tastetogether/views/main_application/resturant_details.dart';
 import 'package:tastetogether/widgets/explore/custom_serachfield.dart';
+=======
+import 'package:tastetogether/views/main_application/resturant_details.dart';
+>>>>>>> your-development
 import 'package:tastetogether/widgets/explore/food_category_chip.dart';
 import 'package:tastetogether/widgets/explore/nearby_tile.dart';
 import 'package:tastetogether/widgets/explore/resturant_card.dart';
 import 'package:tastetogether/widgets/explore/section_textlabels.dart';
 import 'package:tastetogether/widgets/explore/dish_card.dart';
 
+<<<<<<< HEAD
+=======
+import '../../viewmodels/explore_viewmodel/explore_view_model.dart';
+import '../../widgets/explore/custom_searchfield.dart';
+
+>>>>>>> your-development
 class Explore extends StatelessWidget {
   Explore({super.key});
 
@@ -21,7 +31,11 @@ class Explore extends StatelessWidget {
     final cardWidth = MediaQuery.sizeOf(context).width * 0.59;
     final listHeight = cardWidth * 108 / 232 + 92;
 
+<<<<<<< HEAD
     final tileWidth = MediaQuery.sizeOf(context).width * 0.315; 
+=======
+    final tileWidth = MediaQuery.sizeOf(context).width * 0.315;
+>>>>>>> your-development
     final tileListHeight = tileWidth * 104 / 124 + 64;
 
     return Scaffold(
@@ -90,7 +104,11 @@ class Explore extends StatelessWidget {
                   ConstrainedBox(
                     constraints: BoxConstraints.tightFor(height: listHeight),
                     child: Obx(
+<<<<<<< HEAD
                       () => ListView.builder(
+=======
+                          () => ListView.builder(
+>>>>>>> your-development
                         scrollDirection: Axis.horizontal,
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         itemCount: controller.restaurants.length,
@@ -127,7 +145,11 @@ class Explore extends StatelessWidget {
                       height: tileListHeight,
                     ),
                     child: Obx(
+<<<<<<< HEAD
                       () => ListView.builder(
+=======
+                          () => ListView.builder(
+>>>>>>> your-development
                         scrollDirection: Axis.horizontal,
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         itemCount: controller.dishes.length,
@@ -157,7 +179,11 @@ class Explore extends StatelessWidget {
                 children: [
                   SectionTextlabels(title: 'Nearby', onSeeAllPressed: () {}),
                   Obx(
+<<<<<<< HEAD
                     () => ListView.builder(
+=======
+                        () => ListView.builder(
+>>>>>>> your-development
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -179,4 +205,8 @@ class Explore extends StatelessWidget {
       ),
     );
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> your-development

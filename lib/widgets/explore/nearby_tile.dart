@@ -41,6 +41,7 @@ class NearbyTile extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   child: imageUrl == null
                       ? const ColoredBox(
+<<<<<<< HEAD
                           color: AppColors.photoPlaceholder2,
                           child: Center(
                             child: Icon(
@@ -64,6 +65,31 @@ class NearbyTile extends StatelessWidget {
                             ),
                           ),
                         ),
+=======
+                    color: AppColors.photoPlaceholder2,
+                    child: Center(
+                      child: Icon(
+                        Icons.image_outlined,
+                        size: 22,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                  )
+                      : Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, _, _) => const ColoredBox(
+                      color: AppColors.photoPlaceholder2,
+                      child: Center(
+                        child: Icon(
+                          Icons.image_outlined,
+                          size: 22,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                    ),
+                  ),
+>>>>>>> your-development
                 ),
               ),
 
@@ -143,4 +169,8 @@ class NearbyTile extends StatelessWidget {
       ),
     );
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> your-development

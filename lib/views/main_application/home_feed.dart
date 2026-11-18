@@ -2,10 +2,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tastetogether/theme/appcolors.dart';
+<<<<<<< HEAD
 import 'package:tastetogether/viewmodels/main_application_models/home_feed_viewmodel/tabbar_view_model.dart.dart';
 import 'package:tastetogether/widgets/home_feed/feed_list.dart';
 import 'package:tastetogether/widgets/home_feed/tabbar.dart';
 
+=======
+
+import 'package:tastetogether/widgets/home_feed/feed_list.dart';
+import 'package:tastetogether/widgets/home_feed/tabbar.dart';
+
+import '../../viewmodels/home_feed_viewmodel/tabbar_view_model.dart';
+
+>>>>>>> your-development
 class HomeFeed extends StatelessWidget {
   HomeFeed({super.key});
 
@@ -124,4 +133,8 @@ class HomeFeed extends StatelessWidget {
       ),
     );
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> your-development

@@ -18,8 +18,13 @@ class AppTabBar extends StatelessWidget {
       controller: controller,
       isScrollable: true,
       tabAlignment: TabAlignment.start,
+<<<<<<< HEAD
       padding: const EdgeInsets.only(left: 4), 
       labelPadding: const EdgeInsets.symmetric(horizontal: 12), 
+=======
+      padding: const EdgeInsets.only(left: 4),
+      labelPadding: const EdgeInsets.symmetric(horizontal: 12),
+>>>>>>> your-development
       indicator: const UnderlineTabIndicator(
         borderSide: BorderSide(color: AppColors.primary, width: 2),
       ),
@@ -29,7 +34,11 @@ class AppTabBar extends StatelessWidget {
       unselectedLabelColor: AppColors.textMuted,
       labelStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
       unselectedLabelStyle:
+<<<<<<< HEAD
           const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+=======
+      const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+>>>>>>> your-development
       splashFactory: NoSplash.splashFactory,
       overlayColor: const WidgetStatePropertyAll(Colors.transparent),
       tabs: [for (final t in tabs) Tab(text: t, height: 44)],
