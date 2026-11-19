@@ -3,11 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tastetogether/theme/appcolors.dart';
+<<<<<<< HEAD
 import 'package:tastetogether/viewmodels/main_application_models/home_feed_viewmodel/bottomnavbar_view_model.dart';
+=======
+>>>>>>> your-development
 import 'package:tastetogether/views/main_application/create_review.dart';
 import 'package:tastetogether/views/main_application/explore.dart';
 import 'package:tastetogether/views/main_application/home_feed.dart';
 
+<<<<<<< HEAD
+=======
+import '../../viewmodels/home_feed_viewmodel/bottomnavbar_view_model.dart';
+
+>>>>>>> your-development
 class BottomNavbarScreen extends StatelessWidget {
   BottomNavbarScreen({super.key});
 
@@ -25,7 +33,11 @@ class BottomNavbarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(
+<<<<<<< HEAD
         () =>
+=======
+            () =>
+>>>>>>> your-development
             IndexedStack(index: controller.currentIndex.value, children: pages),
       ),
       bottomNavigationBar: Container(
@@ -35,7 +47,11 @@ class BottomNavbarScreen extends StatelessWidget {
           border: Border(top: BorderSide(color: AppColors.border)),
         ),
         child: Obx(
+<<<<<<< HEAD
           () => BottomNavigationBar(
+=======
+              () => BottomNavigationBar(
+>>>>>>> your-development
             currentIndex: controller.currentIndex.value,
             onTap: controller.changeIndex,
             type: BottomNavigationBarType.fixed,
@@ -92,4 +108,8 @@ class BottomNavbarScreen extends StatelessWidget {
       ),
     );
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> your-development

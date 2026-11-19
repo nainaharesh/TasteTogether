@@ -8,10 +8,15 @@ import 'package:tastetogether/views/main_application/resturant_details.dart';
 import 'package:tastetogether/views/main_application/search_results.dart';
 import 'package:tastetogether/widgets/explore/custom_serachfield.dart';
 import 'package:tastetogether/widgets/explore/dish_card.dart';
+import 'package:tastetogether/views/main_application/resturant_details.dart';
+
 import 'package:tastetogether/widgets/explore/food_category_chip.dart';
 import 'package:tastetogether/widgets/explore/nearby_tile.dart';
 import 'package:tastetogether/widgets/explore/resturant_card.dart';
 import 'package:tastetogether/widgets/explore/section_textlabels.dart';
+
+import '../../viewmodels/explore_viewmodel/explore_view_model.dart';
+import '../../widgets/explore/custom_searchfield.dart';
 
 class Explore extends StatelessWidget {
   Explore({super.key});
@@ -21,9 +26,15 @@ class Explore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // card ki width screen ke fraction se (232/393, 124/393).
-    // Height ab kahin fixed nahi: card apne content ke hisaab se khud barhta hai
+
     final cardWidth = MediaQuery.sizeOf(context).width * 0.59;
     final tileWidth = MediaQuery.sizeOf(context).width * 0.315;
+    final listHeight = cardWidth * 108 / 232 + 92;
+
+    final tileWidth = MediaQuery.sizeOf(context).width * 0.315; 
+    final tileWidth = MediaQuery.sizeOf(context).width * 0.315;
+    final tileListHeight = tileWidth * 104 / 124 + 64;
+
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -84,7 +95,7 @@ class Explore extends StatelessWidget {
                 children: [
                   SectionTextlabels(
                     title: 'Popular restaurants',
-                    // TODO: "See all restaurants" screen banne par yahan navigate hoga
+                    // TODO: "See all restaurants" after navigate here
                     onSeeAllPressed: () {},
                   ),
                   Obx(
@@ -108,6 +119,26 @@ class Explore extends StatelessWidget {
                                       ResturantDetails(restaurant: restaurant),
                                 ),
                               ),
+                  ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(height: listHeight),
+                    child: Obx(
+                      () => ListView.builder(
+                          () => ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        itemCount: controller.restaurants.length,
+                        itemBuilder: (context, i) => Padding(
+                          padding: const EdgeInsets.only(right: 12),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints.tightFor(
+                              width: cardWidth,
+                            ),
+                            child: RestaurantCard(
+                              restaurant: controller.restaurants[i],
+                              placeholderColor: AppColors.photoPlaceholder2,
+                              onTap: () =>
+                                  Get.to(() => const ResturantDetails()),
+
                             ),
                         ],
                       ),
@@ -148,6 +179,28 @@ class Explore extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                  ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(
+                      height: tileListHeight,
+                    ),
+                    child: Obx(
+                      () => ListView.builder(
+                          () => ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        itemCount: controller.dishes.length,
+                        itemBuilder: (context, i) => Padding(
+                          padding: const EdgeInsets.only(right: 12),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints.tightFor(
+                              width: tileWidth,
+                            ),
+                            child: DishCard(
+                              dish: controller.dishes[i],
+                              placeholderColor: AppColors.photoPlaceholder2,
+                              onTap: () =>
+                                  Get.to(() => const ResturantDetails()),
+
                             ),
                         ],
                       ),
@@ -163,6 +216,7 @@ class Explore extends StatelessWidget {
                   SectionTextlabels(title: 'Nearby', onSeeAllPressed: () {}),
                   Obx(
                     () => ListView.builder(
+                        () => ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
@@ -188,4 +242,5 @@ class Explore extends StatelessWidget {
       ),
     );
   }
+}
 }
