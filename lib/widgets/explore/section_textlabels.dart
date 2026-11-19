@@ -50,4 +50,5 @@ class SectionTextlabels extends StatelessWidget {
       ),
     );
   }
+
 }

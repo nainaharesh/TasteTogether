@@ -41,29 +41,29 @@ class NearbyTile extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   child: imageUrl == null
                       ? const ColoredBox(
-                          color: AppColors.photoPlaceholder2,
-                          child: Center(
-                            child: Icon(
-                              Icons.image_outlined,
-                              size: 22,
-                              color: AppColors.textPrimary,
-                            ),
-                          ),
-                        )
+                    color: AppColors.photoPlaceholder2,
+                    child: Center(
+                      child: Icon(
+                        Icons.image_outlined,
+                        size: 22,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                  )
                       : Image.network(
-                          imageUrl,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, _, _) => const ColoredBox(
-                            color: AppColors.photoPlaceholder2,
-                            child: Center(
-                              child: Icon(
-                                Icons.image_outlined,
-                                size: 22,
-                                color: AppColors.textPrimary,
-                              ),
-                            ),
-                          ),
+                    imageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, _, _) => const ColoredBox(
+                      color: AppColors.photoPlaceholder2,
+                      child: Center(
+                        child: Icon(
+                          Icons.image_outlined,
+                          size: 22,
+                          color: AppColors.textPrimary,
                         ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
 
