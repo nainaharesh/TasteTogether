@@ -1,3 +1,4 @@
+
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:tastetogether/theme/appcolors.dart';
@@ -59,4 +60,6 @@ class PhotoPlaceholder extends StatelessWidget {
       ),
     );
   }
+
 }
+

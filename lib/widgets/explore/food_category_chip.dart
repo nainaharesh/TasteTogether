@@ -47,4 +47,6 @@ class FoodCategoryChip extends StatelessWidget {
       ),
     );
   }
+
 }
+
