@@ -4,12 +4,14 @@
 >>>>>>> your-development
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 
 class PhotoPlaceholder extends StatelessWidget {
   const PhotoPlaceholder({
     super.key,
     this.label,
+    this.labelPrefix = 'Photo',
     this.imageUrl,
     this.placeholderColor = AppColors.photoPlaceholder2, // #DCC5B3
     this.iconSize = 28,
@@ -17,7 +19,8 @@ class PhotoPlaceholder extends StatelessWidget {
     this.fontSize = 11,
   });
 
-  final String? label; // null ho to sirf "Photo" likha aata hai
+  final String? label; // null ho to sirf prefix likha aata hai
+  final String labelPrefix; // e.g. 'Photo', 'Cover photo', 'Dish photo'
   final String? imageUrl;
   final Color placeholderColor;
   final double iconSize;
@@ -39,22 +42,22 @@ class PhotoPlaceholder extends StatelessWidget {
   }
 
   Widget photoHolder() {
-    final text = label == null ? 'Photo' : 'Photo · $label';
+    final text = label == null ? labelPrefix : '$labelPrefix · $label';
     return Container(
       color: placeholderColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        spacing: spacing,
+        spacing: spacing.h,
         children: [
           Icon(
             Icons.image_outlined,
-            size: iconSize,
+            size: iconSize.r,
             color: AppColors.textPrimary,
           ),
           Text(
             text,
             style: TextStyle(
-              fontSize: fontSize,
+              fontSize: fontSize.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textPrimary,
             ),

@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tastetogether/models/resturant_model.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 
@@ -12,36 +13,33 @@ class NearbyTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final distance = restaurant.distanceKm;
+    final imageUrl = restaurant.imageUrl;
     final subtitle = distance == null
         ? restaurant.cuisine
         : '${restaurant.cuisine} · ${distance.toStringAsFixed(1)} km';
-    final imageUrl = restaurant.imageUrl;
 
     return Material(
       color: AppColors.surface,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         side: const BorderSide(color: AppColors.border),
       ),
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: EdgeInsets.all(8.r),
           child: Row(
-            spacing: 12,
+            spacing: 12.w,
             children: [
               // Photo 72 x 72, radius 12
               ConstrainedBox(
-                constraints: const BoxConstraints.tightFor(
-                  width: 72,
-                  height: 72,
-                ),
+                constraints: BoxConstraints.tightFor(width: 72.r, height: 72.r),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                   child: imageUrl == null
+                      ? _placeholder()
                       ? const ColoredBox(
-<<<<<<< HEAD
                           color: AppColors.photoPlaceholder2,
                           child: Center(
                             child: Icon(
@@ -54,18 +52,9 @@ class NearbyTile extends StatelessWidget {
                       : Image.network(
                           imageUrl,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, _, _) => const ColoredBox(
-                            color: AppColors.photoPlaceholder2,
-                            child: Center(
-                              child: Icon(
-                                Icons.image_outlined,
-                                size: 22,
-                                color: AppColors.textPrimary,
-                              ),
-                            ),
-                          ),
+                          errorBuilder: (_, _, _) => _placeholder(),
                         ),
-=======
+
                     color: AppColors.photoPlaceholder2,
                     child: Center(
                       child: Icon(
@@ -89,7 +78,7 @@ class NearbyTile extends StatelessWidget {
                       ),
                     ),
                   ),
->>>>>>> your-development
+
                 ),
               ),
 
@@ -97,25 +86,25 @@ class NearbyTile extends StatelessWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 2,
+                  spacing: 2.h,
                   children: [
                     Text(
                       restaurant.name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style: TextStyle(
+                        fontSize: 16.sp,
                         height: 22 / 16,
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
                       ),
                     ),
                     Row(
-                      spacing: 4,
+                      spacing: 4.w,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.location_on_outlined,
-                          size: 13,
+                          size: 13.r,
                           color: AppColors.textMuted,
                         ),
                         Flexible(
@@ -123,8 +112,8 @@ class NearbyTile extends StatelessWidget {
                             subtitle,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 13,
+                            style: TextStyle(
+                              fontSize: 13.sp,
                               color: AppColors.textMuted,
                             ),
                           ),
@@ -132,17 +121,17 @@ class NearbyTile extends StatelessWidget {
                       ],
                     ),
                     Row(
-                      spacing: 4,
+                      spacing: 4.w,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.star_rounded,
-                          size: 14,
+                          size: 14.r,
                           color: AppColors.primary,
                         ),
                         Text(
                           restaurant.rating.toStringAsFixed(1),
-                          style: const TextStyle(
-                            fontSize: 13,
+                          style: TextStyle(
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.w700,
                             color: AppColors.textPrimary,
                           ),
@@ -152,8 +141,8 @@ class NearbyTile extends StatelessWidget {
                             '(${restaurant.reviewCount} reviews)',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 13,
+                            style: TextStyle(
+                              fontSize: 13.sp,
                               color: AppColors.textMuted,
                             ),
                           ),
@@ -169,8 +158,19 @@ class NearbyTile extends StatelessWidget {
       ),
     );
   }
-<<<<<<< HEAD
+
+  Widget _placeholder() {
+    return ColoredBox(
+      color: AppColors.photoPlaceholder2,
+      child: Center(
+        child: Icon(
+          Icons.image_outlined,
+          size: 22.r,
+          color: AppColors.textPrimary,
+        ),
+      ),
+    );
+  }
 }
-=======
 }
->>>>>>> your-development
+
