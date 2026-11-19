@@ -110,4 +110,20 @@ class ExploreController extends GetxController {
   void selectCategory(int index) {
     selectedCategory.value = index;
   }
+
+  /// Dish se uska restaurant dhoondta hai (dish model me abhi restaurantId nahi)
+  Restaurant restaurantOfDish(Dish dish) {
+    final all = [...restaurants, ...nearby];
+    return all.firstWhere(
+      (r) => r.name == dish.restaurantName,
+      // TODO: API aane par restaurantId se fetch hoga
+      orElse: () => Restaurant(
+        name: dish.restaurantName,
+        cuisine: 'Restaurant',
+        area: '',
+        rating: dish.rating,
+        reviewCount: 0,
+      ),
+    );
+  }
 }

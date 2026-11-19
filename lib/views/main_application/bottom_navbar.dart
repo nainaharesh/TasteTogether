@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/viewmodels/main_application_models/home_feed_viewmodel/bottomnavbar_view_model.dart';
@@ -28,7 +29,8 @@ class BottomNavbarScreen extends StatelessWidget {
             IndexedStack(index: controller.currentIndex.value, children: pages),
       ),
       bottomNavigationBar: Container(
-        height: 84,
+        // minHeight: chhoti screen / gesture bar par overflow na ho
+        constraints: BoxConstraints(minHeight: 84.h),
         decoration: const BoxDecoration(
           border: Border(top: BorderSide(color: AppColors.border)),
         ),
@@ -39,10 +41,12 @@ class BottomNavbarScreen extends StatelessWidget {
             type: BottomNavigationBarType.fixed,
             backgroundColor: AppColors.surface,
             elevation: 0,
-            selectedItemColor: AppColors.primary,
+            iconSize: 24.r,
+            // primaryDeep: choti label text ke liye (design doc ke mutabiq)
+            selectedItemColor: AppColors.primaryDeep,
             unselectedItemColor: AppColors.textMuted,
-            selectedFontSize: 11,
-            unselectedFontSize: 11,
+            selectedFontSize: 11.sp,
+            unselectedFontSize: 11.sp,
             selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700),
             unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
             items: [
@@ -56,17 +60,17 @@ class BottomNavbarScreen extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 icon: SizedBox(
-                  height: 24,
+                  height: 24.h,
                   child: OverflowBox(
-                    maxHeight: 52,
+                    maxHeight: 52.r,
                     child: Transform.translate(
-                      offset: const Offset(0, 8),
+                      offset: Offset(0, 8.h),
                       child: GestureDetector(
-                        onTap: () => Get.to(() => const CreateReview()),
+                        onTap: () => Get.to(() => CreateReview()),
                         child: Image.asset(
                           'assets/icons/add.png',
-                          width: 52,
-                          height: 52,
+                          width: 52.r,
+                          height: 52.r,
                         ),
                       ),
                     ),
