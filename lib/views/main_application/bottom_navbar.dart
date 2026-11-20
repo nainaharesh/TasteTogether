@@ -1,15 +1,20 @@
+
 // ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/viewmodels/bottomnavbar_controller.dart';
 import 'package:tastetogether/views/main_application/create_review.dart';
 import 'package:tastetogether/views/main_application/home_feed.dart';
+import 'package:tastetogether/views/followers_screen.dart';
 
 class BottomNavbarScreen extends StatelessWidget {
   BottomNavbarScreen({super.key});
 
-  final BottomNavbarController controller = Get.put(BottomNavbarController());
+  final BottomNavbarController controller = Get.put(
+    BottomNavbarController(),
+  );
 
   final List<Widget> pages = [
     HomeFeed(),
@@ -23,8 +28,10 @@ class BottomNavbarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(
-        () =>
-            IndexedStack(index: controller.currentIndex.value, children: pages),
+        () => IndexedStack(
+          index: controller.currentIndex.value,
+          children: pages,
+        ),
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
@@ -33,7 +40,16 @@ class BottomNavbarScreen extends StatelessWidget {
         child: Obx(
           () => BottomNavigationBar(
             currentIndex: controller.currentIndex.value,
-            onTap: controller.changeIndex,
+            onTap: (index) {
+              if (index == 2) {
+                Get.to(() => const CreateReview());
+              } else if (index == 4) {
+                controller.changeIndex(index);
+                Get.to(() => const FollowersScreen());
+              } else {
+                controller.changeIndex(index);
+              }
+            },
             type: BottomNavigationBarType.fixed,
             backgroundColor: AppColors.surface,
             elevation: 0,
@@ -41,8 +57,12 @@ class BottomNavbarScreen extends StatelessWidget {
             unselectedItemColor: AppColors.textMuted,
             selectedFontSize: 11,
             unselectedFontSize: 11,
-            selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700),
-            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
+            selectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.w700,
+            ),
+            unselectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
             items: [
               const BottomNavigationBarItem(
                 icon: ImageIcon(AssetImage('assets/icons/home.png')),
@@ -58,14 +78,11 @@ class BottomNavbarScreen extends StatelessWidget {
                   child: OverflowBox(
                     maxHeight: 52,
                     child: Transform.translate(
-                      offset: const Offset(
-                        0,
-                        8,
-                      ), 
+                      offset: const Offset(0, 8),
                       child: GestureDetector(
                         onTap: () => Get.to(() => const CreateReview()),
                         child: Image.asset(
-                          'assets/icons/add.png', // apni PNG ka naam likhein
+                          'assets/icons/add.png',
                           width: 52,
                           height: 52,
                         ),
