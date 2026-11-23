@@ -18,7 +18,7 @@ import '../../widgets/custom_text_field.dart';
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({super.key});
 
-  AuthController get controller => Get.find<AuthController>();
+  AuthController get controller => Get.put(AuthController(), permanent: true);
 
   @override
   Widget build(BuildContext context) {

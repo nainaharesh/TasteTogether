@@ -6,6 +6,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/views/authentication/welcomescreen.dart';
+import 'package:tastetogether/views/profile_screen/edit_profile_screen.dart';
+import 'package:tastetogether/views/profile_screen/help_support_screen.dart';
+import 'package:tastetogether/views/profile_screen/notification_preference_scree.dart';
+import 'package:tastetogether/views/profile_screen/notification_screen.dart';
+import 'package:tastetogether/views/profile_screen/settings_screen.dart';
 
 import 'routes/app_routes.dart';
 
@@ -88,7 +93,7 @@ class MyApp extends StatelessWidget {
           ),
 
           // Initial screen
-          home: const WelcomeScreen(),
+          home: const NotificationsScreen(),
 
           // GetX named routes
           getPages: AppPages.pages,

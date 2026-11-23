@@ -20,7 +20,7 @@ class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   // Creates the controller (or reuses it if it already exists)
-  AuthController get controller => Get.put(AuthController());
+  AuthController get controller => Get.put(AuthController(), permanent: true);
 
   @override
   Widget build(BuildContext context) {
