@@ -1,10 +1,7 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../theme/appcolors.dart';
-import '../utils/aap_text_styles.dart';
+import 'package:tastetogether/theme/appcolors.dart';
+import 'package:tastetogether/utils/aap_text_styles.dart';
 
 /// Full-width button.
 /// Default: filled terracotta (52 high, radius 14).

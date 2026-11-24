@@ -1,17 +1,15 @@
-
- // ignore_for_file: deprecated_member_use
-
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
+import 'package:tastetogether/models/search_filters_model.dart';
+import 'package:tastetogether/routes/app_routes.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/viewmodels/main_application_models/explore_viewmodel/explore_view_model.dart';
-import 'package:tastetogether/views/main_application/resturant_details.dart';
-import 'package:tastetogether/views/main_application/search_results.dart';
+import 'package:tastetogether/widgets/search/filter_sheet.dart';
+import 'package:tastetogether/widgets/common/chip_row.dart';
 import 'package:tastetogether/widgets/explore/custom_serachfield.dart';
 import 'package:tastetogether/widgets/explore/dish_card.dart';
-import 'package:tastetogether/widgets/explore/food_category_chip.dart';
 import 'package:tastetogether/widgets/explore/nearby_tile.dart';
 import 'package:tastetogether/widgets/explore/resturant_card.dart';
 import 'package:tastetogether/widgets/explore/section_textlabels.dart';
@@ -23,25 +21,19 @@ class Explore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // card ki width screen ke fraction se (232/393, 124/393).
+    // Height ab kahin fixed nahi: card apne content ke hisaab se khud barhta hai
     final cardWidth = MediaQuery.sizeOf(context).width * 0.59;
     final tileWidth = MediaQuery.sizeOf(context).width * 0.315;
-
-    final listHeight = cardWidth * 108 / 232 + 92;
-    final tileListHeight = tileWidth * 104 / 124 + 64;
 
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.only(
-            left: 4.w,
-            right: 4.w,
-            top: 24.h,
-          ),
+          padding: EdgeInsets.only(left: 4.w, right: 4.w, top: 24.h),
           child: Column(
             spacing: 8.h,
             children: [
-
               // Search bar
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -49,9 +41,9 @@ class Explore extends StatelessWidget {
                   hintText: 'Search restaurants or dishes',
                   onSubmitted: (value) {
                     if (value.trim().isEmpty) return;
-
-                    Get.to(
-                      () => SearchResults(query: value.trim()),
+                    Get.toNamed(
+                      AppRoutes.searchResults,
+                      arguments: SearchArgs(query: value.trim()),
                     );
                   },
                   prefixIcon: ImageIcon(
@@ -60,7 +52,18 @@ class Explore extends StatelessWidget {
                     color: AppColors.textMuted,
                   ),
                   suffixIcon: GestureDetector(
-                    onTap: () {},
+                    // Filters sheet -> Apply par filtered Search Results khulte hain
+                    onTap: () async {
+                      final filters = await FilterSheet.show(
+                        const SearchFilters(),
+                      );
+                      if (filters != null) {
+                        Get.toNamed(
+                          AppRoutes.searchResults,
+                          arguments: SearchArgs(filters: filters),
+                        );
+                      }
+                    },
                     child: Image.asset(
                       'assets/icons/filter.png',
                       width: 40.r,
@@ -71,27 +74,13 @@ class Explore extends StatelessWidget {
               ),
 
               // Category chips
-              Obx(() {
-                final selected = controller.selectedCategory.value;
-
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Row(
-                    spacing: 8.w,
-                    children: [
-                      for (var i = 0;
-                          i < controller.categories.length;
-                          i++)
-                        FoodCategoryChip(
-                          label: controller.categories[i],
-                          isSelected: i == selected,
-                          onTap: () => controller.selectCategory(i),
-                        ),
-                    ],
-                  ),
-                );
-              }),
+              Obx(
+                () => ChipRow(
+                  labels: controller.categories,
+                  selectedIndex: controller.selectedCategory.value,
+                  onSelected: controller.selectCategory,
+                ),
+              ),
 
               // Popular restaurants
               Column(
@@ -99,126 +88,107 @@ class Explore extends StatelessWidget {
                 children: [
                   SectionTextlabels(
                     title: 'Popular restaurants',
-                    onSeeAllPressed: () {},
+                    onSeeAllPressed: () => Get.toNamed(
+                      AppRoutes.searchResults,
+                      arguments: SearchArgs(initialFilter: 2),
+                    ),
                   ),
-
-                  SizedBox(
-                    height: listHeight,
-                    child: Obx(
-                      () => ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
-                        itemCount: controller.restaurants.length,
-                        itemBuilder: (context, i) {
-                          final restaurant = controller.restaurants[i];
-
-                          return Padding(
-                            padding: EdgeInsets.only(right: 12.w),
-                            child: SizedBox(
-                              width: cardWidth,
+                  Obx(
+                    () => SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 12.w,
+                        children: [
+                          for (final restaurant in controller.restaurants)
+                            ConstrainedBox(
+                              constraints: BoxConstraints.tightFor(
+                                width: cardWidth,
+                              ),
                               child: RestaurantCard(
                                 restaurant: restaurant,
-                                placeholderColor:
-                                    AppColors.photoPlaceholder2,
-                                onTap: () {
-                                  Get.to(
-                                    () => ResturantDetails(
-                                      restaurant: restaurant,
-                                    ),
-                                  );
-                                },
+                                placeholderColor: AppColors.photoPlaceholder2,
+                                onTap: () => Get.toNamed(
+                                  AppRoutes.restaurantDetails,
+                                  arguments: restaurant,
+                                ),
                               ),
                             ),
-                          );
-                        },
+                        ],
                       ),
                     ),
                   ),
                 ],
               ),
 
-              // Trending dishes
+              //////// Trending dishes//////
               Column(
                 spacing: 4.h,
                 children: [
                   SectionTextlabels(
                     title: 'Trending dishes',
-                    onSeeAllPressed: () {},
+                    onSeeAllPressed: () => Get.toNamed(
+                      AppRoutes.searchResults,
+                      arguments: SearchArgs(initialFilter: 1),
+                    ),
                   ),
-
-                  SizedBox(
-                    height: tileListHeight,
-                    child: Obx(
-                      () => ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
-                        itemCount: controller.dishes.length,
-                        itemBuilder: (context, i) {
-                          final dish = controller.dishes[i];
-
-                          return Padding(
-                            padding: EdgeInsets.only(right: 12.w),
-                            child: SizedBox(
-                              width: tileWidth,
+                  Obx(
+                    () => SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 12.w,
+                        children: [
+                          for (final dish in controller.dishes)
+                            ConstrainedBox(
+                              constraints: BoxConstraints.tightFor(
+                                width: tileWidth,
+                              ),
                               child: DishCard(
                                 dish: dish,
-                                placeholderColor:
-                                    AppColors.photoPlaceholder2,
-                                onTap: () {
-                                  Get.to(
-                                    () => ResturantDetails(
-                                      restaurant:
-                                          controller.restaurantOfDish(dish),
-                                    ),
-                                  );
-                                },
+                                placeholderColor: AppColors.photoPlaceholder2,
+                                onTap: () => Get.toNamed(
+                                  AppRoutes.restaurantDetails,
+                                  arguments: controller.restaurantOfDish(dish),
+                                ),
                               ),
                             ),
-                          );
-                        },
+                        ],
                       ),
                     ),
                   ),
                 ],
               ),
 
-              // Nearby restaurants
+              ///////Nearby ///////
               Column(
                 spacing: 4.h,
                 children: [
                   SectionTextlabels(
                     title: 'Nearby',
-                    onSeeAllPressed: () {},
+                    onSeeAllPressed: () => Get.toNamed(
+                      AppRoutes.searchResults,
+                      arguments: SearchArgs(initialFilter: 3),
+                    ),
                   ),
-
                   Obx(
                     () => ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.fromLTRB(
-                        16.w,
-                        0,
-                        16.w,
-                        16.h,
-                      ),
+                      padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
                       itemCount: controller.nearby.length,
-                      itemBuilder: (context, i) {
-                        final restaurant = controller.nearby[i];
-
-                        return Padding(
-                          padding: EdgeInsets.only(bottom: 8.h),
-                          child: NearbyTile(
-                            restaurant: restaurant,
-                            onTap: () {
-                              Get.to(
-                                () => ResturantDetails(
-                                  restaurant: restaurant,
-                                ),
-                              );
-                            },
+                      itemBuilder: (context, i) => Padding(
+                        padding: EdgeInsets.only(bottom: 8.h),
+                        child: NearbyTile(
+                          restaurant: controller.nearby[i],
+                          onTap: () => Get.toNamed(
+                            AppRoutes.restaurantDetails,
+                            arguments: controller.nearby[i],
                           ),
-                        );
-                      },
+                        ),
+                      ),
                     ),
                   ),
                 ],

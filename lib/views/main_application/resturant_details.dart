@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tastetogether/models/resturant_model.dart';
+import 'package:tastetogether/routes/app_routes.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/viewmodels/main_application_models/restaurant_details_viewmodel/restaurant_details_view_model.dart';
-import 'package:tastetogether/views/main_application/create_review.dart';
-import 'package:tastetogether/views/main_application/dish_details.dart';
 import 'package:tastetogether/widgets/common/bottom_action_bar.dart';
 import 'package:tastetogether/widgets/common/hero_sheet.dart';
 import 'package:tastetogether/widgets/common/outlined_wide_button.dart';
@@ -148,8 +147,8 @@ class ResturantDetails extends StatelessWidget {
                 SectionHeader(
                   title: 'Popular dishes',
                   trailingText: 'See all',
-                  // TODO: restaurant ke saare dishes wali screen
-                  onTrailingTap: () {},
+                  onTrailingTap: () => Get.toNamed(AppRoutes.allDishes, arguments: AllDishesArgs(restaurantName: restaurant.name,
+                      dishes: controller.dishes)),
                 ),
                 SizedBox(height: 8.h),
                 // height fixed nahi: tile apne content ke hisaab se barhta hai
@@ -165,9 +164,7 @@ class ResturantDetails extends StatelessWidget {
                         DishTile(
                           dish: controller.dishes[i],
                           placeholderColor: _dishColors[i % _dishColors.length],
-                          onTap: () => Get.to(
-                            () => DishDetails(dish: controller.dishes[i]),
-                          ),
+                          onTap: () => Get.toNamed(AppRoutes.dishDetails, arguments: controller.dishes[i]),
                         ),
                     ],
                   ),
@@ -187,8 +184,8 @@ class ResturantDetails extends StatelessWidget {
                 SizedBox(height: 4.h),
                 OutlinedWideButton(
                   label: 'See all ${restaurant.reviewCount} reviews',
-                  // TODO: saare reviews ki screen
-                  onPressed: () {},
+                  onPressed: () => Get.toNamed(AppRoutes.allReviews, arguments: AllReviewsArgs(title: restaurant.name,
+                      reviews: controller.reviews)),
                 ),
               ],
             ),
@@ -199,7 +196,7 @@ class ResturantDetails extends StatelessWidget {
         label: 'Write a Review',
         icon: Icons.edit_outlined,
         onPressed: () =>
-            Get.to(() => CreateReview(restaurantName: restaurant.name)),
+            Get.toNamed(AppRoutes.createReview, arguments: ReviewArgs(restaurantName: restaurant.name)),
       ),
     );
   }

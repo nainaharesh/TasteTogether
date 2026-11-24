@@ -5,21 +5,37 @@ import 'package:get/get.dart';
 import 'package:tastetogether/models/dish_model.dart';
 import 'package:tastetogether/models/resturant_model.dart';
 import 'package:tastetogether/models/search_result_model.dart';
+import 'package:tastetogether/models/search_filters_model.dart';
+import 'package:tastetogether/routes/app_routes.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/viewmodels/main_application_models/search_results_viewmodel/search_results_view_model.dart';
-import 'package:tastetogether/views/main_application/dish_details.dart';
-import 'package:tastetogether/views/main_application/resturant_details.dart';
-import 'package:tastetogether/widgets/explore/food_category_chip.dart';
+import 'package:tastetogether/widgets/common/chip_row.dart';
+import 'package:tastetogether/widgets/common/result_tile.dart';
+import 'package:tastetogether/widgets/search/filter_sheet.dart';
 import 'package:tastetogether/widgets/search/search_input_bar.dart';
-import 'package:tastetogether/widgets/search/search_result_tile.dart';
 
 class SearchResults extends StatelessWidget {
-  SearchResults({super.key, this.query = ''});
+  SearchResults({
+    super.key,
+    this.query = '',
+    this.initialFilter = 0,
+    this.filters = const SearchFilters(),
+  });
 
   final String query;
 
+  /// "See all" se aaye to Restaurants / Dishes / Nearby chip pehle se select
+  final int initialFilter;
+
+  /// Explore ke Filters sheet se aaye hue filters
+  final SearchFilters filters;
+
   late final SearchResultsViewModel controller = Get.put(
-    SearchResultsViewModel(query: query),
+    SearchResultsViewModel(
+      query: query,
+      initialFilter: initialFilter,
+      filters: filters,
+    ),
   );
 
   static const _colors = [
@@ -32,29 +48,21 @@ class SearchResults extends StatelessWidget {
   void _open(SearchResult r) {
     if (r.isDish) {
       // TODO: API aane par dish id se details fetch hongi
-      Get.to(
-        () => DishDetails(
-          dish: Dish(
+      Get.toNamed(AppRoutes.dishDetails, arguments: Dish(
             name: r.name,
             restaurantName: r.secondary,
             rating: r.rating,
             ratingCount: r.count,
-          ),
-        ),
-      );
+          ));
     } else {
-      Get.to(
-        () => ResturantDetails(
-          restaurant: Restaurant(
+      Get.toNamed(AppRoutes.restaurantDetails, arguments: Restaurant(
             name: r.name,
             cuisine: r.secondary,
             area: '',
             rating: r.rating,
             reviewCount: r.count,
             distanceKm: r.distanceKm,
-          ),
-        ),
-      );
+          ));
     }
   }
 
@@ -73,28 +81,13 @@ class SearchResults extends StatelessWidget {
             ),
 
             // filter chips
-            Obx(() {
-              final selected = controller.selectedFilter.value;
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Row(
-                  spacing: 8.w,
-                  children: [
-                    for (
-                      var i = 0;
-                      i < SearchResultsViewModel.filters.length;
-                      i++
-                    )
-                      FoodCategoryChip(
-                        label: SearchResultsViewModel.filters[i],
-                        isSelected: i == selected,
-                        onTap: () => controller.selectFilter(i),
-                      ),
-                  ],
-                ),
-              );
-            }),
+            Obx(
+              () => ChipRow(
+                labels: SearchResultsViewModel.filters,
+                selectedIndex: controller.selectedFilter.value,
+                onSelected: controller.selectFilter,
+              ),
+            ),
 
             // count + sort
             Padding(
@@ -118,18 +111,28 @@ class SearchResults extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // TODO: sort options (Best match / Top rated / Nearest)
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () async {
+                        final result = await FilterSheet.show(
+                          controller.appliedFilters.value,
+                          sortOnly: true,
+                        );
+                        if (result != null) controller.applyFilters(result);
+                      },
                       child: Row(
                         spacing: 4.w,
                         children: [
-                          Text(
-                            'Best match',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.primaryDeep,
+                          Obx(
+                            () => Text(
+                              SearchFilters.sortOptions[controller
+                                  .appliedFilters
+                                  .value
+                                  .sort],
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.primaryDeep,
+                              ),
                             ),
                           ),
                           Icon(
@@ -164,8 +167,12 @@ class SearchResults extends StatelessWidget {
                   padding: EdgeInsets.fromLTRB(16.w, 4.h, 16.w, 16.h),
                   itemCount: list.length,
                   separatorBuilder: (_, _) => SizedBox(height: 12.h),
-                  itemBuilder: (_, i) => SearchResultTile(
-                    result: list[i],
+                  itemBuilder: (_, i) => ResultTile(
+                    badge: list[i].isDish ? 'Dish' : 'Restaurant',
+                    name: list[i].name,
+                    subtitle: list[i].subtitle,
+                    rating: list[i].rating,
+                    countLabel: list[i].countLabel,
                     placeholderColor: _colors[i % _colors.length],
                     onTap: () => _open(list[i]),
                   ),

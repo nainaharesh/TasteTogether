@@ -3,50 +3,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:tastetogether/routes/app_routes.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/viewmodels/home_feed_viewmodel/bottomnavbar_view_model.dart';
+import 'package:tastetogether/views/followers_screen.dart';
 import 'package:tastetogether/views/main_application/create_review.dart';
 import 'package:tastetogether/views/main_application/explore.dart';
 import 'package:tastetogether/views/main_application/home_feed.dart';
-import 'package:tastetogether/views/followers_screen.dart';
+import 'package:tastetogether/views/user_activity/profile.dart';
+import 'package:tastetogether/views/user_activity/saved.dart';
 
 class BottomNavbarScreen extends StatelessWidget {
   BottomNavbarScreen({super.key});
 
-  final BottomNavbarViewModel controller = Get.put(
-    BottomNavbarViewModel(),
-  );
+  final BottomNavbarViewModel controller = Get.put(BottomNavbarViewModel());
 
   final List<Widget> pages = [
     HomeFeed(),
     Explore(),
     const SizedBox.shrink(),
-    const Center(child: Text('Saved')),
-    const Center(child: Text('Profile')),
+    Saved(),
+    Profile(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(
-        () => IndexedStack(
-          index: controller.currentIndex.value,
-          children: pages,
-        ),
+        () =>
+            IndexedStack(index: controller.currentIndex.value, children: pages),
       ),
       bottomNavigationBar: Container(
         constraints: BoxConstraints(minHeight: 84.h),
         decoration: const BoxDecoration(
-          border: Border(
-            top: BorderSide(color: AppColors.border),
-          ),
+          border: Border(top: BorderSide(color: AppColors.border)),
         ),
         child: Obx(
           () => BottomNavigationBar(
             currentIndex: controller.currentIndex.value,
             onTap: (index) {
               if (index == 2) {
-                Get.to(() =>  CreateReview());
+                Get.to(() => CreateReview());
               } else if (index == 4) {
                 controller.changeIndex(index);
                 Get.to(() => const FollowersScreen());
@@ -62,23 +59,15 @@ class BottomNavbarScreen extends StatelessWidget {
             unselectedItemColor: AppColors.textMuted,
             selectedFontSize: 11.sp,
             unselectedFontSize: 11.sp,
-            selectedLabelStyle: const TextStyle(
-              fontWeight: FontWeight.w700,
-            ),
-            unselectedLabelStyle: const TextStyle(
-              fontWeight: FontWeight.w500,
-            ),
+            selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700),
+            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
             items: [
               const BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage('assets/icons/home.png'),
-                ),
+                icon: ImageIcon(AssetImage('assets/icons/home.png')),
                 label: 'Home',
               ),
               const BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage('assets/icons/explore.png'),
-                ),
+                icon: ImageIcon(AssetImage('assets/icons/explore.png')),
                 label: 'Explore',
               ),
               BottomNavigationBarItem(
@@ -89,9 +78,8 @@ class BottomNavbarScreen extends StatelessWidget {
                     child: Transform.translate(
                       offset: Offset(0, 8.h),
                       child: GestureDetector(
-                        onTap: () => Get.to(
-                          () => CreateReview(),
-                        ),
+                        onTap: () => Get.toNamed(AppRoutes.createReview),
+
                         child: Image.asset(
                           'assets/icons/add.png',
                           width: 52.r,
@@ -104,15 +92,11 @@ class BottomNavbarScreen extends StatelessWidget {
                 label: '',
               ),
               const BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage('assets/icons/saved.png'),
-                ),
+                icon: ImageIcon(AssetImage('assets/icons/saved.png')),
                 label: 'Saved',
               ),
               const BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage('assets/icons/profile.png'),
-                ),
+                icon: ImageIcon(AssetImage('assets/icons/profile.png')),
                 label: 'Profile',
               ),
             ],

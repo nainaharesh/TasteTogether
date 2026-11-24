@@ -74,11 +74,7 @@ class DishCard extends StatelessWidget {
             child: Row(
               spacing: 3.w,
               children: [
-                Icon(
-                  Icons.star_rounded,
-                  size: 12.r,
-                  color: AppColors.primary,
-                ),
+                Icon(Icons.star_rounded, size: 12.r, color: AppColors.primary),
                 Text(
                   dish.rating.toStringAsFixed(1),
                   style: TextStyle(

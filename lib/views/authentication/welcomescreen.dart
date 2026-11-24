@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../routes/app_routes.dart';
+import '../../routes/app_routes.dart';
 
 import '../../theme/appcolors.dart';
 import '../../utils/aap_text_styles.dart';

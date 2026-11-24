@@ -1,10 +1,8 @@
-// ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../theme/appcolors.dart';
-import '../utils/aap_text_styles.dart';
+import 'package:tastetogether/theme/appcolors.dart';
+import 'package:tastetogether/utils/aap_text_styles.dart';
 
 /// Label + rounded input with an optional left icon, as in the design.
 /// Set isPassword: true to get the eye icon that shows / hides the text.
@@ -126,7 +124,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 : null,
             errorStyle: AppTextStyles.error,
             errorMaxLines: 2,
-            enabledBorder: _border(AppColors.border, 1),
+            enabledBorder: _border(AppColors.fieldBorder, 1),
             focusedBorder: _border(AppColors.primary, 2),
             errorBorder: _border(AppColors.error, 1),
             focusedErrorBorder: _border(AppColors.error, 2),

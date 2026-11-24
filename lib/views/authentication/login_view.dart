@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -13,15 +14,15 @@ import '../../widgets/auth/auth_page_layout.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
 
-
-
-
 /// Screen 2 of 4 - "02 · Login".
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   // Creates the controller (or reuses it if it already exists)
+
+
   AuthController get controller => Get.put(AuthController(), permanent: true);
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,12 +72,18 @@ class LoginScreen extends StatelessWidget {
         SizedBox(height: 10.h),
         Align(
           alignment: Alignment.centerRight,
-          child: InkWell(
-            onTap: () => Get.toNamed(AppRoutes.forgotPassword),
-            child: SizedBox(
-              height: 44.h,
-              child: Center(
-                child: Text('Forgot password?', style: AppTextStyles.linkSmall),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => Get.toNamed(AppRoutes.forgotPassword),
+              child: SizedBox(
+                height: 44.h,
+                child: Center(
+                  child: Text(
+                    'Forgot password?',
+                    style: AppTextStyles.linkSmall,
+                  ),
+                ),
               ),
             ),
           ),
@@ -84,11 +91,10 @@ class LoginScreen extends StatelessWidget {
 
         // Obx rebuilds only this button when isLoading changes.
         Obx(
-              () => CustomButton(
+          () => CustomButton(
             text: 'Log in',
             isLoading: controller.isLoading.value,
             onPressed: () => Get.toNamed(AppRoutes.signup),
-
           ),
         ),
 

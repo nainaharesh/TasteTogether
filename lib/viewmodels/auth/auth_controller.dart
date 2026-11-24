@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get/get.dart';
 
-// BACKEND INTEGRATION: uncomment these imports together with the API code below.
-// import '../../models/auth/auth_models.dart';
-// import '../../services/api_services.dart';
-// import '../../utils/api_endpoints.dart';
-// import '../../routes/app_routes.dart';
+import '../../models/auth/auth_models.dart';
+import '../../routes/app_routes.dart';
+import '../../services/api/api_client.dart';
+import '../../services/api/api_exception.dart';
+import '../../services/auth_service.dart';
+import '../../services/token_storage.dart';
 
 /// ViewModel for all four auth screens (one controller, as requested).
 /// The screens only call its methods and read its values. No UI code here.
@@ -38,9 +39,20 @@ class AuthController extends GetxController {
   final isLoading = false.obs;
 
   /// Forgot password screen: false = email form, true = "Check your inbox".
-  /// BACKEND INTEGRATION: it is set to true only inside the (commented)
-  /// success branch of sendResetLink(), so it stays false for now.
+  /// Sirf tab true hota hai jab backend ne reset email bhej di.
   final isEmailSent = false.obs;
+
+  /// Login ke baad ka user (Profile, Home wagera isi se le sakte hain).
+  final Rxn<UserModel> currentUser = Rxn<UserModel>();
+
+  final _authService = AuthService();
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Kisi bhi API par 401 aaye to token hata kar Welcome par bhejo.
+    ApiClient.onUnauthorized = _forceLogout;
+  }
 
   // ---------------------------------------------------------------------------
   // Validators. A validator returns an error text, or null when the value is OK.
@@ -92,85 +104,129 @@ class AuthController extends GetxController {
   // Actions called by the buttons
   // ---------------------------------------------------------------------------
 
+  /// Splash par: pehle se login hai ya nahi.
+  Future<void> checkSession() async {
+    if (!TokenStorage.hasToken) {
+      Get.offAllNamed(AppRoutes.welcome);
+      return;
+    }
+    try {
+      currentUser.value = await _authService.getMyProfile();
+    } on ApiException catch (e) {
+      // 401 ho to ApiClient.onUnauthorized pehle hi Welcome par bhej chuka hai.
+      if (e.isUnauthorized) return;
+      // Internet na ho to bhi Home kholo, token abhi sahi hai.
+    } catch (_) {
+      // Response ka format ajeeb ho to bhi Home kholo.
+    }
+    Get.offAllNamed(AppRoutes.home);
+  }
+
   Future<void> login() async {
     // Run every validator of the login Form. Stop if any field is invalid.
     if (!(loginFormKey.currentState?.validate() ?? false)) return;
 
-    // BACKEND INTEGRATION (Login)
-    // Needed from backend: URL, request keys, success response (token / user),
-    // error format (wrong password, unknown email).
-    //
-    // isLoading.value = true;
-    // try {
-    //   final request = LoginRequestModel(
-    //     email: loginEmailController.text.trim(),
-    //     password: loginPasswordController.text,
-    //   );
-    //   // final response = await ApiServices.post(
-    //   //   ApiEndpoints.loginUrl,
-    //   //   request.toJson(),
-    //   // );
-    //   // TODO: check response status, save token with GetStorage, then:
-    //   // Get.offAllNamed(AppRoutes.home);
-    // } catch (e) {
-    //   // TODO: show an error message
-    // } finally {
-    //   isLoading.value = false;
-    // }
+    await _run(() async {
+      final result = await _authService.login(
+        email: loginEmailController.text.trim(),
+        password: loginPasswordController.text,
+      );
+      await _startSession(result);
+    });
   }
 
   Future<void> signup() async {
     if (!(signupFormKey.currentState?.validate() ?? false)) return;
 
-    // BACKEND INTEGRATION (Signup)
-    // Needed from backend: URL, request keys, success response, error format
-    // (email already used, username taken), and whether the user must verify
-    // the email before logging in.
-    //
-    // isLoading.value = true;
-    // try {
-    //   final request = SignupRequestModel(
-    //     fullName: signupNameController.text.trim(),
-    //     username: signupUsernameController.text.trim(),
-    //     email: signupEmailController.text.trim(),
-    //     password: signupPasswordController.text,
-    //   );
-    //   // final response = await ApiServices.post(
-    //   //   ApiEndpoints.signupUrl,
-    //   //   request.toJson(),
-    //   // );
-    //   // TODO: check response, then go to Home or back to Login
-    // } catch (e) {
-    //   // TODO: show an error message
-    // } finally {
-    //   isLoading.value = false;
-    // }
+    await _run(() async {
+      final result = await _authService.signup(
+        fullName: signupNameController.text.trim(),
+        username: signupUsernameController.text.trim(),
+        email: signupEmailController.text.trim(),
+        password: signupPasswordController.text,
+      );
+      await _startSession(result);
+    });
   }
 
   Future<void> sendResetLink() async {
     if (!(forgotFormKey.currentState?.validate() ?? false)) return;
 
-    // BACKEND INTEGRATION (Forgot password)
-    // Needed from backend: URL, request key for the email, success / error
-    // format, and the real link expiry time (the design text says
-    // "It expires in 30 minutes", this must match the backend).
-    //
-    // isLoading.value = true;
-    // try {
-    //   final request = ForgotPasswordRequestModel(
-    //     email: forgotEmailController.text.trim(),
-    //   );
-    //   // final response = await ApiServices.post(
-    //   //   ApiEndpoints.forgotPasswordUrl,
-    //   //   request.toJson(),
-    //   // );
-    //   // On success (and ONLY then) show the "Check your inbox" view:
-    //   // isEmailSent.value = true;
-    // } catch (e) {
-    //   // TODO: show an error message
-    // } finally {
-    //   isLoading.value = false;
-    // }
+    await _run(() async {
+      await _authService.forgotPassword(
+        email: forgotEmailController.text.trim(),
+      );
+      // Sirf success par "Check your inbox" dikhao.
+      isEmailSent.value = true;
+    });
+  }
+
+  /// Settings ke "Log out" button par lagega.
+  Future<void> logout() async {
+    isLoading.value = true;
+    try {
+      await _authService.logout();
+    } catch (_) {
+      // Server fail bhi ho to phone se logout ho jana chahiye.
+    } finally {
+      isLoading.value = false;
+    }
+    await _endSession();
+  }
+
+  // ---------------------------------------------------------------------------
+  // Private helpers
+  // ---------------------------------------------------------------------------
+
+  /// Loading on/off aur error ek hi jagah: login, signup, forgot sab use karte hain.
+  Future<void> _run(Future<void> Function() action) async {
+    isLoading.value = true;
+    try {
+      await action();
+    } on ApiException catch (e) {
+      _showError(e.message);
+    } catch (_) {
+      _showError('Server ka jawab samajh nahi aaya. Dobara try karein.');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  /// Login / signup success: token save, user rakho, Home kholo.
+  Future<void> _startSession(AuthResponse result) async {
+    await TokenStorage.saveToken(result.token);
+    currentUser.value = result.user;
+    _clearForms();
+    Get.offAllNamed(AppRoutes.home);
+  }
+
+  /// Logout ya 401: token hatao, user bhulo, Welcome par jao.
+  Future<void> _endSession() async {
+    await TokenStorage.deleteToken();
+    currentUser.value = null;
+    _clearForms();
+    Get.offAllNamed(AppRoutes.welcome);
+  }
+
+  void _forceLogout() {
+    _endSession();
+    _showError('Session khatam ho gaya. Dobara login karein.');
+  }
+
+  void _clearForms() {
+    loginEmailController.clear();
+    loginPasswordController.clear();
+    signupNameController.clear();
+    signupUsernameController.clear();
+    signupEmailController.clear();
+    signupPasswordController.clear();
+    signupConfirmController.clear();
+    forgotEmailController.clear();
+    isEmailSent.value = false;
+  }
+
+  void _showError(String message) {
+    Get.snackbar('Oops', message, snackPosition: SnackPosition.BOTTOM);
   }
 
   /// "Didn't get it? Send again": goes back to the email form (as in the design).

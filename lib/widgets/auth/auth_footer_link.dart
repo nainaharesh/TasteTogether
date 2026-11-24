@@ -1,17 +1,16 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 
 import '../../utils/aap_text_styles.dart';
 
-/// Bottom line such as: "Already have an account?  Log in".
+/// Bottom line such as: "Already have an account? Log in".
 /// Used on all four screens.
 class AuthFooterLink extends StatelessWidget {
   const AuthFooterLink({
     super.key,
     required this.question,
     required this.linkText,
-     this.onTap,
+    this.onTap,
   });
 
   final String question;
@@ -27,11 +26,15 @@ class AuthFooterLink extends StatelessWidget {
         children: [
           Text(question, style: AppTextStyles.footerText),
           SizedBox(width: 6.w),
-          InkWell(
-            onTap: onTap,
-            child: SizedBox(
-              height: 44.h,
-              child: Center(child: Text(linkText, style: AppTextStyles.link)),
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(4.r),
+              child: SizedBox(
+                height: 44.h,
+                child: Center(child: Text(linkText, style: AppTextStyles.link)),
+              ),
             ),
           ),
         ],

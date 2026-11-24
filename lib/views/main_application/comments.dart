@@ -70,8 +70,7 @@ class Comments extends StatelessWidget {
                   return CommentTile(
                     comment: c,
                     onLike: () => controller.toggleLike(c.id),
-                    // TODO: reply feature
-                    onReply: () {},
+                    onReply: () => controller.startReply(c.username),
                   );
                 },
               ),
@@ -97,6 +96,7 @@ class Comments extends StatelessWidget {
                       height: 44.h,
                       child: TextField(
                         controller: controller.textController,
+                        focusNode: controller.focusNode,
                         onSubmitted: (_) => controller.addComment(),
                         textInputAction: TextInputAction.send,
                         cursorColor: AppColors.primary,

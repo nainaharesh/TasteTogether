@@ -1,5 +1,7 @@
+
 name: tastetogether
 description: "A new Flutter project."
+
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
@@ -9,8 +11,9 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # followed by an optional build number separated by a +.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In Android, build-name is used as versionName while build-number is used as versionCode.
+# Read more about Android versioning at
+# https://developer.android.com/studio/publish/versioning
 # In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
@@ -24,9 +27,8 @@ environment:
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
-# dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
-# versions available, run `flutter pub outdated`.
+# dependencies can be manually updated by changing the version numbers below
+# to the latest versions available on pub.dev.
 dependencies:
   flutter:
     sdk: flutter
@@ -34,36 +36,60 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^2.0.0
+
+  # App launcher icons.
   flutter_launcher_icons: ^0.14.4
+
+  # Responsive UI.
   flutter_screenutil: ^5.9.3
-  flutter_secure_storage: ^9.2.4
+
+  # GetX state management and navigation.
   get: ^4.7.3
+
+  # Local storage.
   get_storage: ^2.1.1
+
+  # Google Fonts.
   google_fonts: ^8.2.1
-  http: ^1.6.0
+
+  # Lottie animations.
   lottie: ^3.8.2
+
+  # HTTP client for backend API integration.
+  http: ^1.6.0
+
+  # Secure storage for authentication tokens.
+  flutter_secure_storage: ^11.2.0
+
+  # Firebase core initialization.
+  firebase_core: ^5.2.0
+
+  # Firebase push notifications.
+  firebase_messaging: ^17.1.0
+
+  # Image picker for camera and gallery.
   image_picker: ^1.2.4
 
+  # Material UI components.
+  material_ui: any
+
 dev_dependencies:
+  # The "flutter_test" package contains the Flutter testing framework.
   flutter_test:
     sdk: flutter
 
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
+  # The "flutter_lints" package contains a set of recommended lints to
+  # encourage good coding practices. The lint set is activated in the
+  # analysis_options.yaml file located in the root of your package.
   flutter_lints: ^6.0.0
-  material_ui: any
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
+# For information regarding the generic Dart part of this file, see
+# https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
 flutter:
   # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
+  # included with your application.
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
@@ -71,17 +97,16 @@ flutter:
     - assets/icons/
   #   - images/a_dot_ham.jpeg
 
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/to/resolution-aware-images
+  # An image asset can refer to one or more resolution-specific "variants".
+  # See https://flutter.dev/to/resolution-aware-images
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
 
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
+  # To add custom fonts to your application, add a fonts section here.
+  # Each entry should have a "family" key and a "fonts" key with a list.
+  #
+  # Example:
   # fonts:
   #   - family: Schyler
   #     fonts:
@@ -94,5 +119,5 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/to/font-from-package
+  # For details regarding fonts from package dependencies, see
+  # https://flutter.dev/to/font-from-package
