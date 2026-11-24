@@ -1,18 +1,13 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-<<<<<<< HEAD
 import 'package:tastetogether/models/post_models.dart';
 import 'package:tastetogether/views/main_application/comments.dart';
 import 'package:tastetogether/widgets/home_feed/post_card.dart';
 
-=======
 
-import 'package:tastetogether/widgets/home_feed/post_card.dart';
 
-import '../../models/post_model.dart';
-
->>>>>>> your-development
 class FeedList extends StatelessWidget {
   const FeedList({super.key, required this.posts});
 

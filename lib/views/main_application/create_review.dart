@@ -149,15 +149,17 @@ class CreateReview extends StatelessWidget {
                                         28.h,
                                       ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(14.r),
+                                        borderRadius: BorderRadius.circular(
+                                          14.r,
+                                        ),
                                         borderSide: const BorderSide(
                                           color: AppColors.fieldBorder,
                                         ),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(14.r),
+                                        borderRadius: BorderRadius.circular(
+                                          14.r,
+                                        ),
                                         borderSide: const BorderSide(
                                           color: AppColors.primary,
                                           width: 1.5,
@@ -251,8 +253,4 @@ class CreateReview extends StatelessWidget {
       ),
     );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> your-development

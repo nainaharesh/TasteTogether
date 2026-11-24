@@ -48,8 +48,4 @@ class FoodCategoryChip extends StatelessWidget {
       ),
     );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> your-development

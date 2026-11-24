@@ -1,21 +1,15 @@
-// ignore_for_file: deprecated_member_use
+
+ // ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/viewmodels/main_application_models/home_feed_viewmodel/tabbar_view_model.dart';
 import 'package:tastetogether/views/main_application/search_results.dart';
-import 'package:tastetogether/viewmodels/main_application_models/home_feed_viewmodel/tabbar_view_model.dart.dart';
 import 'package:tastetogether/widgets/home_feed/feed_list.dart';
 import 'package:tastetogether/widgets/home_feed/tabbar.dart';
-
-=======
-
-import 'package:tastetogether/widgets/home_feed/feed_list.dart';
-import 'package:tastetogether/widgets/home_feed/tabbar.dart';
-
-import '../../viewmodels/home_feed_viewmodel/tabbar_view_model.dart';
-
 
 class HomeFeed extends StatelessWidget {
   HomeFeed({super.key});
@@ -25,16 +19,22 @@ class HomeFeed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background, // #F8F7F4
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [
-            //////// header ////////
+
+            // Header
             Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 8.w, top: 24.h),
+              padding: EdgeInsets.only(
+                left: 16.w,
+                right: 8.w,
+                top: 24.h,
+              ),
               child: Row(
                 children: [
-                  ///// logo and title /////
+
+                  // Logo and title
                   Expanded(
                     child: Row(
                       spacing: 8.w,
@@ -44,7 +44,7 @@ class HomeFeed extends StatelessWidget {
                           width: 30.r,
                           height: 30.r,
                         ),
-                        // font adjust auto on small screen we use flexiable here
+
                         Flexible(
                           child: Text(
                             'TasteTogether',
@@ -62,9 +62,11 @@ class HomeFeed extends StatelessWidget {
                     ),
                   ),
 
-                  ///// search icon /////
+                  // Search icon
                   IconButton(
-                    onPressed: () => Get.to(() => SearchResults()),
+                    onPressed: () => Get.to(
+                      () => SearchResults(),
+                    ),
                     padding: EdgeInsets.zero,
                     constraints: BoxConstraints.tightFor(
                       width: 44.r,
@@ -77,7 +79,7 @@ class HomeFeed extends StatelessWidget {
                     ),
                   ),
 
-                  ///// bell icon /////
+                  // Notification bell
                   Stack(
                     children: [
                       IconButton(
@@ -93,6 +95,7 @@ class HomeFeed extends StatelessWidget {
                           color: AppColors.textPrimary,
                         ),
                       ),
+
                       Positioned(
                         top: 10.h,
                         right: 11.w,
@@ -115,18 +118,23 @@ class HomeFeed extends StatelessWidget {
               ),
             ),
 
-            //////// TabBar (Following | Community) ////////
+            // TabBar (Following | Community)
             AppTabBar(
               tabs: const ['Following', 'Community'],
               controller: tabbarcontroller.tabController,
             ),
 
+            // TabBarView
             Expanded(
               child: TabBarView(
                 controller: tabbarcontroller.tabController,
                 children: [
-                  FeedList(posts: tabbarcontroller.followingPosts),
-                  FeedList(posts: tabbarcontroller.communityPosts),
+                  FeedList(
+                    posts: tabbarcontroller.followingPosts,
+                  ),
+                  FeedList(
+                    posts: tabbarcontroller.communityPosts,
+                  ),
                 ],
               ),
             ),
@@ -135,5 +143,4 @@ class HomeFeed extends StatelessWidget {
       ),
     );
   }
-}
 }

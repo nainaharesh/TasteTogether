@@ -39,46 +39,11 @@ class NearbyTile extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.r),
                   child: imageUrl == null
                       ? _placeholder()
-                      ? const ColoredBox(
-                          color: AppColors.photoPlaceholder2,
-                          child: Center(
-                            child: Icon(
-                              Icons.image_outlined,
-                              size: 22,
-                              color: AppColors.textPrimary,
-                            ),
-                          ),
-                        )
                       : Image.network(
                           imageUrl,
                           fit: BoxFit.cover,
                           errorBuilder: (_, _, _) => _placeholder(),
                         ),
-
-                    color: AppColors.photoPlaceholder2,
-                    child: Center(
-                      child: Icon(
-                        Icons.image_outlined,
-                        size: 22,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                  )
-                      : Image.network(
-                    imageUrl,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, _, _) => const ColoredBox(
-                      color: AppColors.photoPlaceholder2,
-                      child: Center(
-                        child: Icon(
-                          Icons.image_outlined,
-                          size: 22,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                    ),
-                  ),
-
                 ),
               ),
 
@@ -172,5 +137,3 @@ class NearbyTile extends StatelessWidget {
     );
   }
 }
-}
-

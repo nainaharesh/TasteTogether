@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> your-development
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -66,8 +62,4 @@ class PhotoPlaceholder extends StatelessWidget {
       ),
     );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> your-development

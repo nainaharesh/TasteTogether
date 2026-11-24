@@ -1,5 +1,4 @@
-
- // ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,7 +46,7 @@ class BottomNavbarScreen extends StatelessWidget {
             currentIndex: controller.currentIndex.value,
             onTap: (index) {
               if (index == 2) {
-                Get.to(() => const CreateReview());
+                Get.to(() =>  CreateReview());
               } else if (index == 4) {
                 controller.changeIndex(index);
                 Get.to(() => const FollowersScreen());
@@ -91,7 +90,7 @@ class BottomNavbarScreen extends StatelessWidget {
                       offset: Offset(0, 8.h),
                       child: GestureDetector(
                         onTap: () => Get.to(
-                          () => const CreateReview(),
+                          () => CreateReview(),
                         ),
                         child: Image.asset(
                           'assets/icons/add.png',
