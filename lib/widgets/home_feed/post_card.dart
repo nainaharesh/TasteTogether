@@ -21,6 +21,7 @@ class PostCard extends StatelessWidget {
     this.isLiked = false,
     this.isSaved = false,
     this.onTap,
+    this.onUserTap,
     this.onMore,
     this.onLike,
     this.onComment,
@@ -41,6 +42,7 @@ class PostCard extends StatelessWidget {
   final bool isLiked;
   final bool isSaved;
   final VoidCallback? onTap;
+  final VoidCallback? onUserTap; // avatar / username par tap
   final VoidCallback? onMore;
   final VoidCallback? onLike;
   final VoidCallback? onComment;
@@ -64,61 +66,68 @@ class PostCard extends StatelessWidget {
             child: Row(
               spacing: 10.w,
               children: [
-                CircleAvatar(
-                  radius: 20.r,
-                  backgroundColor: avatarColor,
-                  child: Text(
-                    initials,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.surface,
+                GestureDetector(
+                  onTap: onUserTap,
+                  child: CircleAvatar(
+                    radius: 20.r,
+                    backgroundColor: avatarColor,
+                    child: Text(
+                      initials,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.surface,
+                      ),
                     ),
                   ),
                 ),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 2.h,
-                    children: [
-                      Text(
-                        username,
-                        style: TextStyle(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      Row(
-                        spacing: 4.w,
-                        children: [
-                          Icon(
-                            Icons.location_on_outlined,
-                            size: 12.r,
-                            color: AppColors.primaryDeep,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: onUserTap,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 2.h,
+                      children: [
+                        Text(
+                          username,
+                          style: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary,
                           ),
-                          Flexible(
-                            child: Text(
-                              restaurant,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.primaryDeep,
+                        ),
+                        Row(
+                          spacing: 4.w,
+                          children: [
+                            Icon(
+                              Icons.location_on_outlined,
+                              size: 12.r,
+                              color: AppColors.primaryDeep,
+                            ),
+                            Flexible(
+                              child: Text(
+                                restaurant,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.primaryDeep,
+                                ),
                               ),
                             ),
-                          ),
-                          Text(
-                            '· $timeAgo',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: AppColors.textMuted,
+                            Text(
+                              '· $timeAgo',
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: AppColors.textMuted,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 IconButton(

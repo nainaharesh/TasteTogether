@@ -21,7 +21,7 @@ class TabbarViewModel extends GetxController
       }
     });
 
-    // TODO: Get data from api//
+    // Todo: Get data from api//
     // dumy data///
     followingPosts.assignAll(dummyPosts);
     communityPosts.assignAll(dummyPosts.reversed);

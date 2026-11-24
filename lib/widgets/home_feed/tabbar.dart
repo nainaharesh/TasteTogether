@@ -4,18 +4,26 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 
 class AppTabBar extends StatelessWidget {
-  const AppTabBar({super.key, required this.tabs, required this.controller});
+  const AppTabBar({
+    super.key,
+    required this.tabs,
+    required this.controller,
+    this.isScrollable = true,
+  });
 
   final List<String> tabs;
   final TabController controller;
+
+  /// false ho to saare tabs barabar chaude (Followers / Following)
+  final bool isScrollable;
 
   @override
   Widget build(BuildContext context) {
     return TabBar(
       controller: controller,
-      isScrollable: true,
-      tabAlignment: TabAlignment.start,
-      padding: EdgeInsets.only(left: 4.w),
+      isScrollable: isScrollable,
+      tabAlignment: isScrollable ? TabAlignment.start : null,
+      padding: isScrollable ? EdgeInsets.only(left: 4.w) : null,
       labelPadding: EdgeInsets.symmetric(horizontal: 12.w),
       indicator: const UnderlineTabIndicator(
         borderSide: BorderSide(color: AppColors.primary, width: 2),

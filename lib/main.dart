@@ -3,10 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tastetogether/services/push_notification_service.dart';
+import 'package:tastetogether/services/token_storage.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/views/main_application/bottom_navbar.dart';
+import 'package:tastetogether/routes/app_routes.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Secure storage se token ek baar memory mein (baad mein sync milta hai).
+  await TokenStorage.init();
+
+  // Firebase + push notifications (setup na ho to app phir bhi chalti hai).
+  await PushNotificationService.init();
+
+  // Enable when local storage is required.
+  // await GetStorage.init();
+
   runApp(const MyApp());
 }
 
@@ -25,6 +38,7 @@ class MyApp extends StatelessWidget {
         // Har device par safe layout:
         // 1) bari screen (Chrome/tablet) par app phone jaisi width (480) mein rahe
         // 2) system ka font size bohat bara ho to bhi text 1.2x se zyada na barhe
+        // 3) keyboard ke bahar tap karne par keyboard band ho jaye
         builder: (context, child) {
           const maxWidth = 480.0;
           final mq = MediaQuery.of(context);
@@ -38,12 +52,15 @@ class MyApp extends StatelessWidget {
           );
           // .w/.h/.sp bhi isi (phone jaisi) width se hisaab lagayen
           ScreenUtil.configure(data: data);
-          return ColoredBox(
-            color: AppColors.background,
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: maxWidth),
-                child: MediaQuery(data: data, child: child!),
+          return GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            child: ColoredBox(
+              color: AppColors.background,
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: maxWidth),
+                  child: MediaQuery(data: data, child: child!),
+                ),
               ),
             ),
           );
@@ -63,6 +80,7 @@ class MyApp extends StatelessWidget {
             outlineVariant: AppColors.border, // #E8D8CA
             surfaceTint: Colors.transparent,
           ),
+          // DM Sans typography
           textTheme: GoogleFonts.dmSansTextTheme(ThemeData.light().textTheme)
               .apply(
                 bodyColor: AppColors.textPrimary,
@@ -113,7 +131,11 @@ class MyApp extends StatelessWidget {
             style: TextButton.styleFrom(foregroundColor: AppColors.primaryDeep),
           ),
         ),
-        home: BottomNavbarScreen(),
+
+        // Saari routes lib/routes/app_routes.dart mein hain
+        initialBinding: AppPages.initialBinding,
+        initialRoute: AppRoutes.splash,
+        getPages: AppPages.pages,
       ),
     );
   }

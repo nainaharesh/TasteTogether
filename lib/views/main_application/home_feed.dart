@@ -2,9 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:tastetogether/viewmodels/user_activity_models/notifications_viewmodel/notifications_view_model.dart';
+import 'package:tastetogether/widgets/common/chip_row.dart';
+import 'package:tastetogether/widgets/common/empty_state.dart';
+import 'package:tastetogether/routes/app_routes.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/viewmodels/main_application_models/home_feed_viewmodel/tabbar_view_model.dart';
-import 'package:tastetogether/views/main_application/search_results.dart';
 import 'package:tastetogether/widgets/home_feed/feed_list.dart';
 import 'package:tastetogether/widgets/home_feed/tabbar.dart';
 
@@ -12,6 +15,9 @@ class HomeFeed extends StatelessWidget {
   HomeFeed({super.key});
 
   final TabbarViewModel tabbarcontroller = Get.put(TabbarViewModel());
+  final NotificationsViewModel notificationsController = Get.put(
+    NotificationsViewModel(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +61,7 @@ class HomeFeed extends StatelessWidget {
 
                   ///// search icon /////
                   IconButton(
-                    onPressed: () => Get.to(() => SearchResults()),
+                    onPressed: () => Get.toNamed(AppRoutes.searchResults),
                     padding: EdgeInsets.zero,
                     constraints: BoxConstraints.tightFor(
                       width: 44.r,
@@ -72,7 +78,7 @@ class HomeFeed extends StatelessWidget {
                   Stack(
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () => Get.toNamed(AppRoutes.notifications),
                         padding: EdgeInsets.zero,
                         constraints: BoxConstraints.tightFor(
                           width: 44.r,
@@ -87,17 +93,22 @@ class HomeFeed extends StatelessWidget {
                       Positioned(
                         top: 10.h,
                         right: 11.w,
-                        child: Container(
-                          width: 13.r,
-                          height: 13.r,
-                          decoration: BoxDecoration(
-                            color: AppColors.primary,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppColors.background,
-                              width: 2,
-                            ),
-                          ),
+                        // dot sirf tab jab unread notifications hon
+                        child: Obx(
+                          () => notificationsController.unreadCount == 0
+                              ? const SizedBox.shrink()
+                              : Container(
+                                  width: 13.r,
+                                  height: 13.r,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: AppColors.background,
+                                      width: 2,
+                                    ),
+                                  ),
+                                ),
                         ),
                       ),
                     ],
@@ -116,8 +127,52 @@ class HomeFeed extends StatelessWidget {
               child: TabBarView(
                 controller: tabbarcontroller.tabController,
                 children: [
-                  FeedList(posts: tabbarcontroller.followingPosts),
-                  FeedList(posts: tabbarcontroller.communityPosts),
+                  // Following: jin ko follow karte ho unki posts
+                  FeedList(
+                    posts: tabbarcontroller.followingPosts,
+                    onLike: tabbarcontroller.toggleLike,
+                    onSave: tabbarcontroller.toggleSave,
+                    onRefresh: tabbarcontroller.refreshFeeds,
+                    emptyState: EmptyState(
+                      icon: Icons.people_outline_rounded,
+                      title: 'No posts yet',
+                      message: 'Follow food lovers in the Community tab to see their reviews here.',
+                      actionLabel: 'Find people',
+                      onAction: () => tabbarcontroller.goToTab(1),
+                    ),
+                  ),
+
+                  // Community: sab ki posts + Trending / Nearby / New chips
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 12.h),
+                        child: Obx(
+                          () => ChipRow(
+                            labels: TabbarViewModel.communityFilters,
+                            selectedIndex:
+                                tabbarcontroller.communityFilter.value,
+                            onSelected: tabbarcontroller.selectCommunityFilter,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: FeedList(
+                          posts: tabbarcontroller.communityPosts,
+                          onLike: tabbarcontroller.toggleLike,
+                          onSave: tabbarcontroller.toggleSave,
+                          onRefresh: tabbarcontroller.refreshFeeds,
+                          emptyState: EmptyState(
+                            icon: Icons.restaurant_menu_rounded,
+                            title: 'Nothing here yet',
+                            message: 'Be the first to review a dish and start the conversation.',
+                            actionLabel: 'Write a review',
+                            onAction: () => Get.toNamed(AppRoutes.createReview),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

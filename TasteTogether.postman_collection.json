@@ -1,0 +1,675 @@
+{
+  "info": {
+    "name": "TasteTogether API",
+    "description": "REST API for the TasteTogether food & restaurant review app. Set the `baseUrl` variable to switch between local (http://localhost:3001) and production (https://tastetogether-backend.vercel.app). Run Auth > Login first — it auto-saves the bearer token for every other request.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "tt-api-collection-0001"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://tastetogether-backend.vercel.app" },
+    { "key": "token", "value": "" },
+    { "key": "userId", "value": "" },
+    { "key": "otherUserId", "value": "" },
+    { "key": "restaurantId", "value": "" },
+    { "key": "dishId", "value": "" },
+    { "key": "reviewId", "value": "" },
+    { "key": "commentId", "value": "" },
+    { "key": "resetToken", "value": "" },
+    { "key": "notificationId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/health", "host": ["{{baseUrl}}"], "path": ["api", "health"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Sign up",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const body = pm.response.json();",
+                  "  pm.collectionVariables.set('token', body.token);",
+                  "  pm.collectionVariables.set('userId', body.user.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Riley Example\",\n  \"username\": \"rileyexample\",\n  \"email\": \"riley.example@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/signup", "host": ["{{baseUrl}}"], "path": ["api", "auth", "signup"] }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const body = pm.response.json();",
+                  "  pm.collectionVariables.set('token', body.token);",
+                  "  pm.collectionVariables.set('userId', body.user.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"maya@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/auth/logout", "host": ["{{baseUrl}}"], "path": ["api", "auth", "logout"] }
+          }
+        },
+        {
+          "name": "Forgot password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const body = pm.response.json();",
+                  "  if (body.resetToken) pm.collectionVariables.set('resetToken', body.resetToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"maya@example.com\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/forgot-password", "host": ["{{baseUrl}}"], "path": ["api", "auth", "forgot-password"] }
+          }
+        },
+        {
+          "name": "Reset password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{resetToken}}\",\n  \"newPassword\": \"newPassword123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/reset-password", "host": ["{{baseUrl}}"], "path": ["api", "auth", "reset-password"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get my profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/users/me", "host": ["{{baseUrl}}"], "path": ["api", "users", "me"] }
+          }
+        },
+        {
+          "name": "Update my profile",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Updated bio from Postman\",\n  \"pushPrefs\": { \"likes\": true, \"comments\": true, \"follows\": true, \"saves\": false }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/users/me", "host": ["{{baseUrl}}"], "path": ["api", "users", "me"] }
+          }
+        },
+        {
+          "name": "Get user by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/users/{{otherUserId}}", "host": ["{{baseUrl}}"], "path": ["api", "users", "{{otherUserId}}"] }
+          }
+        },
+        {
+          "name": "Get user's reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{otherUserId}}/reviews?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "{{otherUserId}}", "reviews"],
+              "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "20" }]
+            }
+          }
+        },
+        {
+          "name": "Get user's followers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{otherUserId}}/followers?q=&page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "{{otherUserId}}", "followers"],
+              "query": [{ "key": "q", "value": "" }, { "key": "page", "value": "1" }, { "key": "limit", "value": "20" }]
+            }
+          }
+        },
+        {
+          "name": "Get user's following",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{otherUserId}}/following?q=&page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "{{otherUserId}}", "following"],
+              "query": [{ "key": "q", "value": "" }, { "key": "page", "value": "1" }, { "key": "limit", "value": "20" }]
+            }
+          }
+        },
+        {
+          "name": "Follow user",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/users/{{otherUserId}}/follow", "host": ["{{baseUrl}}"], "path": ["api", "users", "{{otherUserId}}", "follow"] }
+          }
+        },
+        {
+          "name": "Unfollow user",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/users/{{otherUserId}}/follow", "host": ["{{baseUrl}}"], "path": ["api", "users", "{{otherUserId}}", "follow"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Restaurants",
+      "item": [
+        {
+          "name": "List restaurants",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const body = pm.response.json();",
+                  "  if (body.restaurants && body.restaurants.length) {",
+                  "    pm.collectionVariables.set('restaurantId', body.restaurants[0].id);",
+                  "  }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/restaurants?cuisine=all&sort=popular&page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "restaurants"],
+              "query": [
+                { "key": "cuisine", "value": "all" },
+                { "key": "sort", "value": "popular" },
+                { "key": "lat", "value": "40.73", "disabled": true },
+                { "key": "lng", "value": "-73.99", "disabled": true },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get restaurant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const body = pm.response.json();",
+                  "  if (body.popularDishes && body.popularDishes.length) {",
+                  "    pm.collectionVariables.set('dishId', body.popularDishes[0].id);",
+                  "  }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/restaurants/{{restaurantId}}", "host": ["{{baseUrl}}"], "path": ["api", "restaurants", "{{restaurantId}}"] }
+          }
+        },
+        {
+          "name": "Get restaurant's reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/restaurants/{{restaurantId}}/reviews?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "restaurants", "{{restaurantId}}", "reviews"],
+              "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "20" }]
+            }
+          }
+        },
+        {
+          "name": "Get restaurant's dishes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/restaurants/{{restaurantId}}/dishes?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "restaurants", "{{restaurantId}}", "dishes"],
+              "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "20" }]
+            }
+          }
+        },
+        {
+          "name": "Save restaurant",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/restaurants/{{restaurantId}}/save", "host": ["{{baseUrl}}"], "path": ["api", "restaurants", "{{restaurantId}}", "save"] }
+          }
+        },
+        {
+          "name": "Unsave restaurant",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/restaurants/{{restaurantId}}/save", "host": ["{{baseUrl}}"], "path": ["api", "restaurants", "{{restaurantId}}", "save"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dishes",
+      "item": [
+        {
+          "name": "Trending dishes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/dishes/trending?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "dishes", "trending"],
+              "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "20" }]
+            }
+          }
+        },
+        {
+          "name": "Get dish",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/dishes/{{dishId}}", "host": ["{{baseUrl}}"], "path": ["api", "dishes", "{{dishId}}"] }
+          }
+        },
+        {
+          "name": "Get dish's reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/dishes/{{dishId}}/reviews?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "dishes", "{{dishId}}", "reviews"],
+              "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "20" }]
+            }
+          }
+        },
+        {
+          "name": "Save dish",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/dishes/{{dishId}}/save", "host": ["{{baseUrl}}"], "path": ["api", "dishes", "{{dishId}}", "save"] }
+          }
+        },
+        {
+          "name": "Unsave dish",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/dishes/{{dishId}}/save", "host": ["{{baseUrl}}"], "path": ["api", "dishes", "{{dishId}}", "save"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "Create review",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const body = pm.response.json();",
+                  "  pm.collectionVariables.set('reviewId', body.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"restaurantId\": \"{{restaurantId}}\",\n  \"dishId\": \"{{dishId}}\",\n  \"rating\": 5,\n  \"text\": \"Fantastic dish, would order again.\",\n  \"photoUrl\": null\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/reviews", "host": ["{{baseUrl}}"], "path": ["api", "reviews"] }
+          }
+        },
+        {
+          "name": "Get review",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/reviews/{{reviewId}}", "host": ["{{baseUrl}}"], "path": ["api", "reviews", "{{reviewId}}"] }
+          }
+        },
+        {
+          "name": "Like review",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/reviews/{{reviewId}}/like", "host": ["{{baseUrl}}"], "path": ["api", "reviews", "{{reviewId}}", "like"] }
+          }
+        },
+        {
+          "name": "Unlike review",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/reviews/{{reviewId}}/like", "host": ["{{baseUrl}}"], "path": ["api", "reviews", "{{reviewId}}", "like"] }
+          }
+        },
+        {
+          "name": "Delete review",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/reviews/{{reviewId}}", "host": ["{{baseUrl}}"], "path": ["api", "reviews", "{{reviewId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "List comments on a review",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reviews/{{reviewId}}/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reviews", "{{reviewId}}", "comments"]
+            }
+          }
+        },
+        {
+          "name": "Add comment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const body = pm.response.json();",
+                  "  pm.collectionVariables.set('commentId', body.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Adding this to my list, thanks for the rec!\",\n  \"parentCommentId\": null\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/reviews/{{reviewId}}/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reviews", "{{reviewId}}", "comments"]
+            }
+          }
+        },
+        {
+          "name": "Add reply to comment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Totally agree!\",\n  \"parentCommentId\": \"{{commentId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/reviews/{{reviewId}}/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reviews", "{{reviewId}}", "comments"]
+            }
+          }
+        },
+        {
+          "name": "Like comment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/comments/{{commentId}}/like", "host": ["{{baseUrl}}"], "path": ["api", "comments", "{{commentId}}", "like"] }
+          }
+        },
+        {
+          "name": "Unlike comment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/comments/{{commentId}}/like", "host": ["{{baseUrl}}"], "path": ["api", "comments", "{{commentId}}", "like"] }
+          }
+        },
+        {
+          "name": "Delete comment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/comments/{{commentId}}", "host": ["{{baseUrl}}"], "path": ["api", "comments", "{{commentId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Saved",
+      "item": [
+        {
+          "name": "List saved items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/saved?type=all&page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "saved"],
+              "query": [
+                { "key": "type", "value": "all" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "List notifications",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const body = pm.response.json();",
+                  "  const first = (body.new && body.new[0]) || (body.earlier && body.earlier[0]);",
+                  "  if (first) pm.collectionVariables.set('notificationId', first.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/notifications", "host": ["{{baseUrl}}"], "path": ["api", "notifications"] }
+          }
+        },
+        {
+          "name": "Mark notification read",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications/{{notificationId}}/read",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications", "{{notificationId}}", "read"]
+            }
+          }
+        },
+        {
+          "name": "Mark all notifications read",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/notifications/read-all", "host": ["{{baseUrl}}"], "path": ["api", "notifications", "read-all"] }
+          }
+        },
+        {
+          "name": "Get notification prefs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/notifications/prefs", "host": ["{{baseUrl}}"], "path": ["api", "notifications", "prefs"] }
+          }
+        },
+        {
+          "name": "Update notification prefs",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"push\": { \"likes\": true, \"comments\": true, \"follows\": true, \"saves\": false },\n  \"email\": { \"digest\": true, \"tips\": false }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/notifications/prefs", "host": ["{{baseUrl}}"], "path": ["api", "notifications", "prefs"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search",
+      "item": [
+        {
+          "name": "Search restaurants & dishes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/search?q=taco&type=all&sort=best_match",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "search"],
+              "query": [
+                { "key": "q", "value": "taco" },
+                { "key": "type", "value": "all" },
+                { "key": "sort", "value": "best_match" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Feed",
+      "item": [
+        {
+          "name": "Home feed",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/feed/home?tab=community&page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feed", "home"],
+              "query": [
+                { "key": "tab", "value": "community" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Explore feed",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/feed/explore", "host": ["{{baseUrl}}"], "path": ["api", "feed", "explore"] }
+          }
+        }
+      ]
+    }
+  ]
+}

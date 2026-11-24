@@ -1,7 +1,11 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 
+/// Saare colors design ki "Foundations" board se.
+/// Pehle do alag AppColors classes thi (merge se); ab ek hi hai.
 class AppColors {
+  AppColors._(); // private constructor: ye class kabhi instantiate nahi hoti
+
   // ───────── Brand ─────────
   /// Terracotta – primary accent #B65C45
   /// Buttons, FAB (+), active tab underline, stars, liked heart, notification dot, avatar bg.
@@ -38,7 +42,22 @@ class AppColors {
   static const Color photoPlaceholder2 = Color(0xFFDCC5B3);
   static const Color photoPlaceholder3 = Color(0xFFC9A892);
 
-  // ───────── Overlay ─────────
+  // ───────── Authentication screens ke naam (purane naam, wohi colors) ─────────
+  static const Color white = surface;
+  static const Color textSecondary = textMuted; // subtitles, hints, icons
+  static const Color primaryDark = primaryDeep; // text links
+  static const Color tint = border; // icon circles, info banner
 
+  // Design mein error color nahi, is liye validation errors primaryDeep use karte hain.
+  // Designer dedicated error color de to sirf ye ek line badlo.
+  static const Color error = primaryDeep;
+
+  // Welcome screen ke placeholder photo tiles
+  static const Color tile1 = photoPlaceholder1; // #E2CDBD
+  static const Color tile2 = photoPlaceholder3; // #C9A892
+  static const Color tile3 = fieldBorder; // #D2B7A3
+  static const Color tile4 = photoPlaceholder2; // #DCC5B3
+
+  // ───────── Overlay ─────────
   //static const Color scrim = Color.fromRGBO(41, 41, 41, 0.5);
 }

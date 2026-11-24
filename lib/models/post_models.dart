@@ -28,6 +28,22 @@ class Post {
     this.isLiked = false,
     this.isSaved = false,
   });
+
+  Post copyWith({bool? isLiked, bool? isSaved, int? likes}) => Post(
+    id: id,
+    username: username,
+    initials: initials,
+    restaurant: restaurant,
+    timeAgo: timeAgo,
+    dishName: dishName,
+    rating: rating,
+    review: review,
+    likes: likes ?? this.likes,
+    comments: comments,
+    imageUrl: imageUrl,
+    isLiked: isLiked ?? this.isLiked,
+    isSaved: isSaved ?? this.isSaved,
+  );
 }
 
 /// Dummy data later remove and we use api ////
@@ -40,8 +56,7 @@ const List<Post> dummyPosts = [
     timeAgo: '2h ago',
     dishName: 'Charred Lamb Kofta',
     rating: 5.0,
-    review:
-        "Smoky off the grill, with whipped feta underneath that I'd happily eat alone. Order extra flatbread.",
+    review: "Smoky off the grill, with whipped feta underneath that I'd happily eat alone. Order extra flatbread.",
     likes: 129,
     comments: 14,
     isLiked: true,

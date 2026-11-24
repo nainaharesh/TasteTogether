@@ -2,11 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:tastetogether/routes/app_routes.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/viewmodels/main_application_models/home_feed_viewmodel/bottomnavbar_view_model.dart';
-import 'package:tastetogether/views/main_application/create_review.dart';
 import 'package:tastetogether/views/main_application/explore.dart';
 import 'package:tastetogether/views/main_application/home_feed.dart';
+import 'package:tastetogether/views/user_activity/profile.dart';
+import 'package:tastetogether/views/user_activity/saved.dart';
 
 class BottomNavbarScreen extends StatelessWidget {
   BottomNavbarScreen({super.key});
@@ -17,8 +19,8 @@ class BottomNavbarScreen extends StatelessWidget {
     HomeFeed(),
     Explore(),
     const SizedBox.shrink(),
-    const Center(child: Text('Saved')),
-    const Center(child: Text('Profile')),
+    Saved(),
+    Profile(),
   ];
 
   @override
@@ -66,7 +68,7 @@ class BottomNavbarScreen extends StatelessWidget {
                     child: Transform.translate(
                       offset: Offset(0, 8.h),
                       child: GestureDetector(
-                        onTap: () => Get.to(() => CreateReview()),
+                        onTap: () => Get.toNamed(AppRoutes.createReview),
                         child: Image.asset(
                           'assets/icons/add.png',
                           width: 52.r,
