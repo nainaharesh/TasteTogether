@@ -1,6 +1,8 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tastetogether/theme/appcolors.dart';
+import 'package:tastetogether/widgets/home_feed/photo_placeholder.dart';
 
 class PostCard extends StatelessWidget {
   const PostCard({
@@ -50,7 +52,7 @@ class PostCard extends StatelessWidget {
       color: AppColors.surface,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(20.r),
         side: const BorderSide(color: AppColors.border),
       ),
       child: Column(
@@ -58,57 +60,59 @@ class PostCard extends StatelessWidget {
         children: [
           // 1. Header
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 12, 4, 0),
+            padding: EdgeInsets.fromLTRB(12.w, 12.h, 4.w, 0),
             child: Row(
+              spacing: 10.w,
               children: [
                 CircleAvatar(
-                  radius: 20,
+                  radius: 20.r,
                   backgroundColor: avatarColor,
                   child: Text(
                     initials,
-                    style: const TextStyle(
-                      fontSize: 14,
+                    style: TextStyle(
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w700,
                       color: AppColors.surface,
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 2.h,
                     children: [
                       Text(
                         username,
-                        style: const TextStyle(
-                          fontSize: 15,
+                        style: TextStyle(
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.w700,
                           color: AppColors.textPrimary,
                         ),
                       ),
-                      const SizedBox(height: 2),
                       Row(
+                        spacing: 4.w,
                         children: [
-                          const Icon(Icons.location_on_outlined,
-                              size: 12, color: AppColors.primaryDeep),
-                          const SizedBox(width: 4),
+                          Icon(
+                            Icons.location_on_outlined,
+                            size: 12.r,
+                            color: AppColors.primaryDeep,
+                          ),
                           Flexible(
                             child: Text(
                               restaurant,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontSize: 12,
+                              style: TextStyle(
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.primaryDeep,
                               ),
                             ),
                           ),
-                          const SizedBox(width: 4),
                           Text(
                             '· $timeAgo',
-                            style: const TextStyle(
-                              fontSize: 12,
+                            style: TextStyle(
+                              fontSize: 12.sp,
                               color: AppColors.textMuted,
                             ),
                           ),
@@ -120,73 +124,73 @@ class PostCard extends StatelessWidget {
                 IconButton(
                   onPressed: onMore,
                   padding: EdgeInsets.zero,
-                  constraints:
-                      const BoxConstraints.tightFor(width: 44, height: 44),
-                  icon: const Icon(Icons.more_horiz,
-                      size: 22, color: AppColors.textPrimary),
+                  constraints: BoxConstraints.tightFor(
+                    width: 44.r,
+                    height: 44.r,
+                  ),
+                  icon: Icon(
+                    Icons.more_horiz,
+                    size: 22.r,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ],
             ),
           ),
 
-         
+          // 2. Photo + title + review (tap = detail)
           InkWell(
             onTap: onTap,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+                  padding: EdgeInsets.fromLTRB(12.w, 8.h, 12.w, 0),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(14),
-                    child: SizedBox(
-                      height: 210,
-                      width: double.infinity,
-                      child: imageUrl == null
-                          ? PhotoPlaceholder(label: dishName)
-                          : Image.network(
-                              imageUrl!,
-                              fit: BoxFit.cover,
-                              errorBuilder: (_, _, _) =>
-                                  PhotoPlaceholder(label: dishName),
-                            ),
+                    borderRadius: BorderRadius.circular(14.r),
+                    child: AspectRatio(
+                      aspectRatio: 337 / 210,
+                      child: PhotoPlaceholder(
+                        label: dishName,
+                        imageUrl: imageUrl,
+                      ),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(14, 12, 14, 0),
+                  padding: EdgeInsets.fromLTRB(14.w, 12.h, 14.w, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 6.h,
                     children: [
                       Row(
+                        spacing: 8.w,
                         children: [
                           Expanded(
                             child: Text(
                               dishName,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontSize: 17,
+                              style: TextStyle(
+                                fontSize: 17.sp,
                                 height: 24 / 17,
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.textPrimary,
                               ),
                             ),
                           ),
-                          const SizedBox(width: 8),
                           Stars(rating: rating),
                         ],
                       ),
-                      const SizedBox(height: 6),
                       Text.rich(
                         TextSpan(
                           text: '$review ',
-                          style: const TextStyle(
-                            fontSize: 14,
+                          style: TextStyle(
+                            fontSize: 14.sp,
                             height: 21 / 14,
                             color: AppColors.textPrimary,
                           ),
-                          children: const [
+                          children: [
                             TextSpan(
                               text: 'more',
                               style: TextStyle(
@@ -204,9 +208,9 @@ class PostCard extends StatelessWidget {
             ),
           ),
 
-          // 5. Actions
+          // 3. Actions
           Padding(
-            padding: const EdgeInsets.fromLTRB(8, 4, 6, 6),
+            padding: EdgeInsets.fromLTRB(8.w, 4.h, 6.w, 6.h),
             child: Row(
               children: [
                 ActionButton(
@@ -225,11 +229,13 @@ class PostCard extends StatelessWidget {
                 IconButton(
                   onPressed: onSave,
                   padding: EdgeInsets.zero,
-                  constraints:
-                      const BoxConstraints.tightFor(width: 44, height: 44),
+                  constraints: BoxConstraints.tightFor(
+                    width: 44.r,
+                    height: 44.r,
+                  ),
                   icon: Icon(
                     isSaved ? Icons.bookmark : Icons.bookmark_border,
-                    size: 22,
+                    size: 22.r,
                     color: AppColors.textPrimary,
                   ),
                 ),
@@ -242,57 +248,32 @@ class PostCard extends StatelessWidget {
   }
 }
 
-class PhotoPlaceholder extends StatelessWidget {
-  const PhotoPlaceholder({required this.label});
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.photoPlaceholder2, // #DCC5B3
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.image_outlined,
-              size: 28, color: AppColors.textPrimary),
-          const SizedBox(height: 6),
-          Text(
-            'Photo · $label',
-            style: const TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w500,
-              color: AppColors.textPrimary,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class Stars extends StatelessWidget {
-  const Stars({required this.rating});
+  const Stars({super.key, required this.rating});
   final double rating;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
+      spacing: 6.w,
       children: [
-        for (var i = 1; i <= 5; i++)
-          Padding(
-            padding: EdgeInsets.only(right: i < 5 ? 2 : 0),
-            child: Icon(
-              rating >= i ? Icons.star_rounded : Icons.star_outline_rounded,
-              size: 14,
-              color: AppColors.primary,
-            ),
-          ),
-        const SizedBox(width: 6),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 2.w,
+          children: [
+            for (var i = 1; i <= 5; i++)
+              Icon(
+                rating >= i ? Icons.star_rounded : Icons.star_outline_rounded,
+                size: 14.r,
+                color: AppColors.primary,
+              ),
+          ],
+        ),
         Text(
           rating.toStringAsFixed(1),
-          style: const TextStyle(
-            fontSize: 13,
+          style: TextStyle(
+            fontSize: 13.sp,
             fontWeight: FontWeight.w700,
             color: AppColors.textPrimary,
           ),
@@ -304,6 +285,7 @@ class Stars extends StatelessWidget {
 
 class ActionButton extends StatelessWidget {
   const ActionButton({
+    super.key,
     required this.icon,
     required this.color,
     required this.count,
@@ -319,29 +301,30 @@ class ActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(22),
-      child: SizedBox(
-        height: 44,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, size: 22, color: color),
-              const SizedBox(width: 6),
-              Text(
-                '$count',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textPrimary,
-                ),
+      borderRadius: BorderRadius.circular(22.r),
+      child: Padding(
+        // 11 + icon 22 + 11 = 44 touch height
+        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 11.h),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 6.w,
+          children: [
+            Icon(icon, size: 22.r, color: color),
+            Text(
+              '$count',
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                color: AppColors.textPrimary,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
+<<<<<<< HEAD
 }
-
+=======
+}
+>>>>>>> your-development
