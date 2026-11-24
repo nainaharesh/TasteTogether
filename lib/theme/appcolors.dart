@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 
 /// All colors come from the "Foundations" board of the TasteTogether design.
 class AppColors {
-  AppColors._(); // private constructor: this class is never instantiated
-
   // ───────── Brand ─────────
   /// Terracotta – buttons, FAB, active tab underline, focus border #B65C45
   static const Color primary = Color(0xFFB65C45);
@@ -50,8 +48,6 @@ class AppColors {
   static const Color error = Color(0xFF9E4B36);
 
   // ───────── Photo placeholders (food photo tiles) ─────────
-
-// ───────── Photo placeholders (food photo tiles) ─────────
   static const Color photoPlaceholder1 = Color(0xFFE2CDBD);
   static const Color photoPlaceholder2 = Color(0xFFDCC5B3);
   static const Color photoPlaceholder3 = Color(0xFFC9A892);

@@ -1,8 +1,9 @@
 import 'dart:io';
-
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+
 
 // BACKEND INTEGRATION: uncomment together with the API code below.
 // import '../../models/profile/profile_model.dart';

@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tastetogether/models/dish_model.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/widgets/home_feed/photo_placeholder.dart';
@@ -28,7 +29,7 @@ class DishCard extends StatelessWidget {
           AspectRatio(
             aspectRatio: 124 / 104,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(14.r),
               child: PhotoPlaceholder(
                 imageUrl: dish.imageUrl,
                 placeholderColor: placeholderColor,
@@ -39,16 +40,15 @@ class DishCard extends StatelessWidget {
             ),
           ),
 
-
           // Dish ka naam (photo ke baad 6)
           Padding(
-            padding: const EdgeInsets.only(top: 6),
+            padding: EdgeInsets.only(top: 6.h),
             child: Text(
               dish.name,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 14,
+              style: TextStyle(
+                fontSize: 14.sp,
                 height: 20 / 14,
                 fontWeight: FontWeight.w500,
                 color: AppColors.textPrimary,
@@ -61,8 +61,8 @@ class DishCard extends StatelessWidget {
             dish.restaurantName,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 12,
+            style: TextStyle(
+              fontSize: 12.sp,
               height: 16 / 12,
               color: AppColors.textMuted,
             ),
@@ -70,19 +70,19 @@ class DishCard extends StatelessWidget {
 
           // Rating (upar 2)
           Padding(
-            padding: const EdgeInsets.only(top: 2),
+            padding: EdgeInsets.only(top: 2.h),
             child: Row(
-              spacing: 3,
+              spacing: 3.w,
               children: [
-                const Icon(
+                Icon(
                   Icons.star_rounded,
-                  size: 12,
+                  size: 12.r,
                   color: AppColors.primary,
                 ),
                 Text(
                   dish.rating.toStringAsFixed(1),
-                  style: const TextStyle(
-                    fontSize: 12,
+                  style: TextStyle(
+                    fontSize: 12.sp,
                     height: 16 / 12,
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
@@ -95,6 +95,4 @@ class DishCard extends StatelessWidget {
       ),
     );
   }
-
 }
-

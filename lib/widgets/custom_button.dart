@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -12,12 +14,12 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
     required this.text,
-    required this.onPressed,
+    this.onPressed, // optional: null means a disabled button
     this.isLoading = false,
-    this.isOutlined = false, // NEW
-    this.icon, // NEW: optional icon before the text
-    this.height = 52, // NEW: the Help buttons are 48
-    this.fontSize = 16, // NEW: the Help buttons use 15
+    this.isOutlined = false,
+    this.icon, // optional icon before the text
+    this.height = 52, // the Help buttons are 48
+    this.fontSize = 16, // the Help buttons use 15
   });
 
   final String text;
@@ -30,10 +32,12 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color contentColor =
-    isOutlined ? AppColors.primaryDark : AppColors.white;
-    final Color backgroundColor =
-    isOutlined ? AppColors.white : AppColors.primary;
+    final Color contentColor = isOutlined
+        ? AppColors.primaryDark
+        : AppColors.white;
+    final Color backgroundColor = isOutlined
+        ? AppColors.white
+        : AppColors.primary;
 
     return SizedBox(
       width: double.infinity,
@@ -57,35 +61,35 @@ class CustomButton extends StatelessWidget {
         ),
         child: isLoading
             ? SizedBox(
-          width: 22.w,
-          height: 22.w,
-          child: CircularProgressIndicator(
-            strokeWidth: 2.5,
-            color: contentColor,
-          ),
-        )
-            : Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (icon != null) ...[
-              Icon(icon, size: 20.sp, color: contentColor),
-              SizedBox(width: 8.w),
-            ],
-            // Flexible lets long text shrink instead of overflowing
-            Flexible(
-              child: Text(
-                text,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.button.copyWith(
-                  fontSize: fontSize.sp,
+                width: 22.w,
+                height: 22.w,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.5,
                   color: contentColor,
                 ),
+              )
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (icon != null) ...[
+                    Icon(icon, size: 20.sp, color: contentColor),
+                    SizedBox(width: 8.w),
+                  ],
+                  // Flexible lets long text shrink instead of overflowing
+                  Flexible(
+                    child: Text(
+                      text,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.button.copyWith(
+                        fontSize: fontSize.sp,
+                        color: contentColor,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }

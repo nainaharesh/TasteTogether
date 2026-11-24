@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tastetogether/models/resturant_model.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/widgets/home_feed/photo_placeholder.dart';
@@ -22,7 +23,7 @@ class RestaurantCard extends StatelessWidget {
       color: AppColors.surface,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         side: const BorderSide(color: AppColors.border),
       ),
       child: InkWell(
@@ -41,17 +42,17 @@ class RestaurantCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+              padding: EdgeInsets.fromLTRB(12.w, 10.h, 12.w, 12.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 2,
+                spacing: 2.h,
                 children: [
                   Text(
                     restaurant.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style: TextStyle(
+                      fontSize: 16.sp,
                       height: 22 / 16,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textPrimary,
@@ -61,26 +62,26 @@ class RestaurantCard extends StatelessWidget {
                     '${restaurant.cuisine} · ${restaurant.area}',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 13,
+                    style: TextStyle(
+                      fontSize: 13.sp,
                       height: 18 / 13,
                       color: AppColors.textMuted,
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 4),
+                    padding: EdgeInsets.only(top: 4.h),
                     child: Row(
-                      spacing: 4,
+                      spacing: 4.w,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.star_rounded,
-                          size: 14,
+                          size: 14.r,
                           color: AppColors.primary,
                         ),
                         Text(
                           restaurant.rating.toStringAsFixed(1),
-                          style: const TextStyle(
-                            fontSize: 13,
+                          style: TextStyle(
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.w700,
                             color: AppColors.textPrimary,
                           ),
@@ -90,8 +91,8 @@ class RestaurantCard extends StatelessWidget {
                             '(${restaurant.reviewCount} reviews)',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 13,
+                            style: TextStyle(
+                              fontSize: 13.sp,
                               color: AppColors.textMuted,
                             ),
                           ),
@@ -107,6 +108,4 @@ class RestaurantCard extends StatelessWidget {
       ),
     );
   }
-
 }
-

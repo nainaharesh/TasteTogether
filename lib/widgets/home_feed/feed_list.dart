@@ -1,13 +1,11 @@
-import 'package:flutter/widgets.dart';
+// ignore_for_file: deprecated_member_use
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
-
+import 'package:tastetogether/models/post_models.dart';
+import 'package:tastetogether/views/main_application/comments.dart';
 import 'package:tastetogether/widgets/home_feed/post_card.dart';
 
-
-
-
-import '../../models/post_model.dart';
 
 
 class FeedList extends StatelessWidget {
@@ -22,9 +20,9 @@ class FeedList extends StatelessWidget {
         return const Center(child: Text('No posts yet'));
       }
       return ListView.separated(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16.r),
         itemCount: posts.length,
-        separatorBuilder: (_, _) => const SizedBox(height: 16),
+        separatorBuilder: (_, _) => SizedBox(height: 16.h),
         itemBuilder: (_, i) {
           final p = posts[i];
           return PostCard(
@@ -41,6 +39,7 @@ class FeedList extends StatelessWidget {
             imageUrl: p.imageUrl,
             isLiked: p.isLiked,
             isSaved: p.isSaved,
+            onComment: () => Get.to(() => Comments(post: p)),
           );
         },
       );
