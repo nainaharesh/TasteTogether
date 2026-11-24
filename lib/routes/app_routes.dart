@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:tastetogether/views/splashscreen.dart';
 
 import '../models/dish_model.dart';
 import '../models/post_models.dart';
@@ -19,7 +20,6 @@ import '../views/main_application/create_review.dart';
 import '../views/main_application/dish_details.dart';
 import '../views/main_application/resturant_details.dart';
 import '../views/main_application/search_results.dart';
-import '../views/splashscreen.dart';
 import '../views/user_activity/followers.dart';
 import '../views/user_activity/notifications.dart';
 import '../views/user_activity/public_profile.dart';
