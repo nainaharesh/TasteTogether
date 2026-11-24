@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../theme/appcolors.dart';
 
-
 /// Every text style used by the auth screens (font: DM Sans, as in the design).
 /// They are getters (not const fields) because `.sp` needs ScreenUtil to be
 /// initialised first.
@@ -91,5 +90,59 @@ class AppTextStyles {
   static TextStyle get error => GoogleFonts.dmSans(
     fontSize: 12.sp,
     color: AppColors.error,
+  );
+
+  // ---------------------------------------------------------------------------
+  // NEW: Edit Profile, Settings, Help and support
+  // ---------------------------------------------------------------------------
+
+  // Page title in the top bar: "Edit Profile", "Settings", "Help and support"
+  static TextStyle get pageTitle => GoogleFonts.dmSans(
+    fontSize: 20.sp,
+    fontWeight: FontWeight.w700,
+    letterSpacing: -0.2.sp,
+    color: AppColors.textPrimary,
+  );
+
+  // Small grey heading above a card: "ACCOUNT", "SUPPORT", "FREQUENTLY ASKED"
+  static TextStyle get sectionLabel => GoogleFonts.dmSans(
+    fontSize: 13.sp,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 0.52.sp,
+    color: AppColors.textSecondary,
+  );
+
+  // Row title inside a card: "Edit profile", "Privacy settings"
+  static TextStyle get rowTitle => GoogleFonts.dmSans(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w500,
+    color: AppColors.textPrimary,
+  );
+
+  // Small grey text: email under the name, "v1.0.0", "No articles found."
+  static TextStyle get meta => GoogleFonts.dmSans(
+    fontSize: 13.sp,
+    color: AppColors.textSecondary,
+  );
+
+  // Tiny grey text: the "66 / 160" bio counter
+  static TextStyle get caption => GoogleFonts.dmSans(
+    fontSize: 12.sp,
+    color: AppColors.textSecondary,
+  );
+
+  // FAQ question
+  static TextStyle get faqQuestion => GoogleFonts.dmSans(
+    fontSize: 15.sp,
+    height: 21 / 15,
+    fontWeight: FontWeight.w500,
+    color: AppColors.textPrimary,
+  );
+
+  // FAQ answer
+  static TextStyle get faqAnswer => GoogleFonts.dmSans(
+    fontSize: 14.sp,
+    height: 21 / 14,
+    color: AppColors.textSecondary,
   );
 }

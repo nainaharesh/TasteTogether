@@ -16,7 +16,7 @@ import '../../widgets/custom_text_field.dart';
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
 
-  AuthController get controller => Get.find<AuthController>();
+  AuthController get controller => Get.put(AuthController(), permanent: true);
 
   @override
   Widget build(BuildContext context) {

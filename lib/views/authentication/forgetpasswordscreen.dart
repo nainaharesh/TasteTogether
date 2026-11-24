@@ -1,4 +1,6 @@
-import 'package:material_ui/material_ui.dart';
+// ignore_for_file: deprecated_member_use
+import 'package:flutter/material.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -11,22 +13,19 @@ import '../../widgets/auth/auth_page_layout.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
 
-
 /// Screen 4 of 4 - "13 · Forgot Password".
 /// It has two views in the design: the email form, and "Check your inbox".
 /// The controller's isEmailSent decides which one is shown.
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({super.key});
 
-  AuthController get controller => Get.find<AuthController>();
+  AuthController get controller => Get.put(AuthController(), permanent: true);
 
   @override
   Widget build(BuildContext context) {
     // Obx watches isEmailSent and swaps the two views when it changes.
     return Obx(
-          () => controller.isEmailSent.value
-          ? _buildSentView()
-          : _buildFormView(),
+      () => controller.isEmailSent.value ? _buildSentView() : _buildFormView(),
     );
   }
 

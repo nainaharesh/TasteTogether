@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:tastetogether/views/splashscreen.dart';
 
 import '../models/dish_model.dart';
 import '../models/post_models.dart';
@@ -7,11 +6,15 @@ import '../models/profile_model.dart';
 import '../models/resturant_model.dart';
 import '../models/review_model.dart';
 import '../models/search_filters_model.dart';
+
 import '../viewmodels/auth/auth_controller.dart';
+
+import '../views/splashscreen.dart';
 import '../views/authentication/forgetpasswordscreen.dart';
 import '../views/authentication/login_view.dart';
 import '../views/authentication/signupscreen.dart';
 import '../views/authentication/welcomescreen.dart';
+
 import '../views/main_application/all_dishes.dart';
 import '../views/main_application/all_reviews.dart';
 import '../views/main_application/bottom_navbar.dart';
@@ -20,27 +23,25 @@ import '../views/main_application/create_review.dart';
 import '../views/main_application/dish_details.dart';
 import '../views/main_application/resturant_details.dart';
 import '../views/main_application/search_results.dart';
+
 import '../views/user_activity/followers.dart';
 import '../views/user_activity/notifications.dart';
 import '../views/user_activity/public_profile.dart';
 
-/// Poori app ki saari routes yahin hain (screens mein koi Get.to(() => ...) nahi).
-///
-/// Use:
-///   Get.toNamed(AppRoutes.restaurantDetails, arguments: restaurant);
-///   Get.toNamed(AppRoutes.searchResults, arguments: SearchArgs(initialFilter: 2));
+import '../views/profile_screen/edit_profile_screen.dart';
+import '../views/profile_screen/help_support_screen.dart';
+
 class AppRoutes {
   AppRoutes._();
 
-  // authentication
+  // Authentication
   static const String splash = '/splash';
   static const String welcome = '/welcome';
   static const String login = '/login';
   static const String signup = '/signup';
   static const String forgotPassword = '/forgot-password';
 
-  // main application
-  // home = bottom navbar (Home, Explore, Saved, Profile tabs yahin ke andar hain)
+  // Main application
   static const String home = '/home';
   static const String searchResults = '/search-results';
   static const String restaurantDetails = '/restaurant-details';
@@ -50,18 +51,15 @@ class AppRoutes {
   static const String allReviews = '/all-reviews';
   static const String allDishes = '/all-dishes';
 
-  // user activity
+  // User activity
   static const String notifications = '/notifications';
   static const String followers = '/followers';
   static const String publicProfile = '/public-profile';
-}
 
-// -----------------------------------------------------------------------------
-// Arguments: jin screens ko ek se zyada cheezein chahiye unke liye.
-// Ek cheez wali screens seedha model leti hain:
-//   restaurantDetails -> Restaurant, dishDetails -> Dish,
-//   comments -> Post, publicProfile -> UserProfile
-// -----------------------------------------------------------------------------
+  // Profile
+  static const String editProfile = '/edit-profile';
+  static const String help = '/help';
+}
 
 class SearchArgs {
   const SearchArgs({
@@ -106,17 +104,13 @@ class FollowersArgs {
 class AppPages {
   AppPages._();
 
-  /// App shuru hote hi ek baar bana, kabhi dispose nahi hota (permanent).
-  /// Auth ke text controllers / form keys sab auth screens mein share hote hain.
-  /// Route ke binding se banate to /signup band hote hi controller dispose ho jata
-  /// aur Login/Welcome "TextEditingController was used after being disposed" dete.
-  /// main.dart mein: GetMaterialApp(initialBinding: AppPages.initialBinding)
+  // Auth controller remains alive across authentication screens.
   static final initialBinding = BindingsBuilder(() {
     Get.put<AuthController>(AuthController(), permanent: true);
   });
 
   static final List<GetPage> pages = [
-    // authentication
+    // Authentication
     GetPage(name: AppRoutes.splash, page: () => const Splashscreen()),
     GetPage(name: AppRoutes.welcome, page: () => const WelcomeScreen()),
     GetPage(name: AppRoutes.login, page: () => const LoginScreen()),
@@ -126,7 +120,7 @@ class AppPages {
       page: () => const ForgotPasswordScreen(),
     ),
 
-    // main application
+    // Main application
     GetPage(name: AppRoutes.home, page: () => BottomNavbarScreen()),
     GetPage(
       name: AppRoutes.searchResults,
@@ -179,7 +173,7 @@ class AppPages {
       },
     ),
 
-    // user activity
+    // User activity
     GetPage(name: AppRoutes.notifications, page: () => Notifications()),
     GetPage(
       name: AppRoutes.followers,
@@ -192,5 +186,9 @@ class AppPages {
       name: AppRoutes.publicProfile,
       page: () => PublicProfile(profile: Get.arguments as UserProfile),
     ),
+
+    // Profile
+    GetPage(name: AppRoutes.editProfile, page: () => const EditProfileScreen()),
+    GetPage(name: AppRoutes.help, page: () => const HelpSupportScreen()),
   ];
 }

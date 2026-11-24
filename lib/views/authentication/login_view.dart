@@ -1,4 +1,6 @@
-import 'package:material_ui/material_ui.dart';
+// ignore_for_file: deprecated_member_use
+import 'package:flutter/material.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -17,7 +19,10 @@ class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   // Creates the controller (or reuses it if it already exists)
-  AuthController get controller => Get.find<AuthController>();
+
+
+  AuthController get controller => Get.put(AuthController(), permanent: true);
+
 
   @override
   Widget build(BuildContext context) {

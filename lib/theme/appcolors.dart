@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 /// Saare colors design ki "Foundations" board se.
 /// Pehle do alag AppColors classes thi (merge se); ab ek hi hai.
 class AppColors {
-  AppColors._(); // private constructor: ye class kabhi instantiate nahi hoti
-
   // ───────── Brand ─────────
   /// Terracotta – primary accent #B65C45
   /// Buttons, FAB (+), active tab underline, stars, liked heart, notification dot, avatar bg.
