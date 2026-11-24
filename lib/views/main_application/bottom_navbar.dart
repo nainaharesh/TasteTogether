@@ -1,25 +1,22 @@
-// ignore_for_file: deprecated_member_use
+
+ // ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-<<<<<<< HEAD
-import 'package:tastetogether/viewmodels/main_application_models/home_feed_viewmodel/bottomnavbar_view_model.dart';
-=======
->>>>>>> your-development
+import 'package:tastetogether/viewmodels/home_feed_viewmodel/bottomnavbar_view_model.dart';
 import 'package:tastetogether/views/main_application/create_review.dart';
 import 'package:tastetogether/views/main_application/explore.dart';
 import 'package:tastetogether/views/main_application/home_feed.dart';
+import 'package:tastetogether/views/followers_screen.dart';
 
-<<<<<<< HEAD
-=======
-import '../../viewmodels/home_feed_viewmodel/bottomnavbar_view_model.dart';
-
->>>>>>> your-development
 class BottomNavbarScreen extends StatelessWidget {
   BottomNavbarScreen({super.key});
 
-  final BottomNavbarViewModel controller = Get.put(BottomNavbarViewModel());
+  final BottomNavbarViewModel controller = Get.put(
+    BottomNavbarViewModel(),
+  );
 
   final List<Widget> pages = [
     HomeFeed(),
@@ -33,45 +30,56 @@ class BottomNavbarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(
-<<<<<<< HEAD
-        () =>
-=======
-            () =>
->>>>>>> your-development
-            IndexedStack(index: controller.currentIndex.value, children: pages),
+        () => IndexedStack(
+          index: controller.currentIndex.value,
+          children: pages,
+        ),
       ),
       bottomNavigationBar: Container(
-        // minHeight: chhoti screen / gesture bar par overflow na ho
         constraints: BoxConstraints(minHeight: 84.h),
         decoration: const BoxDecoration(
-          border: Border(top: BorderSide(color: AppColors.border)),
+          border: Border(
+            top: BorderSide(color: AppColors.border),
+          ),
         ),
         child: Obx(
-<<<<<<< HEAD
           () => BottomNavigationBar(
-=======
-              () => BottomNavigationBar(
->>>>>>> your-development
             currentIndex: controller.currentIndex.value,
-            onTap: controller.changeIndex,
+            onTap: (index) {
+              if (index == 2) {
+                Get.to(() => const CreateReview());
+              } else if (index == 4) {
+                controller.changeIndex(index);
+                Get.to(() => const FollowersScreen());
+              } else {
+                controller.changeIndex(index);
+              }
+            },
             type: BottomNavigationBarType.fixed,
             backgroundColor: AppColors.surface,
             elevation: 0,
             iconSize: 24.r,
-            // primaryDeep: choti label text ke liye (design doc ke mutabiq)
             selectedItemColor: AppColors.primaryDeep,
             unselectedItemColor: AppColors.textMuted,
             selectedFontSize: 11.sp,
             unselectedFontSize: 11.sp,
-            selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700),
-            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
+            selectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.w700,
+            ),
+            unselectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
             items: [
               const BottomNavigationBarItem(
-                icon: ImageIcon(AssetImage('assets/icons/home.png')),
+                icon: ImageIcon(
+                  AssetImage('assets/icons/home.png'),
+                ),
                 label: 'Home',
               ),
               const BottomNavigationBarItem(
-                icon: ImageIcon(AssetImage('assets/icons/explore.png')),
+                icon: ImageIcon(
+                  AssetImage('assets/icons/explore.png'),
+                ),
                 label: 'Explore',
               ),
               BottomNavigationBarItem(
@@ -82,7 +90,9 @@ class BottomNavbarScreen extends StatelessWidget {
                     child: Transform.translate(
                       offset: Offset(0, 8.h),
                       child: GestureDetector(
-                        onTap: () => Get.to(() => CreateReview()),
+                        onTap: () => Get.to(
+                          () => const CreateReview(),
+                        ),
                         child: Image.asset(
                           'assets/icons/add.png',
                           width: 52.r,
@@ -95,11 +105,15 @@ class BottomNavbarScreen extends StatelessWidget {
                 label: '',
               ),
               const BottomNavigationBarItem(
-                icon: ImageIcon(AssetImage('assets/icons/saved.png')),
+                icon: ImageIcon(
+                  AssetImage('assets/icons/saved.png'),
+                ),
                 label: 'Saved',
               ),
               const BottomNavigationBarItem(
-                icon: ImageIcon(AssetImage('assets/icons/profile.png')),
+                icon: ImageIcon(
+                  AssetImage('assets/icons/profile.png'),
+                ),
                 label: 'Profile',
               ),
             ],
@@ -108,8 +122,4 @@ class BottomNavbarScreen extends StatelessWidget {
       ),
     );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> your-development
