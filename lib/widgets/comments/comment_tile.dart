@@ -36,8 +36,8 @@ class CommentTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _NameLine(comment: comment),
-                _Body(text: comment.text),
+                NameLine(comment: comment),
+                Body(text: comment.text),
                 SizedBox(
                   height: 44.h,
                   child: Align(
@@ -56,7 +56,7 @@ class CommentTile extends StatelessWidget {
                     ),
                   ),
                 ),
-                for (final reply in comment.replies) _ReplyTile(reply: reply),
+                for (final reply in comment.replies) ReplyTile(reply: reply),
               ],
             ),
           ),
@@ -94,8 +94,8 @@ class CommentTile extends StatelessWidget {
   }
 }
 
-class _NameLine extends StatelessWidget {
-  const _NameLine({required this.comment});
+class NameLine extends StatelessWidget {
+  const NameLine({super.key, required this.comment});
 
   final Comment comment;
 
@@ -145,8 +145,8 @@ class _NameLine extends StatelessWidget {
   }
 }
 
-class _Body extends StatelessWidget {
-  const _Body({required this.text});
+class Body extends StatelessWidget {
+  const Body({super.key, required this.text});
 
   final String text;
 
@@ -166,8 +166,8 @@ class _Body extends StatelessWidget {
   }
 }
 
-class _ReplyTile extends StatelessWidget {
-  const _ReplyTile({required this.reply});
+class ReplyTile extends StatelessWidget {
+  const ReplyTile({super.key, required this.reply});
 
   final Comment reply;
 
@@ -189,8 +189,8 @@ class _ReplyTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _NameLine(comment: reply),
-                _Body(text: reply.text),
+                NameLine(comment: reply),
+                Body(text: reply.text),
               ],
             ),
           ),

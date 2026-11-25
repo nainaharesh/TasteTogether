@@ -38,11 +38,11 @@ class NearbyTile extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12.r),
                   child: imageUrl == null
-                      ? _placeholder()
+                      ? placeholder()
                       : Image.network(
                           imageUrl,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, _, _) => _placeholder(),
+                          errorBuilder: (_, _, _) => placeholder(),
                         ),
                 ),
               ),
@@ -124,7 +124,7 @@ class NearbyTile extends StatelessWidget {
     );
   }
 
-  Widget _placeholder() {
+  Widget placeholder() {
     return ColoredBox(
       color: AppColors.photoPlaceholder2,
       child: Center(

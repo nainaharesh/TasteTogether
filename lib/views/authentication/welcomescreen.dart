@@ -1,15 +1,16 @@
-import 'package:material_ui/material_ui.dart';
+// ignore_for_file: deprecated_member_use
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../routes/app_routes.dart';
-
 import '../../theme/appcolors.dart';
-import '../../utils/aap_text_styles.dart';
 import '../../widgets/app_logo.dart';
 import '../../widgets/auth/auth_footer_link.dart';
 import '../../widgets/custom_button.dart';
+
+import 'package:tastetogether/views/authentication/login_view.dart';
+import 'package:tastetogether/views/authentication/signupscreen.dart';
 
 /// Screen 1 of 4 - "01 · Welcome" in the design.
 /// No controller needed: it only navigates.
@@ -36,15 +37,15 @@ class WelcomeScreen extends StatelessWidget {
                         Expanded(
                           child: Column(
                             children: [
-                              _PhotoTile(
+                              PhotoTile(
                                 label: 'Photo · Ramen',
-                                color: AppColors.tile1,
+                                color: AppColors.photoPlaceholder1,
                                 height: 200,
                               ),
                               SizedBox(height: 12.h),
-                              _PhotoTile(
+                              PhotoTile(
                                 label: 'Photo · Pastry',
-                                color: AppColors.tile2,
+                                color: AppColors.photoPlaceholder3,
                                 height: 150,
                               ),
                             ],
@@ -56,15 +57,15 @@ class WelcomeScreen extends StatelessWidget {
                             padding: EdgeInsets.only(top: 48.h),
                             child: Column(
                               children: [
-                                _PhotoTile(
+                                PhotoTile(
                                   label: 'Photo · Margherita',
-                                  color: AppColors.tile3,
+                                  color: AppColors.fieldBorder,
                                   height: 150,
                                 ),
                                 SizedBox(height: 12.h),
-                                _PhotoTile(
+                                PhotoTile(
                                   label: 'Photo · Lamb kofta',
-                                  color: AppColors.tile4,
+                                  color: AppColors.photoPlaceholder2,
                                   height: 200,
                                 ),
                               ],
@@ -74,33 +75,40 @@ class WelcomeScreen extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 28.h),
-                    const AppLogo(
-                      boxSize: 36,
-                      iconSize: 22,
-                      radius: 11,
-                      fontSize: 26,
-                    ),
+                    const AppLogo(boxSize: 36, fontSize: 26),
                     SizedBox(height: 12.h),
-                    Text('Discover. Review. Connect.', style: AppTextStyles.tagline),
+                    Text(
+                      'Discover. Review. Connect.',
+                      style: GoogleFonts.dmSans(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
                     SizedBox(height: 8.h),
                     ConstrainedBox(
                       constraints: BoxConstraints(maxWidth: 300.w),
                       child: Text(
                         'Honest reviews and dish ratings from people who love to eat.',
                         textAlign: TextAlign.center,
-                        style: AppTextStyles.subtitle,
+                        style: GoogleFonts.dmSans(
+                          fontSize: 15.sp,
+                          height: 1.5,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.textMuted,
+                        ),
                       ),
                     ),
                     const Spacer(),
                     CustomButton(
                       text: 'Get Started',
-                      onPressed: () => Get.toNamed(AppRoutes.signup),
+                      onPressed: () => Get.to(() => SignupScreen()),
                     ),
                     SizedBox(height: 8.h),
                     AuthFooterLink(
                       question: 'Already have an account?',
                       linkText: 'Log in',
-                      onTap: () => Get.toNamed(AppRoutes.login),
+                      onTap: () => Get.to(() => LoginScreen()),
                     ),
                   ],
                 ),
@@ -115,9 +123,9 @@ class WelcomeScreen extends StatelessWidget {
 
 /// Placeholder photo (the design also shows grey placeholders here).
 /// To use real photos later: replace the child with
-/// Image.asset(AppAssets.photoRamen, fit: BoxFit.cover) inside a ClipRRect.
-class _PhotoTile extends StatelessWidget {
-  const _PhotoTile({
+/// Image.asset(...) inside a ClipRRect.
+class PhotoTile extends StatelessWidget {
+  const PhotoTile({super.key, 
     required this.label,
     required this.color,
     required this.height,

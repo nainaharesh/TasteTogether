@@ -1,40 +1,26 @@
-import 'package:material_ui/material_ui.dart';
+// ignore_for_file: deprecated_member_use
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../theme/appcolors.dart';
 
-/// Rounded terracotta square + "TasteTogether". Used on Welcome (big) and
-/// Login (small). Sizes are given in design pixels.
-/// If you have the real logo as an SVG, replace the Icon with SvgPicture.asset.
+import '../theme/appcolors.dart';
+import '../utils/app_assets.dart';
+
+/// Design ka logo: terracotta tile (do rings) + "TasteTogether".
+/// Tile asset (logo.png) ka apna rang/corner hain, is liye bina color.
 class AppLogo extends StatelessWidget {
-  const AppLogo({
-    super.key,
-    this.boxSize = 32,
-    this.iconSize = 20,
-    this.radius = 10,
-    this.fontSize = 20,
-  });
+  const AppLogo({super.key, this.boxSize = 32, this.fontSize = 20});
 
   final double boxSize;
-  final double iconSize;
-  final double radius;
   final double fontSize;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
+      spacing: 10.w,
       children: [
-        Container(
-          width: boxSize.w,
-          height: boxSize.w,
-          decoration: BoxDecoration(
-            color: AppColors.primary,
-            borderRadius: BorderRadius.circular(radius.r),
-          ),
-          child: Icon(Icons.trip_origin, size: iconSize.sp, color: AppColors.white),
-        ),
-        SizedBox(width: 10.w),
+        Image.asset(AppAssets.logo, width: boxSize.r, height: boxSize.r),
         Text(
           'TasteTogether',
           style: GoogleFonts.dmSans(

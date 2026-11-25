@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 class Comment {
   final String id;
   final String username;

@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 import 'package:tastetogether/models/dish_model.dart';
 import 'package:tastetogether/models/resturant_model.dart';
 
@@ -48,7 +49,7 @@ String compactCount(int n) {
 }
 
 /// Dummy data later remove and we use api ////
-const _restaurants = [
+const restaurants = [
   Restaurant(
     name: 'Olive & Ember',
     cuisine: 'Mediterranean',
@@ -72,7 +73,7 @@ const _restaurants = [
   ),
 ];
 
-const _dishes = [
+const dishes = [
   Dish(
     name: 'Charred Lamb Kofta',
     restaurantName: 'Olive & Ember',
@@ -93,11 +94,11 @@ const _dishes = [
   ),
 ];
 
-List<ProfileReview> _reviewsFor(List<double> ratings) => [
+List<ProfileReview> reviewsFor(List<double> ratings) => [
   for (var i = 0; i < ratings.length; i++)
     ProfileReview(
-      restaurant: _restaurants[i % _restaurants.length],
-      dish: _dishes[i % _dishes.length],
+      restaurant: restaurants[i % restaurants.length],
+      dish: dishes[i % dishes.length],
       rating: ratings[i],
     ),
 ];
@@ -110,7 +111,7 @@ final UserProfile dummyMyProfile = UserProfile(
   reviewCount: 42,
   followers: 1200,
   following: 318,
-  reviews: _reviewsFor([5.0, 4.0, 5.0, 3.0, 4.0, 5.0]),
+  reviews: reviewsFor([5.0, 4.0, 5.0, 3.0, 4.0, 5.0]),
 );
 
 final UserProfile dummyPublicProfile = UserProfile(
@@ -121,5 +122,5 @@ final UserProfile dummyPublicProfile = UserProfile(
   reviewCount: 128,
   followers: 3400,
   following: 210,
-  reviews: _reviewsFor([4.0, 5.0, 4.0, 5.0, 3.0, 4.0, 5.0, 4.0, 5.0]),
+  reviews: reviewsFor([4.0, 5.0, 4.0, 5.0, 3.0, 4.0, 5.0, 4.0, 5.0]),
 );

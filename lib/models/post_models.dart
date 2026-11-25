@@ -1,3 +1,7 @@
+// ignore_for_file: deprecated_member_use
+import 'package:tastetogether/utils/helpers.dart';
+import 'package:tastetogether/widgets/common/user_avatar.dart';
+
 class Post {
   final String id;
   final String username;
@@ -13,6 +17,12 @@ class Post {
   final bool isLiked;
   final bool isSaved;
 
+  // API se aane wali extra cheezein (dummy data mein nahi hoti)
+  final String userId;
+  final String restaurantId;
+  final String? dishId;
+  final String? avatarColor; // "#C96E5E"
+
   const Post({
     required this.id,
     required this.username,
@@ -27,7 +37,45 @@ class Post {
     this.imageUrl,
     this.isLiked = false,
     this.isSaved = false,
+    this.userId = '',
+    this.restaurantId = '',
+    this.dishId,
+    this.avatarColor,
   });
+
+  /// Feed API ka ek review:
+  /// { id, userId, restaurantId, dishId, rating, text, photoUrl, likeCount,
+  ///   commentCount, isLiked, createdAt, author{}, restaurant{}, dish{} }
+  /// dish null ho sakti hai (sirf restaurant ka review): tab title mein restaurant ka naam.
+  factory Post.fromJson(Map<String, dynamic> json) {
+    final author = (json['author'] as Map?)?.cast<String, dynamic>() ?? {};
+    final restaurant =
+        (json['restaurant'] as Map?)?.cast<String, dynamic>() ?? {};
+    final dish = (json['dish'] as Map?)?.cast<String, dynamic>();
+
+    final fullName = (author['fullName'] ?? '') as String;
+    final username = (author['username'] ?? '') as String;
+    final restaurantName = (restaurant['name'] ?? '') as String;
+
+    return Post(
+      id: json['id'].toString(),
+      userId: (json['userId'] ?? '').toString(),
+      restaurantId: (json['restaurantId'] ?? '').toString(),
+      dishId: json['dishId']?.toString(),
+      username: username,
+      initials: UserAvatar.initialsOf(fullName.isNotEmpty ? fullName : username),
+      avatarColor: author['avatarColor'] as String?,
+      restaurant: restaurantName,
+      timeAgo: formatTimeAgo(json['createdAt'] as String?),
+      dishName: (dish?['name'] ?? restaurantName) as String,
+      rating: ((json['rating'] ?? 0) as num).toDouble(),
+      review: (json['text'] ?? '') as String,
+      likes: ((json['likeCount'] ?? 0) as num).toInt(),
+      comments: ((json['commentCount'] ?? 0) as num).toInt(),
+      imageUrl: json['photoUrl'] as String?,
+      isLiked: (json['isLiked'] ?? false) as bool,
+    );
+  }
 
   Post copyWith({bool? isLiked, bool? isSaved, int? likes}) => Post(
     id: id,
@@ -43,46 +91,9 @@ class Post {
     imageUrl: imageUrl,
     isLiked: isLiked ?? this.isLiked,
     isSaved: isSaved ?? this.isSaved,
+    userId: userId,
+    restaurantId: restaurantId,
+    dishId: dishId,
+    avatarColor: avatarColor,
   );
 }
-
-/// Dummy data later remove and we use api ////
-const List<Post> dummyPosts = [
-  Post(
-    id: '1',
-    username: 'amina.eats',
-    initials: 'AR',
-    restaurant: 'Olive & Ember',
-    timeAgo: '2h ago',
-    dishName: 'Charred Lamb Kofta',
-    rating: 5.0,
-    review: "Smoky off the grill, with whipped feta underneath that I'd happily eat alone. Order extra flatbread.",
-    likes: 129,
-    comments: 14,
-    isLiked: true,
-  ),
-  Post(
-    id: '2',
-    username: 'danny_dines',
-    initials: 'DO',
-    restaurant: 'Saffron Table',
-    timeAgo: '5h ago',
-    dishName: 'Butter Chicken',
-    rating: 4.5,
-    review: 'Creamy and rich, the naan is soft and fresh.',
-    likes: 64,
-    comments: 7,
-  ),
-  Post(
-    id: '3',
-    username: 'sofia.bites',
-    initials: 'SM',
-    restaurant: 'The Daily Crumb',
-    timeAgo: '1d ago',
-    dishName: 'Pistachio Croissant',
-    rating: 4.0,
-    review: 'Flaky outside, a little too sweet for me, but worth a try.',
-    likes: 31,
-    comments: 3,
-  ),
-];

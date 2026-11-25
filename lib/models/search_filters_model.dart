@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 /// Filter sheet ka result: sort + minimum rating + distance
 class SearchFilters {
   /// 0 = Best match, 1 = Top rated, 2 = Nearest

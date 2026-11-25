@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/viewmodels/main_application_models/create_review_viewmodel/create_review_view_model.dart';
+import 'package:tastetogether/viewmodels/create_review_view_model.dart';
+//import 'package:tastetogether/viewmodels/main_application_models/create_review_viewmodel/create_review_view_model.dart';
 import 'package:tastetogether/widgets/create_review/labeled_field.dart';
 import 'package:tastetogether/widgets/create_review/photo_tiles.dart';
 import 'package:tastetogether/widgets/create_review/star_rating_picker.dart';
@@ -197,13 +198,15 @@ class CreateReview extends StatelessWidget {
                                   children: [
                                     for (
                                       var i = 0;
-                                      i < controller.photoCount.value;
+                                      i < controller.photos.length;
                                       i++
                                     )
                                       SelectedPhotoTile(
-                                        onRemove: controller.removePhoto,
+                                        path: controller.photos[i].path,
+                                        onRemove: () =>
+                                            controller.removePhoto(i),
                                       ),
-                                    if (controller.photoCount.value <
+                                    if (controller.photos.length <
                                         CreateReviewViewModel.maxPhotos)
                                       AddPhotoTile(onTap: controller.addPhoto),
                                   ],

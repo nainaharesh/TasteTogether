@@ -1,8 +1,8 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:tastetogether/theme/appcolors.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../utils/aap_text_styles.dart';
-
 
 /// Small grey heading above a card: "ACCOUNT", "SUPPORT", "FREQUENTLY ASKED".
 class SectionLabel extends StatelessWidget {
@@ -16,7 +16,15 @@ class SectionLabel extends StatelessWidget {
       height: 28.h,
       child: Align(
         alignment: Alignment.centerLeft,
-        child: Text(text.toUpperCase(), style: AppTextStyles.sectionLabel),
+        child: Text(
+          text.toUpperCase(),
+          style: GoogleFonts.dmSans(
+            fontSize: 13.sp,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.52.sp,
+            color: AppColors.textMuted,
+          ),
+        ),
       ),
     );
   }

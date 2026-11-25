@@ -1,12 +1,14 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:tastetogether/views/main_application/comments.dart';
+import 'package:tastetogether/views/user_activity/public_profile.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tastetogether/models/post_models.dart';
 import 'package:tastetogether/models/profile_model.dart';
-import 'package:tastetogether/routes/app_routes.dart';
 import 'package:tastetogether/theme/appcolors.dart';
+import 'package:tastetogether/utils/helpers.dart';
 import 'package:tastetogether/widgets/common/action_sheet.dart';
 import 'package:tastetogether/widgets/home_feed/post_card.dart';
 
@@ -18,6 +20,7 @@ class FeedList extends StatelessWidget {
     required this.onSave,
     required this.onRefresh,
     required this.emptyState,
+    this.isLoading,
   });
 
   final RxList<Post> posts;
@@ -28,12 +31,15 @@ class FeedList extends StatelessWidget {
   /// list khali ho to ye dikhta hai
   final Widget emptyState;
 
-  void _openProfile(Post p) {
+  /// true aur list khali ho to emptyState ki jagah spinner dikhta hai
+  final RxBool? isLoading;
+
+  void openProfile(Post p) {
     // TODO: p.username se us user ka profile API se laana
-    Get.toNamed(AppRoutes.publicProfile, arguments: dummyPublicProfile);
+    Get.to(() => PublicProfile(profile: dummyPublicProfile));
   }
 
-  void _openOptions(Post p) {
+  void openOptions(Post p) {
     ActionSheet.show([
       SheetAction(
         icon: p.isSaved
@@ -45,7 +51,7 @@ class FeedList extends StatelessWidget {
       SheetAction(
         icon: Icons.person_outline_rounded,
         label: 'View ${p.username}',
-        onTap: () => _openProfile(p),
+        onTap: () => openProfile(p),
       ),
       SheetAction(
         icon: Icons.link_rounded,
@@ -73,7 +79,20 @@ class FeedList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       if (posts.isEmpty) {
-        return SingleChildScrollView(child: emptyState);
+        if (isLoading?.value ?? false) {
+          return const Center(
+            child: CircularProgressIndicator(color: AppColors.primary),
+          );
+        }
+        // pull to refresh khali list par bhi chale
+        return RefreshIndicator(
+          color: AppColors.primary,
+          onRefresh: onRefresh,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: emptyState,
+          ),
+        );
       }
       return RefreshIndicator(
         color: AppColors.primary,
@@ -102,14 +121,18 @@ class FeedList extends StatelessWidget {
                 likes: p.likes,
                 comments: p.comments,
                 imageUrl: p.imageUrl,
+                avatarColor: colorFromHex(
+                  p.avatarColor,
+                  fallback: AppColors.primary,
+                ),
                 isLiked: p.isLiked,
                 isSaved: p.isSaved,
-                onTap: () => Get.toNamed(AppRoutes.comments, arguments: p),
-                onUserTap: () => _openProfile(p),
-                onMore: () => _openOptions(p),
+                onTap: () => Get.to(() => Comments(post: p)),
+                onUserTap: () => openProfile(p),
+                onMore: () => openOptions(p),
                 onLike: () => onLike(p.id),
                 onSave: () => onSave(p.id),
-                onComment: () => Get.toNamed(AppRoutes.comments, arguments: p),
+                onComment: () => Get.to(() => Comments(post: p)),
               ),
             );
           },

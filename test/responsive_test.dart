@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tastetogether/main.dart';
 import 'package:tastetogether/models/dish_model.dart';
-import 'package:tastetogether/routes/app_routes.dart';
 import 'package:tastetogether/models/post_models.dart';
 import 'package:tastetogether/models/resturant_model.dart';
 import 'package:tastetogether/views/main_application/comments.dart';
@@ -100,7 +99,7 @@ void main() {
         await settle();
 
         // app Welcome se shuru hoti hai, test Home (bottom navbar) se
-        Get.offAllNamed(AppRoutes.home);
+      //  Get.offAllNamed(Home());
         await settle();
 
         // 1) Home feed (dono tabs)

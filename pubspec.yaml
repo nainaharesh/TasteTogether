@@ -1,4 +1,3 @@
-
 name: tastetogether
 description: "A new Flutter project."
 
@@ -61,17 +60,8 @@ dependencies:
   # Secure storage for authentication tokens.
   flutter_secure_storage: ^11.2.0
 
-  # Firebase core initialization.
-  firebase_core: ^5.2.0
-
-  # Firebase push notifications.
-  firebase_messaging: ^17.1.0
-
   # Image picker for camera and gallery.
   image_picker: ^1.2.4
-
-  # Material UI components.
-  material_ui: any
 
 dev_dependencies:
   # The "flutter_test" package contains the Flutter testing framework.
@@ -121,3 +111,13 @@ flutter:
   #
   # For details regarding fonts from package dependencies, see
   # https://flutter.dev/to/font-from-package
+
+# App icon (design ka logo). Chalane ka tareeqa:
+#   dart run flutter_launcher_icons
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/app_icon/app_icon.png
+  adaptive_icon_background: "#B65C45"
+  adaptive_icon_foreground: assets/app_icon/app_icon_foreground.png
+  remove_alpha_ios: true

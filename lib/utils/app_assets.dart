@@ -1,96 +1,38 @@
 // ignore_for_file: deprecated_member_use
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import '../theme/appcolors.dart';
+/// assets/icons/ ke saare PNG ek jagah. Naam yahan se hi use karo (typo na ho).
+/// Sizes @2x export hain: 48px file = 24 logical, 44px = 22, 104px = 52.
+class AppAssets {
+  AppAssets._();
 
+  static const String _dir = 'assets/icons/';
 
-/// Every text style used by the auth screens (font: DM Sans, as in the design).
-/// They are getters (not const fields) because `.sp` needs ScreenUtil to be
-/// initialised first.
-class AppTextStyles {
-  AppTextStyles._();
+  // Brand
+  static const String logo = '${_dir}logo.png'; // terracotta tile + rings (30 logical)
 
-  // "Welcome back", "Create account", "Forgot password?" -> 32/40 bold
-  static TextStyle get heading => GoogleFonts.dmSans(
-    fontSize: 32.sp,
-    height: 40 / 32,
-    fontWeight: FontWeight.w700,
-    letterSpacing: -0.64.sp,
-    color: AppColors.textPrimary,
-  );
+  // Bottom navbar (48px = 24 logical, sirf icon -> ImageIcon + color)
+  static const String home = '${_dir}home.png';
+  static const String explore = '${_dir}explore.png';
+  static const String saved = '${_dir}saved.png';
+  static const String profile = '${_dir}profile.png';
+  static const String add = '${_dir}add.png'; // 52x52 apna box hai -> bina color
 
-  // "Check your inbox" -> 28/36 bold
-  static TextStyle get headingMedium => GoogleFonts.dmSans(
-    fontSize: 28.sp,
-    height: 36 / 28,
-    fontWeight: FontWeight.w700,
-    letterSpacing: -0.56.sp,
-    color: AppColors.textPrimary,
-  );
+  // Header
+  static const String search = '${_dir}search.png'; // 44 logical box
+  static const String bell = '${_dir}bell.png'; // bina notification (24 logical)
+  // TODO(asset): bell1.png abhi bell.png ki hubahu copy hai (dot nahi).
+  // Dot wala asli icon aane par sirf is file ko replace karo, code nahi badlega.
+  static const String bellUnread = '${_dir}bell1.png';
 
-  // "Discover. Review. Connect."
-  static TextStyle get tagline => GoogleFonts.dmSans(
-    fontSize: 18.sp,
-    fontWeight: FontWeight.w500,
-    color: AppColors.textPrimary,
-  );
+  // Post card (44px = 22 logical)
+  static const String likes = '${_dir}likes.png'; // filled heart (liked)
+  static const String comments = '${_dir}comments.png';
+  static const String bookmark = '${_dir}flag.png'; // outline bookmark (not saved)
 
-  // Grey 15px paragraph under headings
-  static TextStyle get subtitle => GoogleFonts.dmSans(
-    fontSize: 15.sp,
-    height: 1.5,
-    fontWeight: FontWeight.w400,
-    color: AppColors.textSecondary,
-  );
+  // Explore
+  static const String searchBar = '${_dir}searchbar.png';
+  static const String filter = '${_dir}filter.png'; // apna box hai -> bina color
 
-  // Label above each input
-  static TextStyle get label => GoogleFonts.dmSans(
-    fontSize: 14.sp,
-    fontWeight: FontWeight.w500,
-    color: AppColors.textPrimary,
-  );
-
-  // Text typed by the user
-  static TextStyle get input => GoogleFonts.dmSans(
-    fontSize: 16.sp,
-    color: AppColors.textPrimary,
-  );
-
-  static TextStyle get hint => GoogleFonts.dmSans(
-    fontSize: 16.sp,
-    color: AppColors.textSecondary,
-  );
-
-  static TextStyle get button => GoogleFonts.dmSans(
-    fontSize: 16.sp,
-    fontWeight: FontWeight.w700,
-    color: AppColors.white,
-  );
-
-  // "Already have an account?"
-  static TextStyle get footerText => GoogleFonts.dmSans(
-    fontSize: 15.sp,
-    color: AppColors.textSecondary,
-  );
-
-  // "Log in", "Sign up", "Send again"
-  static TextStyle get link => GoogleFonts.dmSans(
-    fontSize: 15.sp,
-    fontWeight: FontWeight.w700,
-    color: AppColors.primaryDark,
-  );
-
-  // "Forgot password?" on the login screen
-  static TextStyle get linkSmall => GoogleFonts.dmSans(
-    fontSize: 14.sp,
-    fontWeight: FontWeight.w500,
-    color: AppColors.primaryDark,
-  );
-
-  static TextStyle get error => GoogleFonts.dmSans(
-    fontSize: 12.sp,
-    color: AppColors.error,
-  );
+  // Auth
+  static const String eye = '${_dir}onEyeTapped.png';
 }

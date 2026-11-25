@@ -1,17 +1,18 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../theme/appcolors.dart';
-import '../../utils/aap_text_styles.dart';
 
-import '../../viewmodels/auth/auth_controller.dart';
+import 'package:tastetogether/viewmodels/auth_controller.dart';
 import '../../widgets/auth/auth_footer_link.dart';
 import '../../widgets/auth/auth_page_layout.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
+import 'reset_password_screen.dart';
 
 /// Screen 4 of 4 - "13 · Forgot Password".
 /// It has two views in the design: the email form, and "Check your inbox".
@@ -25,24 +26,38 @@ class ForgotPasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Obx watches isEmailSent and swaps the two views when it changes.
     return Obx(
-      () => controller.isEmailSent.value ? _buildSentView() : _buildFormView(),
+      () => controller.isEmailSent.value ? buildSentView() : buildFormView(),
     );
   }
 
   // ---------------------------------------------------------------------------
   // View 1: enter your email
   // ---------------------------------------------------------------------------
-  Widget _buildFormView() {
+  Widget buildFormView() {
     return AuthPageLayout(
       children: [
         SizedBox(height: 8.h),
-        _circleIcon(size: 64, iconSize: 30, icon: Icons.lock_outline),
+        circleIcon(size: 64, iconSize: 30, icon: Icons.lock_outline),
         SizedBox(height: 20.h),
-        Text('Forgot password?', style: AppTextStyles.heading),
+        Text(
+          'Forgot password?',
+          style: GoogleFonts.dmSans(
+            fontSize: 32.sp,
+            height: 40 / 32,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.64.sp,
+            color: AppColors.textPrimary,
+          ),
+        ),
         SizedBox(height: 8.h),
         Text(
           "Enter the email linked to your account and we'll send you a link to reset it.",
-          style: AppTextStyles.subtitle,
+          style: GoogleFonts.dmSans(
+            fontSize: 15.sp,
+            height: 1.5,
+            fontWeight: FontWeight.w400,
+            color: AppColors.textMuted,
+          ),
         ),
         SizedBox(height: 28.h),
         Form(
@@ -78,16 +93,25 @@ class ForgotPasswordScreen extends StatelessWidget {
   // ---------------------------------------------------------------------------
   // View 2: "Check your inbox"
   // ---------------------------------------------------------------------------
-  Widget _buildSentView() {
+  Widget buildSentView() {
     return AuthPageLayout(
       children: [
         SizedBox(height: 56.h),
         Center(
           child: Column(
             children: [
-              _circleIcon(size: 96, iconSize: 42, icon: Icons.mail_outline),
+              circleIcon(size: 96, iconSize: 42, icon: Icons.mail_outline),
               SizedBox(height: 24.h),
-              Text('Check your inbox', style: AppTextStyles.headingMedium),
+              Text(
+                'Check your inbox',
+                style: GoogleFonts.dmSans(
+                  fontSize: 28.sp,
+                  height: 36 / 28,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: -0.56.sp,
+                  color: AppColors.textPrimary,
+                ),
+              ),
               SizedBox(height: 8.h),
               ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: 300.w),
@@ -95,15 +119,26 @@ class ForgotPasswordScreen extends StatelessWidget {
                 child: RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
-                    style: AppTextStyles.subtitle,
+                    style: GoogleFonts.dmSans(
+                      fontSize: 15.sp,
+                      height: 1.5,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.textMuted,
+                    ),
                     children: [
                       const TextSpan(text: 'We sent a reset link to '),
                       TextSpan(
                         text: controller.forgotEmailController.text.trim(),
-                        style: AppTextStyles.subtitle.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
-                        ),
+                        style:
+                            GoogleFonts.dmSans(
+                              fontSize: 15.sp,
+                              height: 1.5,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.textMuted,
+                            ).copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textPrimary,
+                            ),
                       ),
                       // BACKEND INTEGRATION: "30 minutes" is copied from the
                       // design. It must match the real expiry time.
@@ -120,7 +155,7 @@ class ForgotPasswordScreen extends StatelessWidget {
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
           decoration: BoxDecoration(
-            color: AppColors.tint,
+            color: AppColors.border,
             borderRadius: BorderRadius.circular(14.r),
           ),
           child: Row(
@@ -134,9 +169,11 @@ class ForgotPasswordScreen extends StatelessWidget {
               Expanded(
                 child: Text(
                   'Reset link sent',
-                  style: AppTextStyles.label.copyWith(
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: GoogleFonts.dmSans(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.textPrimary,
+                  ).copyWith(fontWeight: FontWeight.w400),
                 ),
               ),
             ],
@@ -147,9 +184,30 @@ class ForgotPasswordScreen extends StatelessWidget {
         SizedBox(height: 8.h),
         Center(
           child: TextButton(
+            onPressed: () => Get.to(() => ResetPasswordScreen()),
+            style: TextButton.styleFrom(minimumSize: Size(0, 44.h)),
+            child: Text(
+              'Have a reset code? Reset password',
+              style: GoogleFonts.dmSans(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w700,
+                color: AppColors.primaryDeep,
+              ),
+            ),
+          ),
+        ),
+        Center(
+          child: TextButton(
             onPressed: controller.resetForgotPasswordState,
             style: TextButton.styleFrom(minimumSize: Size(0, 44.h)),
-            child: Text("Didn't get it? Send again", style: AppTextStyles.link),
+            child: Text(
+              "Didn't get it? Send again",
+              style: GoogleFonts.dmSans(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w700,
+                color: AppColors.primaryDeep,
+              ),
+            ),
           ),
         ),
       ],
@@ -157,7 +215,7 @@ class ForgotPasswordScreen extends StatelessWidget {
   }
 
   // Round beige circle with an icon (used in both views).
-  Widget _circleIcon({
+  Widget circleIcon({
     required double size,
     required double iconSize,
     required IconData icon,
@@ -166,7 +224,7 @@ class ForgotPasswordScreen extends StatelessWidget {
       width: size.w,
       height: size.w,
       decoration: const BoxDecoration(
-        color: AppColors.tint,
+        color: AppColors.border,
         shape: BoxShape.circle,
       ),
       child: Icon(icon, size: iconSize.sp, color: AppColors.textPrimary),

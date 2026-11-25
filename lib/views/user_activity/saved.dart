@@ -1,11 +1,13 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:tastetogether/viewmodels/main_application_models_home_feed_viewmodel_bottomnavbar_view_model.dart';
+import 'package:tastetogether/viewmodels/saved_view_model.dart';
+import 'package:tastetogether/views/main_application/resturant_details.dart';
+import 'package:tastetogether/views/main_application/dish_details.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tastetogether/routes/app_routes.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/viewmodels/main_application_models/home_feed_viewmodel/bottomnavbar_view_model.dart';
-import 'package:tastetogether/viewmodels/user_activity_models/saved_viewmodel/saved_view_model.dart';
+
 import 'package:tastetogether/widgets/common/chip_row.dart';
 import 'package:tastetogether/widgets/common/empty_state.dart';
 import 'package:tastetogether/widgets/common/result_tile.dart';
@@ -16,7 +18,7 @@ class Saved extends StatelessWidget {
 
   final SavedViewModel controller = Get.put(SavedViewModel());
 
-  static const _colors = [
+  static const colors = [
     AppColors.photoPlaceholder2, // #DCC5B3
     AppColors.photoPlaceholder3, // #C9A892
     AppColors.fieldBorder, // #D2B7A3
@@ -71,8 +73,17 @@ class Saved extends StatelessWidget {
           Expanded(
             child: Obx(() {
               final list = controller.visible;
+              if (list.isEmpty && controller.isLoading.value) {
+                return const Center(
+                  child: CircularProgressIndicator(color: AppColors.primary),
+                );
+              }
               if (list.isEmpty) {
-                return SingleChildScrollView(
+                return RefreshIndicator(
+                  color: AppColors.primary,
+                  onRefresh: controller.fetchSaved,
+                  child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   child: EmptyState(
                     icon: Icons.bookmark_border_rounded,
                     title: 'Nothing saved yet',
@@ -82,9 +93,14 @@ class Saved extends StatelessWidget {
                     onAction: () =>
                         Get.find<BottomNavbarViewModel>().changeIndex(1),
                   ),
+                  ),
                 );
               }
-              return ListView.builder(
+              return RefreshIndicator(
+                color: AppColors.primary,
+                onRefresh: controller.fetchSaved,
+                child: ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
                 // har card ke neeche 12 (Padding), isliye last par 16 - 12 = 4
                 padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 4.h),
                 itemCount: list.length,
@@ -97,10 +113,14 @@ class Saved extends StatelessWidget {
                       subtitle: place.subtitle,
                       rating: place.rating,
                       countLabel: place.countLabel,
-                      placeholderColor: _colors[i % _colors.length],
+                      placeholderColor: colors[i % colors.length],
                       onTap: () => place.isDish
-                          ? Get.toNamed(AppRoutes.dishDetails, arguments: place.dish!)
-                          : Get.toNamed(AppRoutes.restaurantDetails, arguments: place.restaurant!),
+                          ? Get.to(() => DishDetails(dish: place.dish!))
+                          : Get.to(
+                              () => ResturantDetails(
+                                restaurant: place.restaurant!,
+                              ),
+                            ),
                       trailing: IconButton(
                         tooltip: 'Remove from saved',
                         onPressed: () => controller.remove(place),
@@ -113,6 +133,7 @@ class Saved extends StatelessWidget {
                     ),
                   );
                 },
+                ),
               );
             }),
           ),

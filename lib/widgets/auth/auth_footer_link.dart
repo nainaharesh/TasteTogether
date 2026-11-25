@@ -1,7 +1,8 @@
-import 'package:material_ui/material_ui.dart';
+// ignore_for_file: deprecated_member_use
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../utils/aap_text_styles.dart';
+import 'package:tastetogether/theme/appcolors.dart';
 
 /// Bottom line such as: "Already have an account? Log in".
 /// Used on all four screens.
@@ -24,7 +25,13 @@ class AuthFooterLink extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(question, style: AppTextStyles.footerText),
+          Text(
+            question,
+            style: GoogleFonts.dmSans(
+              fontSize: 15.sp,
+              color: AppColors.textMuted,
+            ),
+          ),
           SizedBox(width: 6.w),
           Material(
             color: Colors.transparent,
@@ -33,7 +40,16 @@ class AuthFooterLink extends StatelessWidget {
               borderRadius: BorderRadius.circular(4.r),
               child: SizedBox(
                 height: 44.h,
-                child: Center(child: Text(linkText, style: AppTextStyles.link)),
+                child: Center(
+                  child: Text(
+                    linkText,
+                    style: GoogleFonts.dmSans(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primaryDeep,
+                    ),
+                  ),
+                ),
               ),
             ),
           ),

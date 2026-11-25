@@ -30,18 +30,18 @@ class FilterSheet extends StatefulWidget {
   }
 
   @override
-  State<FilterSheet> createState() => _FilterSheetState();
+  State<FilterSheet> createState() => FilterSheetState();
 }
 
-class _FilterSheetState extends State<FilterSheet> {
-  static const _ratings = [0.0, 4.0, 4.5, 4.8];
-  static const _ratingLabels = ['Any', '4.0+', '4.5+', '4.8+'];
-  static const _distances = [0.0, 1.0, 2.0, 5.0];
-  static const _distanceLabels = ['Any', '1 km', '2 km', '5 km'];
+class FilterSheetState extends State<FilterSheet> {
+  static const ratings = [0.0, 4.0, 4.5, 4.8];
+  static const ratingLabels = ['Any', '4.0+', '4.5+', '4.8+'];
+  static const distances = [0.0, 1.0, 2.0, 5.0];
+  static const distanceLabels = ['Any', '1 km', '2 km', '5 km'];
 
   late SearchFilters draft = widget.initial;
 
-  Widget _section(String title, Widget child) {
+  Widget section(String title, Widget child) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 4.h,
@@ -107,7 +107,7 @@ class _FilterSheetState extends State<FilterSheet> {
                 ),
               ],
             ),
-            _section(
+            section(
               'Sort by',
               ChipRow(
                 padding: EdgeInsets.zero,
@@ -118,25 +118,25 @@ class _FilterSheetState extends State<FilterSheet> {
               ),
             ),
             if (!widget.sortOnly) ...[
-              _section(
+              section(
                 'Minimum rating',
                 ChipRow(
                   padding: EdgeInsets.zero,
-                  labels: _ratingLabels,
-                  selectedIndex: _ratings.indexOf(draft.minRating),
+                  labels: ratingLabels,
+                  selectedIndex: ratings.indexOf(draft.minRating),
                   onSelected: (i) => setState(
-                    () => draft = draft.copyWith(minRating: _ratings[i]),
+                    () => draft = draft.copyWith(minRating: ratings[i]),
                   ),
                 ),
               ),
-              _section(
+              section(
                 'Distance',
                 ChipRow(
                   padding: EdgeInsets.zero,
-                  labels: _distanceLabels,
-                  selectedIndex: _distances.indexOf(draft.maxDistanceKm),
+                  labels: distanceLabels,
+                  selectedIndex: distances.indexOf(draft.maxDistanceKm),
                   onSelected: (i) => setState(
-                    () => draft = draft.copyWith(maxDistanceKm: _distances[i]),
+                    () => draft = draft.copyWith(maxDistanceKm: distances[i]),
                   ),
                 ),
               ),

@@ -41,16 +41,16 @@ class ProfileSummary extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _Stat(
+                  Stat(
                     value: compactCount(profile.reviewCount),
                     label: 'Reviews',
                   ),
-                  _Stat(
+                  Stat(
                     value: compactCount(profile.followers),
                     label: 'Followers',
                     onTap: onFollowersTap,
                   ),
-                  _Stat(
+                  Stat(
                     value: compactCount(profile.following),
                     label: 'Following',
                     onTap: onFollowingTap,
@@ -88,8 +88,8 @@ class ProfileSummary extends StatelessWidget {
   }
 }
 
-class _Stat extends StatelessWidget {
-  const _Stat({required this.value, required this.label, this.onTap});
+class Stat extends StatelessWidget {
+  const Stat({super.key, required this.value, required this.label, this.onTap});
 
   final String value;
   final String label;

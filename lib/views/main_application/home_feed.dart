@@ -1,13 +1,18 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:tastetogether/viewmodels/main_application_models_home_feed_viewmodel_tabbar_view_model.dart';
+import 'package:tastetogether/viewmodels/notification_viewmodel.dart';
+import 'package:tastetogether/views/main_application/search_results.dart';
+import 'package:tastetogether/views/main_application/create_review.dart';
+import 'package:tastetogether/views/user_activity/notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tastetogether/viewmodels/user_activity_models/notifications_viewmodel/notifications_view_model.dart';
+//import 'package:tastetogether/viewmodels/user_activity_models/notifications_viewmodel/notifications_view_model.dart';
 import 'package:tastetogether/widgets/common/chip_row.dart';
 import 'package:tastetogether/widgets/common/empty_state.dart';
-import 'package:tastetogether/routes/app_routes.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/viewmodels/main_application_models/home_feed_viewmodel/tabbar_view_model.dart';
+import 'package:tastetogether/utils/app_assets.dart';
+//import 'package:tastetogether/viewmodels/main_application_models/home_feed_viewmodel/tabbar_view_model.dart';
 import 'package:tastetogether/widgets/home_feed/feed_list.dart';
 import 'package:tastetogether/widgets/home_feed/tabbar.dart';
 
@@ -26,9 +31,10 @@ class HomeFeed extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            //////// header ////////
-            Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 8.w, top: 24.h),
+            //////// header (design: 56 high) ////////
+            Container(
+              height: 56.h,
+              padding: EdgeInsets.only(left: 16.w, right: 8.w),
               child: Row(
                 children: [
                   ///// logo and title /////
@@ -36,11 +42,7 @@ class HomeFeed extends StatelessWidget {
                     child: Row(
                       spacing: 8.w,
                       children: [
-                        Image.asset(
-                          'assets/icons/logo.png',
-                          width: 30.r,
-                          height: 30.r,
-                        ),
+                        Image.asset(AppAssets.logo, width: 30.r, height: 30.r),
                         // choti screen / bara font par text kat jaye, Row na phate
                         Flexible(
                           child: Text(
@@ -59,59 +61,40 @@ class HomeFeed extends StatelessWidget {
                     ),
                   ),
 
-                  ///// search icon /////
+                  ///// search icon (44 box) /////
                   IconButton(
-                    onPressed: () => Get.toNamed(AppRoutes.searchResults),
+                    onPressed: () => Get.to(() => SearchResults()),
                     padding: EdgeInsets.zero,
                     constraints: BoxConstraints.tightFor(
                       width: 44.r,
                       height: 44.r,
                     ),
                     icon: ImageIcon(
-                      const AssetImage('assets/icons/search.png'),
+                      const AssetImage(AppAssets.search),
                       size: 44.r,
                       color: AppColors.textPrimary,
                     ),
                   ),
 
-                  ///// bell icon /////
-                  Stack(
-                    children: [
-                      IconButton(
-                        onPressed: () => Get.toNamed(AppRoutes.notifications),
-                        padding: EdgeInsets.zero,
-                        constraints: BoxConstraints.tightFor(
-                          width: 44.r,
-                          height: 44.r,
-                        ),
-                        icon: ImageIcon(
-                          const AssetImage('assets/icons/bell.png'),
-                          size: 44.r,
-                          color: AppColors.textPrimary,
-                        ),
+                  ///// bell icon: 24 logical, 44 touch target /////
+                  // Unread ho to bellUnread asset, warna bell asset.
+                  // Dot code se nahi bana, sirf asset se aata hai.
+                  IconButton(
+                    onPressed: () => Get.to(() => Notifications()),
+                    padding: EdgeInsets.zero,
+                    constraints: BoxConstraints.tightFor(
+                      width: 44.r,
+                      height: 44.r,
+                    ),
+                    icon: Obx(
+                      () => Image.asset(
+                        notificationsController.unreadCount == 0
+                            ? AppAssets.bell
+                            : AppAssets.bellUnread,
+                        width: 24.r,
+                        height: 24.r,
                       ),
-                      Positioned(
-                        top: 10.h,
-                        right: 11.w,
-                        // dot sirf tab jab unread notifications hon
-                        child: Obx(
-                          () => notificationsController.unreadCount == 0
-                              ? const SizedBox.shrink()
-                              : Container(
-                                  width: 13.r,
-                                  height: 13.r,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primary,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: AppColors.background,
-                                      width: 2,
-                                    ),
-                                  ),
-                                ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),
@@ -133,6 +116,7 @@ class HomeFeed extends StatelessWidget {
                     onLike: tabbarcontroller.toggleLike,
                     onSave: tabbarcontroller.toggleSave,
                     onRefresh: tabbarcontroller.refreshFeeds,
+                    isLoading: tabbarcontroller.isLoading,
                     emptyState: EmptyState(
                       icon: Icons.people_outline_rounded,
                       title: 'No posts yet',
@@ -162,12 +146,13 @@ class HomeFeed extends StatelessWidget {
                           onLike: tabbarcontroller.toggleLike,
                           onSave: tabbarcontroller.toggleSave,
                           onRefresh: tabbarcontroller.refreshFeeds,
+                          isLoading: tabbarcontroller.isLoading,
                           emptyState: EmptyState(
                             icon: Icons.restaurant_menu_rounded,
                             title: 'Nothing here yet',
                             message: 'Be the first to review a dish and start the conversation.',
                             actionLabel: 'Write a review',
-                            onAction: () => Get.toNamed(AppRoutes.createReview),
+                            onAction: () => Get.to(() => CreateReview()),
                           ),
                         ),
                       ),

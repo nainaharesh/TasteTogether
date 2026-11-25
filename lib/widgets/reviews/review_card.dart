@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tastetogether/models/review_model.dart';
 import 'package:tastetogether/theme/appcolors.dart';
+import 'package:tastetogether/utils/helpers.dart';
 import 'package:tastetogether/widgets/common/star_row.dart';
 import 'package:tastetogether/widgets/common/user_avatar.dart';
 import 'package:tastetogether/widgets/home_feed/photo_placeholder.dart';
@@ -16,6 +17,8 @@ class ReviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final photoLabel = review.photoLabel;
+    final photoUrl = review.photoUrl;
+    final avatarColor = review.avatarColor;
 
     return Container(
       padding: EdgeInsets.all(14.r),
@@ -33,6 +36,9 @@ class ReviewCard extends StatelessWidget {
               UserAvatar(
                 initials: review.initials,
                 style: review.avatarStyle,
+                color: avatarColor == null
+                    ? null
+                    : colorFromHex(avatarColor, fallback: AppColors.primary),
               ),
               Expanded(
                 child: Column(
@@ -71,7 +77,7 @@ class ReviewCard extends StatelessWidget {
               ),
             ),
           ),
-          if (photoLabel != null)
+          if (photoLabel != null || photoUrl != null)
             Padding(
               padding: EdgeInsets.only(top: 10.h),
               child: ClipRRect(
@@ -81,6 +87,7 @@ class ReviewCard extends StatelessWidget {
                   width: double.infinity,
                   child: PhotoPlaceholder(
                     label: photoLabel,
+                    imageUrl: photoUrl,
                     iconSize: 26,
                     spacing: 6,
                     fontSize: 11,

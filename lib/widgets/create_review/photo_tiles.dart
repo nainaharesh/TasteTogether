@@ -1,13 +1,20 @@
 // ignore_for_file: deprecated_member_use
+import 'dart:io';
 import 'dart:ui' show PathMetric;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 
-/// Select ki hui photo (abhi "Preview" placeholder) + remove button
+/// Select ki hui photo + remove button
 class SelectedPhotoTile extends StatelessWidget {
-  const SelectedPhotoTile({super.key, required this.onRemove});
+  const SelectedPhotoTile({
+    super.key,
+    required this.path,
+    required this.onRemove,
+  });
 
+  final String path;
   final VoidCallback onRemove;
 
   @override
@@ -19,30 +26,9 @@ class SelectedPhotoTile extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppColors.photoPlaceholder2,
-                borderRadius: BorderRadius.circular(14.r),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 4.h,
-                children: [
-                  Icon(
-                    Icons.image_outlined,
-                    size: 22.r,
-                    color: AppColors.textPrimary,
-                  ),
-                  Text(
-                    'Preview',
-                    style: TextStyle(
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ],
-              ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(14.r),
+              child: Image.file(File(path), fit: BoxFit.cover),
             ),
           ),
           Positioned(
@@ -79,7 +65,7 @@ class AddPhotoTile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: CustomPaint(
-        painter: _DashedBorderPainter(radius: 14.r),
+        painter: DashedBorderPainter(radius: 14.r),
         child: SizedBox(
           width: 88.r,
           height: 88.r,
@@ -108,8 +94,8 @@ class AddPhotoTile extends StatelessWidget {
   }
 }
 
-class _DashedBorderPainter extends CustomPainter {
-  _DashedBorderPainter({required this.radius});
+class DashedBorderPainter extends CustomPainter {
+  DashedBorderPainter({required this.radius});
 
   final double radius;
 
@@ -121,10 +107,7 @@ class _DashedBorderPainter extends CustomPainter {
       ..strokeWidth = 1.5;
     final path = Path()
       ..addRRect(
-        RRect.fromRectAndRadius(
-          Offset.zero & size,
-          Radius.circular(radius),
-        ),
+        RRect.fromRectAndRadius(Offset.zero & size, Radius.circular(radius)),
       );
     const dash = 6.0;
     const gap = 4.0;
@@ -138,6 +121,5 @@ class _DashedBorderPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _DashedBorderPainter old) =>
-      old.radius != radius;
+  bool shouldRepaint(covariant DashedBorderPainter old) => old.radius != radius;
 }

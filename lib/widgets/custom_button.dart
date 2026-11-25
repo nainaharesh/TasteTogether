@@ -1,7 +1,8 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/utils/aap_text_styles.dart';
 
 /// Full-width button.
 /// Default: filled terracotta (52 high, radius 14).
@@ -30,10 +31,10 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color contentColor = isOutlined
-        ? AppColors.primaryDark
-        : AppColors.white;
+        ? AppColors.primaryDeep
+        : AppColors.surface;
     final Color backgroundColor = isOutlined
-        ? AppColors.white
+        ? AppColors.surface
         : AppColors.primary;
 
     return SizedBox(
@@ -79,10 +80,11 @@ class CustomButton extends StatelessWidget {
                       text,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.button.copyWith(
-                        fontSize: fontSize.sp,
-                        color: contentColor,
-                      ),
+                      style: GoogleFonts.dmSans(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.surface,
+                      ).copyWith(fontSize: fontSize.sp, color: contentColor),
                     ),
                   ),
                 ],

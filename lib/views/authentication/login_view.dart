@@ -1,13 +1,15 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:tastetogether/views/authentication/forgetpasswordscreen.dart';
+import 'package:tastetogether/views/authentication/signupscreen.dart';
+import 'package:tastetogether/theme/appcolors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../viewmodels/auth/auth_controller.dart';
-import '../../routes/app_routes.dart';
+import 'package:tastetogether/viewmodels/auth_controller.dart';
 
-import '../../utils/aap_text_styles.dart';
 import '../../widgets/app_logo.dart';
 import '../../widgets/auth/auth_footer_link.dart';
 import '../../widgets/auth/auth_page_layout.dart';
@@ -20,9 +22,7 @@ class LoginScreen extends StatelessWidget {
 
   // Creates the controller (or reuses it if it already exists)
 
-
   AuthController get controller => Get.put(AuthController(), permanent: true);
-
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +31,25 @@ class LoginScreen extends StatelessWidget {
         SizedBox(height: 8.h),
         const AppLogo(),
         SizedBox(height: 24.h),
-        Text('Welcome back', style: AppTextStyles.heading),
+        Text(
+          'Welcome back',
+          style: GoogleFonts.dmSans(
+            fontSize: 32.sp,
+            height: 40 / 32,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.64.sp,
+            color: AppColors.textPrimary,
+          ),
+        ),
         SizedBox(height: 8.h),
         Text(
           'Log in to see what your friends are eating.',
-          style: AppTextStyles.subtitle,
+          style: GoogleFonts.dmSans(
+            fontSize: 15.sp,
+            height: 1.5,
+            fontWeight: FontWeight.w400,
+            color: AppColors.textMuted,
+          ),
         ),
         SizedBox(height: 32.h),
 
@@ -75,13 +89,17 @@ class LoginScreen extends StatelessWidget {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () => Get.toNamed(AppRoutes.forgotPassword),
+              onTap: () => Get.to(() => ForgotPasswordScreen()),
               child: SizedBox(
                 height: 44.h,
                 child: Center(
                   child: Text(
                     'Forgot password?',
-                    style: AppTextStyles.linkSmall,
+                    style: GoogleFonts.dmSans(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.primaryDeep,
+                    ),
                   ),
                 ),
               ),
@@ -94,7 +112,7 @@ class LoginScreen extends StatelessWidget {
           () => CustomButton(
             text: 'Log in',
             isLoading: controller.isLoading.value,
-            onPressed: () => Get.toNamed(AppRoutes.signup),
+            onPressed: controller.login,
           ),
         ),
 
@@ -103,7 +121,7 @@ class LoginScreen extends StatelessWidget {
           question: 'New to TasteTogether?',
           linkText: 'Sign up',
           // offNamed = replace this screen (so Back from Sign up goes to Welcome)
-          onTap: () => Get.offNamed(AppRoutes.signup),
+          onTap: () => Get.off(() => SignupScreen()),
         ),
       ],
     );

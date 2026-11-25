@@ -1,17 +1,15 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
-import '../../models/support/support_models.dart';
-import '../../theme/appcolors.dart';
-import '../../utils/aap_text_styles.dart';
-
-
-import '../../viewmodels/support/support_controller.dart';
-import '../../widgets/components/app_card.dart';
-import '../../widgets/components/app_page_layout.dart';
-import '../../widgets/components/section_label.dart';
-import '../../widgets/custom_button.dart';
+import 'package:tastetogether/models/support/support_models.dart';
+import 'package:tastetogether/theme/appcolors.dart';
+import 'package:tastetogether/viewmodels/support_controller.dart';
+import 'package:tastetogether/widgets/components/app_card.dart';
+import 'package:tastetogether/widgets/components/app_page_layout.dart';
+import 'package:tastetogether/widgets/components/section_label.dart';
+import 'package:tastetogether/widgets/custom_button.dart';
 
 
 class HelpSupportScreen extends StatelessWidget {
@@ -24,18 +22,18 @@ class HelpSupportScreen extends StatelessWidget {
       title: 'Help and support',
       children: [
         SizedBox(height: 8.h),
-        _buildSearchField(),
+        buildSearchField(),
         SizedBox(height: 20.h),
         const SectionLabel('Frequently asked'),
-        _buildFaqList(),
+        buildFaqList(),
         SizedBox(height: 24.h),
         const Spacer(),
-        _buildContactBox(),
+        buildContactBox(),
       ],
     );
   }
 
-  Widget _buildSearchField() {
+  Widget buildSearchField() {
     OutlineInputBorder border(Color color, double width) => OutlineInputBorder(
       borderRadius: BorderRadius.circular(14.r),
       borderSide: BorderSide(color: color, width: width),
@@ -46,16 +44,22 @@ class HelpSupportScreen extends StatelessWidget {
       onChanged: controller.onSearchChanged,
       textInputAction: TextInputAction.search,
       cursorColor: AppColors.primary,
-      style: AppTextStyles.input.copyWith(fontSize: 15.sp),
+      style: GoogleFonts.dmSans(
+        fontSize: 16.sp,
+        color: AppColors.textPrimary,
+      ).copyWith(fontSize: 15.sp),
       decoration: InputDecoration(
         hintText: 'Search help articles',
-        hintStyle: AppTextStyles.hint.copyWith(fontSize: 15.sp),
+        hintStyle: GoogleFonts.dmSans(
+          fontSize: 16.sp,
+          color: AppColors.textMuted,
+        ).copyWith(fontSize: 15.sp),
         filled: true,
-        fillColor: AppColors.white,
+        fillColor: AppColors.surface,
         contentPadding: EdgeInsets.symmetric(vertical: 14.h),
         prefixIcon: Padding(
           padding: EdgeInsets.only(left: 14.w, right: 10.w),
-          child: Icon(Icons.search, size: 20.sp, color: AppColors.textSecondary),
+          child: Icon(Icons.search, size: 20.sp, color: AppColors.textMuted),
         ),
         prefixIconConstraints: const BoxConstraints(),
         enabledBorder: border(AppColors.border, 1),
@@ -66,7 +70,7 @@ class HelpSupportScreen extends StatelessWidget {
 
   /// The expandable question list. Obx rebuilds it when the search text or the
   /// open question changes.
-  Widget _buildFaqList() {
+  Widget buildFaqList() {
     return Obx(() {
       final faqs = controller.filteredFaqs;
       final openId = controller.openFaqId.value;
@@ -74,7 +78,13 @@ class HelpSupportScreen extends StatelessWidget {
       if (faqs.isEmpty) {
         return Padding(
           padding: EdgeInsets.symmetric(vertical: 16.h),
-          child: Text('No articles found.', style: AppTextStyles.meta),
+          child: Text(
+            'No articles found.',
+            style: GoogleFonts.dmSans(
+              fontSize: 13.sp,
+              color: AppColors.textMuted,
+            ),
+          ),
         );
       }
 
@@ -82,9 +92,9 @@ class HelpSupportScreen extends StatelessWidget {
         child: Column(
           children: [
             for (int i = 0; i < faqs.length; i++) ...[
-              _buildFaqItem(faqs[i], isOpen: faqs[i].id == openId),
+              buildFaqItem(faqs[i], isOpen: faqs[i].id == openId),
               if (i != faqs.length - 1)
-                Divider(height: 1, thickness: 1, color: AppColors.tint),
+                Divider(height: 1, thickness: 1, color: AppColors.border),
             ],
           ],
         ),
@@ -92,7 +102,7 @@ class HelpSupportScreen extends StatelessWidget {
     });
   }
 
-  Widget _buildFaqItem(FaqModel faq, {required bool isOpen}) {
+  Widget buildFaqItem(FaqModel faq, {required bool isOpen}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -105,13 +115,23 @@ class HelpSupportScreen extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: Text(faq.question, style: AppTextStyles.faqQuestion),
+                    child: Text(
+                      faq.question,
+                      style: GoogleFonts.dmSans(
+                        fontSize: 15.sp,
+                        height: 21 / 15,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
                   ),
                   SizedBox(width: 12.w),
                   Icon(
-                    isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                    isOpen
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down,
                     size: 24.sp,
-                    color: AppColors.textSecondary,
+                    color: AppColors.textMuted,
                   ),
                 ],
               ),
@@ -122,17 +142,24 @@ class HelpSupportScreen extends StatelessWidget {
         if (isOpen)
           Padding(
             padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 14.h),
-            child: Text(faq.answer, style: AppTextStyles.faqAnswer),
+            child: Text(
+              faq.answer,
+              style: GoogleFonts.dmSans(
+                fontSize: 14.sp,
+                height: 21 / 14,
+                color: AppColors.textMuted,
+              ),
+            ),
           ),
       ],
     );
   }
 
-  Widget _buildContactBox() {
+  Widget buildContactBox() {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: AppColors.tint,
+        color: AppColors.border,
         borderRadius: BorderRadius.circular(16.r),
       ),
       child: Column(
@@ -140,17 +167,22 @@ class HelpSupportScreen extends StatelessWidget {
         children: [
           Text(
             'Still need help?',
-            style: AppTextStyles.rowTitle.copyWith(fontWeight: FontWeight.w700),
+            style: GoogleFonts.dmSans(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              color: AppColors.textPrimary,
+            ).copyWith(fontWeight: FontWeight.w700),
           ),
           SizedBox(height: 2.h),
           // TODO(backend/support): this promise is copied from the design.
           // Make sure it matches the real support response time.
           Text(
             'Our team replies within one working day.',
-            style: AppTextStyles.faqAnswer.copyWith(
-              color: AppColors.textPrimary,
-              height: 20 / 14,
-            ),
+            style: GoogleFonts.dmSans(
+              fontSize: 14.sp,
+              height: 21 / 14,
+              color: AppColors.textMuted,
+            ).copyWith(color: AppColors.textPrimary, height: 20 / 14),
           ),
           SizedBox(height: 12.h),
           Row(

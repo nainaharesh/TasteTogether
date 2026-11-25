@@ -11,20 +11,32 @@ class UserAvatar extends StatelessWidget {
     this.size = 40,
     this.fontSize = 14,
     this.style = 0,
+    this.color,
   });
+
+  /// "Layla Hassan" -> "LH". Naam khali ho to khali string.
+  static String initialsOf(String name) {
+    final words = name.trim().split(RegExp(r'\s+')).where((w) => w.isNotEmpty);
+    return words.take(2).map((w) => w[0].toUpperCase()).join();
+  }
 
   final String initials;
   final double size;
   final double fontSize;
   final int style;
 
+  /// null nahi to style ki jagah ye rang (API ka avatarColor)
+  final Color? color;
+
   @override
   Widget build(BuildContext context) {
-    final (bg, fg) = switch (style) {
-      1 => (AppColors.primary, AppColors.surface),
-      2 => (AppColors.textPrimary, AppColors.surface),
-      _ => (AppColors.border, AppColors.textPrimary),
-    };
+    final (bg, fg) = color != null
+        ? (color!, AppColors.surface)
+        : switch (style) {
+            1 => (AppColors.primary, AppColors.surface),
+            2 => (AppColors.textPrimary, AppColors.surface),
+            _ => (AppColors.border, AppColors.textPrimary),
+          };
 
     return Container(
       width: size.r,

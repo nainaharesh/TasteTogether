@@ -1,9 +1,17 @@
+// ignore_for_file: deprecated_member_use
 import 'package:tastetogether/models/auth/auth_models.dart';
 import 'package:tastetogether/services/api/api_client.dart';
+import 'package:tastetogether/services/api/api_exception.dart';
 import 'package:tastetogether/services/api/api_endpoints.dart';
 
 /// Auth ke saare API calls. Sirf endpoint + body + model: koi UI ya state nahi.
 class AuthService {
+  /// Response object na ho (khali / HTML) to saaf error, crash nahi.
+  Map<String, dynamic> asMap(dynamic json) {
+    if (json is Map) return json.cast<String, dynamic>();
+    throw ApiException('Server ka jawab samajh nahi aaya. Dobara try karein.');
+  }
+
   Future<AuthResponse> login({
     required String email,
     required String password,
@@ -13,7 +21,7 @@ class AuthService {
       body: {'email': email, 'password': password},
       auth: false, // abhi token hai hi nahi
     );
-    return AuthResponse.fromJson(json as Map<String, dynamic>);
+    return AuthResponse.fromJson(asMap(json));
   }
 
   Future<AuthResponse> signup({
@@ -32,22 +40,27 @@ class AuthService {
       },
       auth: false,
     );
-    return AuthResponse.fromJson(json as Map<String, dynamic>);
+    return AuthResponse.fromJson(asMap(json));
   }
 
   Future<void> logout() async {
     await ApiClient.post(ApiEndpoints.logout);
   }
 
-  Future<void> forgotPassword({required String email}) async {
-    await ApiClient.post(
+  /// Backend (abhi dev mode) response mein `resetToken` bhi bhejta hai.
+  /// Mile to wapas karta hai (screen us se code field bhar deti hai),
+  /// warna null (asli email se code aayega).
+  Future<String?> forgotPassword({required String email}) async {
+    final json = await ApiClient.post(
       ApiEndpoints.forgotPassword,
       body: {'email': email},
       auth: false,
     );
+    final token = json is Map ? json['resetToken'] : null;
+    return token == null || '$token'.isEmpty ? null : '$token';
   }
 
-  /// UI screen abhi nahi (reset link email se khulta hai), service tayyar hai.
+  /// Reset Password screen (reset_password_screen.dart) isay chalati hai.
   Future<void> resetPassword({
     required String token,
     required String newPassword,
@@ -59,10 +72,18 @@ class AuthService {
     );
   }
 
-  /// Splash par: token abhi bhi sahi hai ya nahi
+  /// GET /api/users/me -> user seedha (Postman se confirm, `{user: ...}` nahi)
   Future<UserModel> getMyProfile() async {
-    final json = await ApiClient.get(ApiEndpoints.myProfile) as Map<String, dynamic>;
-    // TODO: Postman mein dekho: response { "user": {...} } hai ya seedha {...}
-    return UserModel.fromJson((json['user'] ?? json) as Map<String, dynamic>);
+    final json = asMap(await ApiClient.get(ApiEndpoints.myProfile));
+    return UserModel.fromJson(json);
+  }
+
+  /// PATCH /api/users/me -> sirf bheje hue fields badalte hain, poora user wapas.
+  /// Misal: {'bio': '...'} ya {'pushPrefs': {...}}
+  Future<UserModel> updateMyProfile(Map<String, dynamic> changes) async {
+    final json = asMap(
+      await ApiClient.patch(ApiEndpoints.myProfile, body: changes),
+    );
+    return UserModel.fromJson(json);
   }
 }

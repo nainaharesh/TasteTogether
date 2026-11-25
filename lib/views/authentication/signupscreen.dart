@@ -1,16 +1,17 @@
-import 'package:material_ui/material_ui.dart';
+// ignore_for_file: deprecated_member_use
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../routes/app_routes.dart';
-import '../../utils/aap_text_styles.dart';
-
-import '../../viewmodels/auth/auth_controller.dart';
+import 'package:tastetogether/viewmodels/auth_controller.dart';
 import '../../widgets/auth/auth_footer_link.dart';
 import '../../widgets/auth/auth_page_layout.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
 
+import 'package:tastetogether/theme/appcolors.dart';
+import 'package:tastetogether/views/authentication/login_view.dart';
 
 /// Screen 3 of 4 - "03 · Sign Up".
 class SignupScreen extends StatelessWidget {
@@ -23,9 +24,26 @@ class SignupScreen extends StatelessWidget {
     return AuthPageLayout(
       children: [
         SizedBox(height: 4.h),
-        Text('Create account', style: AppTextStyles.heading),
+        Text(
+          'Create account',
+          style: GoogleFonts.dmSans(
+            fontSize: 32.sp,
+            height: 40 / 32,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.64.sp,
+            color: AppColors.textPrimary,
+          ),
+        ),
         SizedBox(height: 8.h),
-        Text('Join a community of food lovers.', style: AppTextStyles.subtitle),
+        Text(
+          'Join a community of food lovers.',
+          style: GoogleFonts.dmSans(
+            fontSize: 15.sp,
+            height: 1.5,
+            fontWeight: FontWeight.w400,
+            color: AppColors.textMuted,
+          ),
+        ),
         SizedBox(height: 24.h),
 
         Form(
@@ -84,7 +102,7 @@ class SignupScreen extends StatelessWidget {
 
         SizedBox(height: 22.h),
         Obx(
-              () => CustomButton(
+          () => CustomButton(
             text: 'Create account',
             isLoading: controller.isLoading.value,
             onPressed: controller.signup,
@@ -95,7 +113,7 @@ class SignupScreen extends StatelessWidget {
         AuthFooterLink(
           question: 'Already have an account?',
           linkText: 'Log in',
-          onTap: () => Get.offNamed(AppRoutes.login),
+          onTap: () => Get.off(() => LoginScreen()),
         ),
       ],
     );
