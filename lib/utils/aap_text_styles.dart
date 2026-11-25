@@ -1,4 +1,5 @@
-import 'package:material_ui/material_ui.dart';
+// ignore_for_file: deprecated_member_use
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -51,15 +52,11 @@ class AppTextStyles {
   );
 
   // Text typed by the user
-  static TextStyle get input => GoogleFonts.dmSans(
-    fontSize: 16.sp,
-    color: AppColors.textPrimary,
-  );
+  static TextStyle get input =>
+      GoogleFonts.dmSans(fontSize: 16.sp, color: AppColors.textPrimary);
 
-  static TextStyle get hint => GoogleFonts.dmSans(
-    fontSize: 16.sp,
-    color: AppColors.textSecondary,
-  );
+  static TextStyle get hint =>
+      GoogleFonts.dmSans(fontSize: 16.sp, color: AppColors.textSecondary);
 
   static TextStyle get button => GoogleFonts.dmSans(
     fontSize: 16.sp,
@@ -68,10 +65,8 @@ class AppTextStyles {
   );
 
   // "Already have an account?"
-  static TextStyle get footerText => GoogleFonts.dmSans(
-    fontSize: 15.sp,
-    color: AppColors.textSecondary,
-  );
+  static TextStyle get footerText =>
+      GoogleFonts.dmSans(fontSize: 15.sp, color: AppColors.textSecondary);
 
   // "Log in", "Sign up", "Send again"
   static TextStyle get link => GoogleFonts.dmSans(
@@ -87,10 +82,8 @@ class AppTextStyles {
     color: AppColors.primaryDark,
   );
 
-  static TextStyle get error => GoogleFonts.dmSans(
-    fontSize: 12.sp,
-    color: AppColors.error,
-  );
+  static TextStyle get error =>
+      GoogleFonts.dmSans(fontSize: 12.sp, color: AppColors.error);
 
   // ---------------------------------------------------------------------------
   // NEW: Edit Profile, Settings, Help and support
@@ -120,16 +113,12 @@ class AppTextStyles {
   );
 
   // Small grey text: email under the name, "v1.0.0", "No articles found."
-  static TextStyle get meta => GoogleFonts.dmSans(
-    fontSize: 13.sp,
-    color: AppColors.textSecondary,
-  );
+  static TextStyle get meta =>
+      GoogleFonts.dmSans(fontSize: 13.sp, color: AppColors.textSecondary);
 
   // Tiny grey text: the "66 / 160" bio counter
-  static TextStyle get caption => GoogleFonts.dmSans(
-    fontSize: 12.sp,
-    color: AppColors.textSecondary,
-  );
+  static TextStyle get caption =>
+      GoogleFonts.dmSans(fontSize: 12.sp, color: AppColors.textSecondary);
 
   // FAQ question
   static TextStyle get faqQuestion => GoogleFonts.dmSans(

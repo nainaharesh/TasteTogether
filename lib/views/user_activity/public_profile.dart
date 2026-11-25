@@ -1,12 +1,14 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:tastetogether/viewmodels/public_profile_view_model.dart';
+import 'package:tastetogether/views/main_application/dish_details.dart';
+import 'package:tastetogether/views/user_activity/followers.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tastetogether/models/profile_model.dart';
-import 'package:tastetogether/routes/app_routes.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/viewmodels/user_activity_models/public_profile_viewmodel/public_profile_view_model.dart';
+//import 'package:tastetogether/viewmodels/user_activity_models/public_profile_viewmodel/public_profile_view_model.dart';
 import 'package:tastetogether/widgets/common/action_sheet.dart';
 import 'package:tastetogether/widgets/common/app_back_button.dart';
 import 'package:tastetogether/widgets/profile/follow_button.dart';
@@ -90,8 +92,12 @@ class PublicProfile extends StatelessWidget {
                   ProfileSummary(
                     profile: profile,
                     avatarStyle: 2,
-                    onFollowersTap: () => Get.toNamed(AppRoutes.followers, arguments: FollowersArgs(profile: profile, initialTab: 0)),
-                    onFollowingTap: () => Get.toNamed(AppRoutes.followers, arguments: FollowersArgs(profile: profile, initialTab: 1)),
+                    onFollowersTap: () => Get.to(
+                      () => Followers(profile: profile, initialTab: 0),
+                    ),
+                    onFollowingTap: () => Get.to(
+                      () => Followers(profile: profile, initialTab: 1),
+                    ),
                   ),
                   Obx(
                     () => FollowButton(
@@ -107,7 +113,7 @@ class PublicProfile extends StatelessWidget {
               child: ReviewsSection(
                 label: 'Reviews',
                 reviews: profile.reviews,
-                onTap: (review) => Get.toNamed(AppRoutes.dishDetails, arguments: review.dish),
+                onTap: (review) => Get.to(() => DishDetails(dish: review.dish)),
               ),
             ),
           ],

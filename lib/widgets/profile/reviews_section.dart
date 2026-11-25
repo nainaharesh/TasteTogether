@@ -19,7 +19,7 @@ class ReviewsSection extends StatelessWidget {
   final List<ProfileReview> reviews;
   final ValueChanged<ProfileReview> onTap;
 
-  static const _colors = [
+  static const colors = [
     AppColors.photoPlaceholder2, // #DCC5B3
     AppColors.photoPlaceholder3, // #C9A892
     AppColors.fieldBorder, // #D2B7A3
@@ -81,9 +81,9 @@ class ReviewsSection extends StatelessWidget {
             crossAxisSpacing: 4.w,
             childAspectRatio: 117.67 / 114, // design: tile 117.67 x 114
           ),
-          itemBuilder: (_, i) => _ReviewThumb(
+          itemBuilder: (_, i) => ReviewThumb(
             review: reviews[i],
-            color: _colors[i % _colors.length],
+            color: colors[i % colors.length],
             onTap: () => onTap(reviews[i]),
           ),
         ),
@@ -92,8 +92,8 @@ class ReviewsSection extends StatelessWidget {
   }
 }
 
-class _ReviewThumb extends StatelessWidget {
-  const _ReviewThumb({
+class ReviewThumb extends StatelessWidget {
+  const ReviewThumb({super.key, 
     required this.review,
     required this.color,
     required this.onTap,

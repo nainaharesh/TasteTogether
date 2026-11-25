@@ -53,17 +53,13 @@ class FollowersViewModel extends GetxController {
   final RxString searchQuery = ''.obs;
 
   List<FollowerModel> get filteredFollowers {
-    if (searchQuery.value.isEmpty) {
-      return followers;
-    }
+    final query = searchQuery.value.toLowerCase().trim();
+
+    if (query.isEmpty) return followers.toList();
 
     return followers.where((follower) {
-      return follower.name
-              .toLowerCase()
-              .contains(searchQuery.value.toLowerCase()) ||
-          follower.username
-              .toLowerCase()
-              .contains(searchQuery.value.toLowerCase());
+      return follower.name.toLowerCase().contains(query) ||
+          follower.username.toLowerCase().contains(query);
     }).toList();
   }
 

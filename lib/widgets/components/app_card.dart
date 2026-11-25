@@ -1,8 +1,8 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../theme/appcolors.dart';
-
 
 /// White card with a thin beige border and 16px corners.
 /// Used for the Settings groups and the FAQ list.
@@ -17,11 +17,11 @@ class AppCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.white,
+      color: AppColors.surface,
       clipBehavior: Clip.antiAlias, // clips the rows to the rounded corners
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.r),
-        side: const BorderSide(color: AppColors.tint),
+        side: const BorderSide(color: AppColors.border),
       ),
       child: child,
     );

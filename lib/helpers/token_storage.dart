@@ -1,33 +1,50 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class TokenStorage {
+  static const storage = FlutterSecureStorage();
+  static const tokenKey = 'auth_token';
 
-  static const _storage = FlutterSecureStorage();
-  static const _tokenKey = 'auth_token';
+  /// Memory cache. Secure storage async hota hai, is liye token ek baar
+  /// padh kar yahan rakh lete hain taake baaki jagah sync mil jaye.
+  static String? tokenValue;
 
-  // Memory cache for synchronous token access
-  static String? _token;
+  /// Sync: ApiClient har request mein isi se token leta hai
+  static String? get token => tokenValue;
 
-  // Get the currently stored token from memory
-  static String? get token => _token;
+  /// Login hai ya nahi (main.dart isi se pehli screen chunta hai)
+  static bool get hasToken => tokenValue != null && tokenValue!.isNotEmpty;
 
-  // Check whether a token exists
-  static bool get hasToken => _token != null && _token!.isNotEmpty;
-
-  // Initialize token from secure storage
+  /// main() mein runApp se pehle ek baar.
+  /// Kuch Android phones par keystore kharab ho jata hai (restore / update ke
+  /// baad) aur read exception deta hai. Us par app crash na ho: storage saaf
+  /// karo aur user ko dobara login par bhejo.
   static Future<void> init() async {
-    _token = await _storage.read(key: _tokenKey);
+    try {
+      tokenValue = await storage.read(key: tokenKey);
+    } catch (_) {
+      tokenValue = null;
+      try {
+        await storage.deleteAll();
+      } catch (_) {}
+    }
   }
 
-  // Save token after successful login
+  /// Login / signup success par. Disk write fail bhi ho to session isi run mein
+  /// chalta rahe (token memory mein hai), login rukna nahi chahiye.
   static Future<void> saveToken(String token) async {
-    await _storage.write(key: _tokenKey, value: token);
-    _token = token;
+    tokenValue = token;
+    try {
+      await storage.write(key: tokenKey, value: token);
+    } catch (_) {}
   }
 
-  // Delete token during logout or unauthorized session
+  /// Logout ya 401 par. Memory pehle (sync), taake baaki requests ko turant
+  /// token na mile.
   static Future<void> deleteToken() async {
-    await _storage.delete(key: _tokenKey);
-    _token = null;
+    tokenValue = null;
+    try {
+      await storage.delete(key: tokenKey);
+    } catch (_) {}
   }
 }

@@ -1,11 +1,15 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:tastetogether/viewmodels/restaurant_details_view_model.dart';
+import 'package:tastetogether/views/main_application/all_dishes.dart';
+import 'package:tastetogether/views/main_application/create_review.dart';
+import 'package:tastetogether/views/main_application/dish_details.dart';
+import 'package:tastetogether/views/main_application/all_reviews.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tastetogether/models/resturant_model.dart';
-import 'package:tastetogether/routes/app_routes.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/viewmodels/main_application_models/restaurant_details_viewmodel/restaurant_details_view_model.dart';
+//import 'package:tastetogether/viewmodels/main_application_models/restaurant_details_viewmodel/restaurant_details_view_model.dart';
 import 'package:tastetogether/widgets/common/bottom_action_bar.dart';
 import 'package:tastetogether/widgets/common/hero_sheet.dart';
 import 'package:tastetogether/widgets/common/outlined_wide_button.dart';
@@ -23,7 +27,7 @@ class ResturantDetails extends StatelessWidget {
     RestaurantDetailsViewModel(restaurant),
   );
 
-  static const _dishColors = [
+  static const dishColors = [
     AppColors.photoPlaceholder2, // #DCC5B3
     AppColors.photoPlaceholder3, // #C9A892
     AppColors.fieldBorder, // #D2B7A3
@@ -31,18 +35,18 @@ class ResturantDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final subtitle = restaurant.area.isEmpty
-        ? restaurant.cuisine
-        : '${restaurant.cuisine} · ${restaurant.area}';
-
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SingleChildScrollView(
-        child: Obx(
-          () => HeroSheet(
-            photoLabel: restaurant.name,
+        child: Obx(() {
+          // pehle pichli screen ka data, API aane par poora data
+          final r = controller.restaurant.value;
+          final subtitle = r.area.isEmpty ? r.cuisine : '${r.cuisine} · ${r.area}';
+
+          return HeroSheet(
+            photoLabel: r.name,
             photoPrefix: 'Cover photo',
-            imageUrl: restaurant.imageUrl,
+            imageUrl: r.imageUrl,
             isSaved: controller.isSaved.value,
             onBack: Get.back,
             onSave: controller.toggleSave,
@@ -51,7 +55,7 @@ class ResturantDetails extends StatelessWidget {
               children: [
                 // name, cuisine, address
                 Text(
-                  restaurant.name,
+                  r.name,
                   style: TextStyle(
                     fontSize: 26.sp,
                     height: 32 / 26,
@@ -71,6 +75,7 @@ class ResturantDetails extends StatelessWidget {
                     ),
                   ),
                 ),
+                if (controller.address.isNotEmpty)
                 Padding(
                   padding: EdgeInsets.only(top: 8.h),
                   child: Row(
@@ -104,7 +109,7 @@ class ResturantDetails extends StatelessWidget {
                       spacing: 8.w,
                       children: [
                         Text(
-                          restaurant.rating.toStringAsFixed(1),
+                          r.rating.toStringAsFixed(1),
                           style: TextStyle(
                             fontSize: 28.sp,
                             fontWeight: FontWeight.w700,
@@ -112,10 +117,10 @@ class ResturantDetails extends StatelessWidget {
                             color: AppColors.textPrimary,
                           ),
                         ),
-                        StarRow(rating: restaurant.rating, size: 16),
+                        StarRow(rating: r.rating, size: 16),
                         Flexible(
                           child: Text(
-                            '${restaurant.reviewCount} reviews',
+                            '${r.reviewCount} reviews',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -130,6 +135,7 @@ class ResturantDetails extends StatelessWidget {
                 ),
 
                 // about
+                if (controller.about.isNotEmpty)
                 Padding(
                   padding: EdgeInsets.only(top: 12.h),
                   child: Text(
@@ -143,14 +149,20 @@ class ResturantDetails extends StatelessWidget {
                 ),
 
                 // popular dishes
-                SizedBox(height: 24.h),
-                SectionHeader(
-                  title: 'Popular dishes',
-                  trailingText: 'See all',
-                  onTrailingTap: () => Get.toNamed(AppRoutes.allDishes, arguments: AllDishesArgs(restaurantName: restaurant.name,
-                      dishes: controller.dishes)),
+                Padding(
+                  padding: EdgeInsets.only(top: 24.h),
+                  child: SectionHeader(
+                    title: 'Popular dishes',
+                    trailingText: 'See all',
+                    onTrailingTap: () => Get.to(
+                      () => AllDishes(
+                        restaurantName: r.name,
+                        dishes: controller.dishes,
+                      ),
+                    ),
+                  ),
                 ),
-                SizedBox(height: 8.h),
+                /*SPACER*/
                 // height fixed nahi: tile apne content ke hisaab se barhta hai
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -163,40 +175,50 @@ class ResturantDetails extends StatelessWidget {
                       for (var i = 0; i < controller.dishes.length; i++)
                         DishTile(
                           dish: controller.dishes[i],
-                          placeholderColor: _dishColors[i % _dishColors.length],
-                          onTap: () => Get.toNamed(AppRoutes.dishDetails, arguments: controller.dishes[i]),
+                          placeholderColor: dishColors[i % dishColors.length],
+                          onTap: () => Get.to(
+                            () => DishDetails(dish: controller.dishes[i]),
+                          ),
                         ),
                     ],
                   ),
                 ),
 
                 // reviews
-                SizedBox(height: 24.h),
-                SectionHeader(
-                  title: 'Customer reviews',
-                  trailingText: '${restaurant.reviewCount}',
+                Padding(
+                  padding: EdgeInsets.only(top: 24.h),
+                  child: SectionHeader(
+                    title: 'Customer reviews',
+                    trailingText: '${r.reviewCount}',
+                  ),
                 ),
-                SizedBox(height: 8.h),
-                for (final review in controller.reviews) ...[
-                  ReviewCard(review: review),
-                  SizedBox(height: 12.h),
-                ],
-                SizedBox(height: 4.h),
-                OutlinedWideButton(
-                  label: 'See all ${restaurant.reviewCount} reviews',
-                  onPressed: () => Get.toNamed(AppRoutes.allReviews, arguments: AllReviewsArgs(title: restaurant.name,
-                      reviews: controller.reviews)),
+                /*SPACER*/ for (final review in controller.reviews)
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 12.h),
+                    child: ReviewCard(review: review),
+                  ),
+                Padding(
+                  padding: EdgeInsets.only(top: 4.h),
+                  child: OutlinedWideButton(
+                    label: 'See all ${r.reviewCount} reviews',
+                    onPressed: () => Get.to(
+                      () => AllReviews(
+                        title: r.name,
+                        reviews: controller.reviews,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
-          ),
-        ),
+          );
+        }),
       ),
       bottomNavigationBar: BottomActionBar(
         label: 'Write a Review',
         icon: Icons.edit_outlined,
         onPressed: () =>
-            Get.toNamed(AppRoutes.createReview, arguments: ReviewArgs(restaurantName: restaurant.name)),
+            Get.to(() => CreateReview(restaurantName: controller.restaurant.value.name)),
       ),
     );
   }

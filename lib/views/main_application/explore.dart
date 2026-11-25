@@ -1,18 +1,20 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:tastetogether/viewmodels/main_application_models_explore_viewmodel_explore_view_model.dart';
+import 'package:tastetogether/views/main_application/resturant_details.dart';
+import 'package:tastetogether/views/main_application/search_results.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tastetogether/models/search_filters_model.dart';
-import 'package:tastetogether/routes/app_routes.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/viewmodels/main_application_models/explore_viewmodel/explore_view_model.dart';
+//import 'package:tastetogether/viewmodels/main_application_models/explore_viewmodel/explore_view_model.dart';
 import 'package:tastetogether/widgets/search/filter_sheet.dart';
 import 'package:tastetogether/widgets/common/chip_row.dart';
 import 'package:tastetogether/widgets/explore/custom_serachfield.dart';
 import 'package:tastetogether/widgets/explore/dish_card.dart';
 import 'package:tastetogether/widgets/explore/nearby_tile.dart';
 import 'package:tastetogether/widgets/explore/resturant_card.dart';
-import 'package:tastetogether/widgets/explore/section_textlabels.dart';
+import 'package:tastetogether/widgets/common/section_header.dart';
 
 class Explore extends StatelessWidget {
   Explore({super.key});
@@ -29,7 +31,11 @@ class Explore extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: RefreshIndicator(
+          color: AppColors.primary,
+          onRefresh: controller.fetchExplore,
+          child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.only(left: 4.w, right: 4.w, top: 24.h),
           child: Column(
             spacing: 8.h,
@@ -41,10 +47,7 @@ class Explore extends StatelessWidget {
                   hintText: 'Search restaurants or dishes',
                   onSubmitted: (value) {
                     if (value.trim().isEmpty) return;
-                    Get.toNamed(
-                      AppRoutes.searchResults,
-                      arguments: SearchArgs(query: value.trim()),
-                    );
+                    Get.to(() => SearchResults(query: value.trim()));
                   },
                   prefixIcon: ImageIcon(
                     const AssetImage('assets/icons/searchbar.png'),
@@ -58,10 +61,7 @@ class Explore extends StatelessWidget {
                         const SearchFilters(),
                       );
                       if (filters != null) {
-                        Get.toNamed(
-                          AppRoutes.searchResults,
-                          arguments: SearchArgs(filters: filters),
-                        );
+                        Get.to(() => SearchResults(filters: filters));
                       }
                     },
                     child: Image.asset(
@@ -73,10 +73,22 @@ class Explore extends StatelessWidget {
                 ),
               ),
 
+              // Pehli baar data aane tak
+              Obx(
+                () => controller.isLoading.value && controller.restaurants.isEmpty
+                    ? Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: const LinearProgressIndicator(
+                          color: AppColors.primary,
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+              ),
+
               // Category chips
               Obx(
                 () => ChipRow(
-                  labels: controller.categories,
+                  labels: controller.categories.toList(),
                   selectedIndex: controller.selectedCategory.value,
                   onSelected: controller.selectCategory,
                 ),
@@ -86,11 +98,16 @@ class Explore extends StatelessWidget {
               Column(
                 spacing: 4.h,
                 children: [
-                  SectionTextlabels(
-                    title: 'Popular restaurants',
-                    onSeeAllPressed: () => Get.toNamed(
-                      AppRoutes.searchResults,
-                      arguments: SearchArgs(initialFilter: 2),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 6.h,
+                    ),
+                    child: SectionHeader(
+                      title: 'Popular restaurants',
+                      trailingText: 'See all',
+                      onTrailingTap: () =>
+                          Get.to(() => SearchResults(initialFilter: 2)),
                     ),
                   ),
                   Obx(
@@ -109,9 +126,9 @@ class Explore extends StatelessWidget {
                               child: RestaurantCard(
                                 restaurant: restaurant,
                                 placeholderColor: AppColors.photoPlaceholder2,
-                                onTap: () => Get.toNamed(
-                                  AppRoutes.restaurantDetails,
-                                  arguments: restaurant,
+                                onTap: () => Get.to(
+                                  () =>
+                                      ResturantDetails(restaurant: restaurant),
                                 ),
                               ),
                             ),
@@ -126,11 +143,16 @@ class Explore extends StatelessWidget {
               Column(
                 spacing: 4.h,
                 children: [
-                  SectionTextlabels(
-                    title: 'Trending dishes',
-                    onSeeAllPressed: () => Get.toNamed(
-                      AppRoutes.searchResults,
-                      arguments: SearchArgs(initialFilter: 1),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 6.h,
+                    ),
+                    child: SectionHeader(
+                      title: 'Trending dishes',
+                      trailingText: 'See all',
+                      onTrailingTap: () =>
+                          Get.to(() => SearchResults(initialFilter: 1)),
                     ),
                   ),
                   Obx(
@@ -149,9 +171,12 @@ class Explore extends StatelessWidget {
                               child: DishCard(
                                 dish: dish,
                                 placeholderColor: AppColors.photoPlaceholder2,
-                                onTap: () => Get.toNamed(
-                                  AppRoutes.restaurantDetails,
-                                  arguments: controller.restaurantOfDish(dish),
+                                onTap: () => Get.to(
+                                  () => ResturantDetails(
+                                    restaurant: controller.restaurantOfDish(
+                                      dish,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -166,11 +191,16 @@ class Explore extends StatelessWidget {
               Column(
                 spacing: 4.h,
                 children: [
-                  SectionTextlabels(
-                    title: 'Nearby',
-                    onSeeAllPressed: () => Get.toNamed(
-                      AppRoutes.searchResults,
-                      arguments: SearchArgs(initialFilter: 3),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 6.h,
+                    ),
+                    child: SectionHeader(
+                      title: 'Nearby',
+                      trailingText: 'See all',
+                      onTrailingTap: () =>
+                          Get.to(() => SearchResults(initialFilter: 3)),
                     ),
                   ),
                   Obx(
@@ -183,9 +213,10 @@ class Explore extends StatelessWidget {
                         padding: EdgeInsets.only(bottom: 8.h),
                         child: NearbyTile(
                           restaurant: controller.nearby[i],
-                          onTap: () => Get.toNamed(
-                            AppRoutes.restaurantDetails,
-                            arguments: controller.nearby[i],
+                          onTap: () => Get.to(
+                            () => ResturantDetails(
+                              restaurant: controller.nearby[i],
+                            ),
                           ),
                         ),
                       ),
@@ -195,6 +226,7 @@ class Explore extends StatelessWidget {
               ),
             ],
           ),
+        ),
         ),
       ),
     );

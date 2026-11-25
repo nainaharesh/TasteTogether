@@ -67,12 +67,12 @@ class HeroSheet extends StatelessWidget {
         Positioned(
           top: topInset + 8.h,
           left: 16.w,
-          child: _CircleButton(icon: Icons.arrow_back_rounded, onTap: onBack),
+          child: CircleButton(icon: Icons.arrow_back_rounded, onTap: onBack),
         ),
         Positioned(
           top: topInset + 8.h,
           right: 16.w,
-          child: _CircleButton(
+          child: CircleButton(
             icon: isSaved ? Icons.bookmark : Icons.bookmark_border_rounded,
             onTap: onSave,
           ),
@@ -82,8 +82,8 @@ class HeroSheet extends StatelessWidget {
   }
 }
 
-class _CircleButton extends StatelessWidget {
-  const _CircleButton({required this.icon, required this.onTap});
+class CircleButton extends StatelessWidget {
+  const CircleButton({super.key, required this.icon, required this.onTap});
 
   final IconData icon;
   final VoidCallback onTap;

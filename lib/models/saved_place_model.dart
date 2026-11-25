@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 import 'package:tastetogether/models/dish_model.dart';
 import 'package:tastetogether/models/resturant_model.dart';
 
@@ -8,6 +9,24 @@ class SavedPlace {
 
   final Restaurant? restaurant;
   final Dish? dish;
+
+  /// Saved API ka ek item: { type, savedAt, dish{} | restaurant{} }.
+  /// Samajh na aane wala item null deta hai (list se skip ho jata hai).
+  static SavedPlace? fromJson(Map<String, dynamic> json) {
+    final type = json['type'];
+    final dish = json['dish'];
+    final restaurant = json['restaurant'];
+
+    if (type == 'dish' && dish is Map) {
+      return SavedPlace.dish(Dish.fromJson(dish.cast<String, dynamic>()));
+    }
+    if (type == 'restaurant' && restaurant is Map) {
+      return SavedPlace.restaurant(
+        Restaurant.fromJson(restaurant.cast<String, dynamic>()),
+      );
+    }
+    return null;
+  }
 
   bool get isDish => dish != null;
 
@@ -20,56 +39,10 @@ class SavedPlace {
 
   int get count => isDish ? dish!.ratingCount : restaurant!.reviewCount;
 
-  String get subtitle => '${isDish ? 'Dish' : 'Restaurant'} · $secondary';
+  String get subtitle {
+    final kind = isDish ? 'Dish' : 'Restaurant';
+    return secondary.isEmpty ? kind : '$kind · $secondary';
+  }
 
   String get countLabel => '($count)';
-
-  ////  later on API use here ////
 }
-
-/// Dummy data later remove and we use api ////
-const List<SavedPlace> dummySavedPlaces = [
-  SavedPlace.restaurant(
-    Restaurant(
-      name: 'Olive & Ember',
-      cuisine: 'Mediterranean',
-      area: 'Downtown',
-      rating: 4.6,
-      reviewCount: 248,
-    ),
-  ),
-  SavedPlace.dish(
-    Dish(
-      name: 'Butter Chicken',
-      restaurantName: 'Saffron Table',
-      rating: 4.9,
-      ratingCount: 132,
-    ),
-  ),
-  SavedPlace.restaurant(
-    Restaurant(
-      name: 'Koji Counter',
-      cuisine: 'Japanese',
-      area: 'Midtown',
-      rating: 4.7,
-      reviewCount: 189,
-    ),
-  ),
-  SavedPlace.dish(
-    Dish(
-      name: 'Pistachio Croissant',
-      restaurantName: 'The Daily Crumb',
-      rating: 4.8,
-      ratingCount: 97,
-    ),
-  ),
-  SavedPlace.restaurant(
-    Restaurant(
-      name: 'Smoke & Salt',
-      cuisine: 'Barbecue',
-      area: 'Harbour',
-      rating: 4.6,
-      reviewCount: 203,
-    ),
-  ),
-];

@@ -1,9 +1,9 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:tastetogether/views/main_application/dish_details.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tastetogether/models/dish_model.dart';
-import 'package:tastetogether/routes/app_routes.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/widgets/common/app_back_button.dart';
 import 'package:tastetogether/widgets/common/result_tile.dart';
@@ -19,7 +19,7 @@ class AllDishes extends StatelessWidget {
   final String restaurantName;
   final List<Dish> dishes;
 
-  static const _colors = [
+  static const colors = [
     AppColors.photoPlaceholder2, // #DCC5B3
     AppColors.photoPlaceholder3, // #C9A892
     AppColors.fieldBorder, // #D2B7A3
@@ -63,8 +63,8 @@ class AllDishes extends StatelessWidget {
               subtitle: dish.restaurantName,
               rating: dish.rating,
               countLabel: '(${dish.ratingCount})',
-              placeholderColor: _colors[(i - 1) % _colors.length],
-              onTap: () => Get.toNamed(AppRoutes.dishDetails, arguments: dish),
+              placeholderColor: colors[(i - 1) % colors.length],
+              onTap: () => Get.to(() => DishDetails(dish: dish)),
             ),
           );
         },

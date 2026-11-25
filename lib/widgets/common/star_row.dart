@@ -18,7 +18,9 @@ class StarRow extends StatelessWidget {
       children: [
         for (var i = 1; i <= 5; i++)
           Icon(
-            rating >= i - 0.25 ? Icons.star_rounded : Icons.star_outline_rounded,
+            rating >= i - 0.25
+                ? Icons.star_rounded
+                : Icons.star_outline_rounded,
             size: size.r,
             color: rating >= i - 0.25
                 ? AppColors.primary

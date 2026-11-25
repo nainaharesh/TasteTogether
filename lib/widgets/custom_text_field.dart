@@ -1,8 +1,8 @@
-
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/utils/aap_text_styles.dart';
 
 /// Label + rounded input with an optional left icon, as in the design.
 /// Set isPassword: true to get the eye icon that shows / hides the text.
@@ -38,15 +38,15 @@ class CustomTextField extends StatefulWidget {
   final int? maxLength;
 
   @override
-  State<CustomTextField> createState() => _CustomTextFieldState();
+  State<CustomTextField> createState() => CustomTextFieldState();
 }
 
-class _CustomTextFieldState extends State<CustomTextField> {
+class CustomTextFieldState extends State<CustomTextField> {
   // Only this field cares whether its text is hidden, so a plain bool +
   // setState is enough (no GetX variable needed).
-  bool _obscure = true;
+  bool obscure = true;
 
-  OutlineInputBorder _border(Color color, double width) {
+  OutlineInputBorder border(Color color, double width) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(14.r),
       borderSide: BorderSide(color: color, width: width),
@@ -61,7 +61,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(widget.label, style: AppTextStyles.label),
+        Text(
+          widget.label,
+          style: GoogleFonts.dmSans(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textPrimary,
+          ),
+        ),
         SizedBox(height: 6.h),
         TextFormField(
           controller: widget.controller,
@@ -70,7 +77,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           textInputAction: widget.textInputAction,
           textCapitalization: widget.textCapitalization,
           onFieldSubmitted: widget.onFieldSubmitted,
-          obscureText: widget.isPassword && _obscure,
+          obscureText: widget.isPassword && obscure,
           // minLines = maxLines gives a fixed-height box
           minLines: widget.maxLines,
           maxLines: widget.maxLines,
@@ -80,15 +87,27 @@ class _CustomTextFieldState extends State<CustomTextField> {
           cursorColor: AppColors.primary,
           // The Bio text is slightly smaller (15 / 22) in the design.
           style: isMultiline
-              ? AppTextStyles.input.copyWith(fontSize: 15.sp, height: 22 / 15)
-              : AppTextStyles.input,
+              ? GoogleFonts.dmSans(
+                  fontSize: 16.sp,
+                  color: AppColors.textPrimary,
+                ).copyWith(fontSize: 15.sp, height: 22 / 15)
+              : GoogleFonts.dmSans(
+                  fontSize: 16.sp,
+                  color: AppColors.textPrimary,
+                ),
           decoration: InputDecoration(
             hintText: widget.hint,
             hintStyle: isMultiline
-                ? AppTextStyles.hint.copyWith(fontSize: 15.sp)
-                : AppTextStyles.hint,
+                ? GoogleFonts.dmSans(
+                    fontSize: 16.sp,
+                    color: AppColors.textMuted,
+                  ).copyWith(fontSize: 15.sp)
+                : GoogleFonts.dmSans(
+                    fontSize: 16.sp,
+                    color: AppColors.textMuted,
+                  ),
             filled: true,
-            fillColor: AppColors.white,
+            fillColor: AppColors.surface,
             // Hides Flutter's own "0/160" counter (the screen draws its own).
             counterText: '',
             contentPadding: isMultiline
@@ -105,29 +124,32 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     child: Icon(
                       widget.prefixIcon,
                       size: 20.sp,
-                      color: AppColors.textSecondary,
+                      color: AppColors.textMuted,
                     ),
                   )
                 : null,
             prefixIconConstraints: const BoxConstraints(),
             suffixIcon: widget.isPassword
                 ? IconButton(
-                    onPressed: () => setState(() => _obscure = !_obscure),
+                    onPressed: () => setState(() => obscure = !obscure),
                     icon: Icon(
-                      _obscure
+                      obscure
                           ? Icons.visibility_outlined
                           : Icons.visibility_off_outlined,
                       size: 20.sp,
-                      color: AppColors.textSecondary,
+                      color: AppColors.textMuted,
                     ),
                   )
                 : null,
-            errorStyle: AppTextStyles.error,
+            errorStyle: GoogleFonts.dmSans(
+              fontSize: 12.sp,
+              color: AppColors.primaryDeep,
+            ),
             errorMaxLines: 2,
-            enabledBorder: _border(AppColors.fieldBorder, 1),
-            focusedBorder: _border(AppColors.primary, 2),
-            errorBorder: _border(AppColors.error, 1),
-            focusedErrorBorder: _border(AppColors.error, 2),
+            enabledBorder: border(AppColors.fieldBorder, 1),
+            focusedBorder: border(AppColors.primary, 2),
+            errorBorder: border(AppColors.primaryDeep, 1),
+            focusedErrorBorder: border(AppColors.primaryDeep, 2),
           ),
         ),
       ],

@@ -1,14 +1,15 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:tastetogether/viewmodels/main_application_models_home_feed_viewmodel_bottomnavbar_view_model.dart';
+import 'package:tastetogether/viewmodels/notification_viewmodel.dart';
+import 'package:tastetogether/views/user_activity/public_profile.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tastetogether/models/notification_model.dart';
 import 'package:tastetogether/models/profile_model.dart';
-import 'package:tastetogether/routes/app_routes.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/viewmodels/main_application_models/home_feed_viewmodel/bottomnavbar_view_model.dart';
-import 'package:tastetogether/viewmodels/user_activity_models/notifications_viewmodel/notifications_view_model.dart';
 import 'package:tastetogether/widgets/common/app_back_button.dart';
+
 import 'package:tastetogether/widgets/common/empty_state.dart';
 import 'package:tastetogether/widgets/notifications/notification_tile.dart';
 
@@ -22,7 +23,7 @@ class Notifications extends StatelessWidget {
       ? Get.find<NotificationsViewModel>()
       : Get.put(NotificationsViewModel());
 
-  static const _thumbColors = [
+  static const thumbColors = [
     AppColors.photoPlaceholder2, // #DCC5B3
     AppColors.fieldBorder, // #D2B7A3
     AppColors.photoPlaceholder3, // #C9A892
@@ -71,20 +72,20 @@ class Notifications extends StatelessWidget {
 
           Widget tile(int i, List<AppNotification> items) => NotificationTile(
             notification: items[i],
-            thumbnailColor: _thumbColors[i % _thumbColors.length],
+            thumbnailColor: thumbColors[i % thumbColors.length],
             // TODO: like/comment par us review ki screen, follow par profile
             onTap: () =>
-                Get.toNamed(AppRoutes.publicProfile, arguments: dummyPublicProfile),
+                Get.to(() => PublicProfile(profile: dummyPublicProfile)),
           );
 
           return ListView(
             children: [
               if (unread.isNotEmpty) ...[
-                const _SectionLabel('New'),
+                const NotificationSectionLabel('New'),
                 for (var i = 0; i < unread.length; i++) tile(i, unread),
               ],
               if (earlier.isNotEmpty) ...[
-                _SectionLabel('Earlier', topGap: unread.isNotEmpty),
+                NotificationSectionLabel('Earlier', topGap: unread.isNotEmpty),
                 for (var i = 0; i < earlier.length; i++) tile(i, earlier),
               ],
             ],
@@ -95,8 +96,8 @@ class Notifications extends StatelessWidget {
   }
 }
 
-class _SectionLabel extends StatelessWidget {
-  const _SectionLabel(this.label, {this.topGap = false});
+class NotificationSectionLabel extends StatelessWidget {
+  const NotificationSectionLabel(this.label, {super.key, this.topGap = false});
 
   final String label;
   final bool topGap;

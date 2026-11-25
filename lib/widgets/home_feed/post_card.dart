@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tastetogether/theme/appcolors.dart';
+import 'package:tastetogether/utils/app_assets.dart';
 import 'package:tastetogether/widgets/home_feed/photo_placeholder.dart';
 
 class PostCard extends StatelessWidget {
@@ -223,14 +224,23 @@ class PostCard extends StatelessWidget {
             child: Row(
               children: [
                 ActionButton(
-                  icon: isLiked ? Icons.favorite : Icons.favorite_border,
-                  color: AppColors.primary,
+                  // liked = asset (likes.png). Unliked outline heart ka asset nahi hai.
+                  icon: isLiked
+                      ? Image.asset(AppAssets.likes, width: 22.r, height: 22.r)
+                      : Icon(
+                          Icons.favorite_border,
+                          size: 22.r,
+                          color: AppColors.primary,
+                        ),
                   count: likes,
                   onTap: onLike,
                 ),
                 ActionButton(
-                  icon: Icons.chat_bubble_outline,
-                  color: AppColors.textPrimary,
+                  icon: Image.asset(
+                    AppAssets.comments,
+                    width: 22.r,
+                    height: 22.r,
+                  ),
                   count: comments,
                   onTap: onComment,
                 ),
@@ -242,11 +252,18 @@ class PostCard extends StatelessWidget {
                     width: 44.r,
                     height: 44.r,
                   ),
-                  icon: Icon(
-                    isSaved ? Icons.bookmark : Icons.bookmark_border,
-                    size: 22.r,
-                    color: AppColors.textPrimary,
-                  ),
+                  // not saved = asset (flag.png). Filled bookmark ka asset nahi hai.
+                  icon: isSaved
+                      ? Icon(
+                          Icons.bookmark,
+                          size: 22.r,
+                          color: AppColors.textPrimary,
+                        )
+                      : Image.asset(
+                          AppAssets.bookmark,
+                          width: 22.r,
+                          height: 22.r,
+                        ),
                 ),
               ],
             ),
@@ -296,13 +313,11 @@ class ActionButton extends StatelessWidget {
   const ActionButton({
     super.key,
     required this.icon,
-    required this.color,
     required this.count,
     this.onTap,
   });
 
-  final IconData icon;
-  final Color color;
+  final Widget icon;
   final int count;
   final VoidCallback? onTap;
 
@@ -318,7 +333,7 @@ class ActionButton extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           spacing: 6.w,
           children: [
-            Icon(icon, size: 22.r, color: color),
+            icon,
             Text(
               '$count',
               style: TextStyle(

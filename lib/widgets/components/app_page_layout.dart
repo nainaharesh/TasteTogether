@@ -1,10 +1,10 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../theme/appcolors.dart';
-import '../../utils/aap_text_styles.dart';
-
 
 /// Shared frame of Edit Profile, Settings and Help and support:
 /// back arrow + page title at the top, 16px side padding, and scrolling.
@@ -51,7 +51,15 @@ class AppPageLayout extends StatelessWidget {
                             ),
                           ),
                           SizedBox(width: 4.w),
-                          Text(title, style: AppTextStyles.pageTitle),
+                          Text(
+                            title,
+                            style: GoogleFonts.dmSans(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: -0.2.sp,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
                         ],
                       ),
                     ),

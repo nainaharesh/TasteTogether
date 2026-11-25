@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 /// Followers / Following list ka aik banda
 class Person {
   final String id;

@@ -1,12 +1,17 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:tastetogether/viewmodels/main_application_models_home_feed_viewmodel_bottomnavbar_view_model.dart';
+import 'package:tastetogether/viewmodels/profile_view_model.dart';
+import 'package:tastetogether/viewmodels/saved_view_model.dart';
+import 'package:tastetogether/views/main_application/resturant_details.dart';
+import 'package:tastetogether/views/profile_screen/settings_screen.dart';
+import 'package:tastetogether/views/profile_screen/edit_profile_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tastetogether/routes/app_routes.dart';
+//import 'package:tastetogether/viewmodels/user_activity_models/saved_viewmodel/saved_view_model.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/viewmodels/main_application_models/home_feed_viewmodel/bottomnavbar_view_model.dart';
-import 'package:tastetogether/viewmodels/user_activity_models/profile_viewmodel/profile_view_model.dart';
-import 'package:tastetogether/viewmodels/user_activity_models/saved_viewmodel/saved_view_model.dart';
+//import 'package:tastetogether/viewmodels/main_application_models/home_feed_viewmodel/bottomnavbar_view_model.dart';
+//import 'package:tastetogether/viewmodels/user_activity_models/profile_viewmodel/profile_view_model.dart';
 import 'package:tastetogether/widgets/common/nav_card.dart';
 import 'package:tastetogether/widgets/common/outlined_wide_button.dart';
 import 'package:tastetogether/widgets/profile/profile_summary.dart';
@@ -38,8 +43,7 @@ class Profile extends StatelessWidget {
         actions: [
           IconButton(
             tooltip: 'Settings',
-            // TODO: Settings screen (screen 12)
-            onPressed: () {},
+            onPressed: () => Get.to(() => SettingsScreen()),
             icon: Icon(Icons.settings_outlined, size: 24.r),
           ),
         ],
@@ -55,10 +59,9 @@ class Profile extends StatelessWidget {
                   ProfileSummary(profile: profile),
                   Padding(
                     padding: EdgeInsets.only(top: 4.h), // 12 + 4 = 16
-                    // TODO: Edit Profile screen (screen 10)
                     child: OutlinedWideButton(
                       label: 'Edit Profile',
-                      onPressed: () {},
+                      onPressed: () => Get.to(() => EditProfileScreen()),
                     ),
                   ),
                   Obx(
@@ -80,7 +83,9 @@ class Profile extends StatelessWidget {
               child: ReviewsSection(
                 label: 'My reviews',
                 reviews: profile.reviews,
-                onTap: (review) => Get.toNamed(AppRoutes.restaurantDetails, arguments: review.restaurant),
+                onTap: (review) => Get.to(
+                  () => ResturantDetails(restaurant: review.restaurant),
+                ),
               ),
             ),
           ],

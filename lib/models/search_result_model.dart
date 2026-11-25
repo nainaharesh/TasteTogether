@@ -1,75 +1,65 @@
+// ignore_for_file: deprecated_member_use
+import 'package:tastetogether/models/dish_model.dart';
+import 'package:tastetogether/models/resturant_model.dart';
+
 enum SearchResultType { dish, restaurant }
 
+/// Search list ka ek item. Asli dish / restaurant saath rehta hai,
+/// taake tap par uski id se details khul sakein.
 class SearchResult {
   final SearchResultType type;
   final String name;
 
   /// dish ho to restaurant ka naam, restaurant ho to cuisine
   final String secondary;
-  final double distanceKm;
+
+  /// API distance nahi deti (user ki location abhi bheji nahi jati), isliye null
+  final double? distanceKm;
   final double rating;
 
   /// dish: ratings ki tadad, restaurant: reviews ki tadad
   final int count;
 
-  const SearchResult({
+  final Restaurant? restaurant;
+  final Dish? dish;
+
+  const SearchResult._({
     required this.type,
     required this.name,
     required this.secondary,
-    required this.distanceKm,
     required this.rating,
     required this.count,
+    this.distanceKm,
+    this.restaurant,
+    this.dish,
   });
+
+  factory SearchResult.fromRestaurant(Restaurant r) => SearchResult._(
+    type: SearchResultType.restaurant,
+    name: r.name,
+    secondary: r.cuisine,
+    rating: r.rating,
+    count: r.reviewCount,
+    distanceKm: r.distanceKm,
+    restaurant: r,
+  );
+
+  factory SearchResult.fromDish(Dish d) => SearchResult._(
+    type: SearchResultType.dish,
+    name: d.name,
+    secondary: d.restaurantName,
+    rating: d.rating,
+    count: d.ratingCount,
+    dish: d,
+  );
 
   bool get isDish => type == SearchResultType.dish;
 
-  String get subtitle => '$secondary · ${distanceKm.toStringAsFixed(1)} km';
+  String get subtitle {
+    final distance = distanceKm;
+    if (distance == null) return secondary;
+    return '$secondary · ${distance.toStringAsFixed(1)} km';
+  }
 
   String get countLabel => isDish ? '($count)' : '($count reviews)';
-
-  ////  later on API use here ////
 }
-
-/// Dummy data later remove and we use api ////
-const List<SearchResult> dummySearchResults = [
-  SearchResult(
-    type: SearchResultType.dish,
-    name: 'Miso Ramen',
-    secondary: 'Koji Counter',
-    distanceKm: 0.4,
-    rating: 4.7,
-    count: 96,
-  ),
-  SearchResult(
-    type: SearchResultType.restaurant,
-    name: 'Koji Counter',
-    secondary: 'Japanese',
-    distanceKm: 0.4,
-    rating: 4.7,
-    count: 189,
-  ),
-  SearchResult(
-    type: SearchResultType.dish,
-    name: 'Tonkotsu Ramen',
-    secondary: 'Hana Noodle Bar',
-    distanceKm: 1.8,
-    rating: 4.5,
-    count: 61,
-  ),
-  SearchResult(
-    type: SearchResultType.restaurant,
-    name: 'Hana Noodle Bar',
-    secondary: 'Japanese',
-    distanceKm: 1.8,
-    rating: 4.5,
-    count: 142,
-  ),
-  SearchResult(
-    type: SearchResultType.dish,
-    name: 'Kimchi Ramen',
-    secondary: 'Seoul Street',
-    distanceKm: 2.3,
-    rating: 4.4,
-    count: 38,
-  ),
-];

@@ -1,3 +1,7 @@
+// ignore_for_file: deprecated_member_use
+import 'package:tastetogether/utils/helpers.dart';
+import 'package:tastetogether/widgets/common/user_avatar.dart';
+
 /// Create Review screen se jo data API ko jayega
 class NewReview {
   final String restaurantName;
@@ -39,6 +43,10 @@ class Review {
   /// photo ho to uska label (abhi placeholder), null = photo nahi
   final String? photoLabel;
 
+  // API se aane wali extra cheezein
+  final String? avatarColor; // "#C96E5E", null ho to avatarStyle chalta hai
+  final String? photoUrl;
+
   const Review({
     required this.id,
     required this.username,
@@ -48,45 +56,29 @@ class Review {
     required this.text,
     this.avatarStyle = 0,
     this.photoLabel,
+    this.avatarColor,
+    this.photoUrl,
   });
 
-  ////  later on API use here ////
-  // factory Review.fromJson(Map<String, dynamic> json) { ... }
-}
+  /// Restaurant reviews API ka ek review:
+  /// { id, rating, text, photoUrl, createdAt, author{fullName, username, avatarColor}, ... }
+  factory Review.fromJson(Map<String, dynamic> json) {
+    final author = (json['author'] as Map?)?.cast<String, dynamic>() ?? {};
+    final fullName = (author['fullName'] ?? '') as String;
+    final username = (author['username'] ?? '') as String;
 
-/// Dummy data later remove and we use api ////
-const List<Review> dummyRestaurantReviews = [
-  Review(
-    id: 'r1',
-    username: 'sofia.bites',
-    initials: 'SM',
-    date: '12 Oct 2026',
-    rating: 5,
-    text:
-        'Went on a Tuesday and it was lively without being packed. The lamb kofta and charred broccolini were the standouts, and the service was warm and unhurried.',
-  ),
-  Review(
-    id: 'r2',
-    username: 'lucas.m',
-    initials: 'LM',
-    date: '3 Oct 2026',
-    rating: 4,
-    avatarStyle: 1,
-    text:
-        'Great mezze platter. The smoked aubergine dip is the one to get. Dessert was a little sweet for my taste.',
-    photoLabel: 'Mezze platter',
-  ),
-  Review(
-    id: 'r3',
-    username: 'hira.cooks',
-    initials: 'HK',
-    date: '28 Sep 2026',
-    rating: 5,
-    avatarStyle: 2,
-    text:
-        'Booked for a birthday and they brought out a little pistachio cake without being asked. Lovely touch.',
-  ),
-];
+    return Review(
+      id: json['id'].toString(),
+      username: username,
+      initials: UserAvatar.initialsOf(fullName.isNotEmpty ? fullName : username),
+      date: formatDate(json['createdAt'] as String?),
+      rating: ((json['rating'] ?? 0) as num).toInt(),
+      text: (json['text'] ?? '') as String,
+      avatarColor: author['avatarColor'] as String?,
+      photoUrl: json['photoUrl'] as String?,
+    );
+  }
+}
 
 const List<Review> dummyDishReviews = [
   Review(
@@ -96,8 +88,7 @@ const List<Review> dummyDishReviews = [
     date: '9 Nov 2026',
     rating: 5,
     avatarStyle: 2,
-    text:
-        'Rich, savoury broth with a proper hit of corn butter. The noodles had real bite.',
+    text: 'Rich, savoury broth with a proper hit of corn butter. The noodles had real bite.',
   ),
   Review(
     id: 'd2',
@@ -105,8 +96,7 @@ const List<Review> dummyDishReviews = [
     initials: 'PN',
     date: '2 Nov 2026',
     rating: 4,
-    text:
-        "Great depth in the miso. I'd ask for the egg extra soft next time.",
+    text: "Great depth in the miso. I'd ask for the egg extra soft next time.",
   ),
   Review(
     id: 'd3',

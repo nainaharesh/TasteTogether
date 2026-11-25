@@ -1,14 +1,14 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:tastetogether/viewmodels/search_results_view_model.dart';
+import 'package:tastetogether/views/main_application/resturant_details.dart';
+import 'package:tastetogether/views/main_application/dish_details.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tastetogether/models/dish_model.dart';
-import 'package:tastetogether/models/resturant_model.dart';
 import 'package:tastetogether/models/search_result_model.dart';
 import 'package:tastetogether/models/search_filters_model.dart';
-import 'package:tastetogether/routes/app_routes.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/viewmodels/main_application_models/search_results_viewmodel/search_results_view_model.dart';
+//import 'package:tastetogether/viewmodels/main_application_models/search_results_viewmodel/search_results_view_model.dart';
 import 'package:tastetogether/widgets/common/chip_row.dart';
 import 'package:tastetogether/widgets/common/result_tile.dart';
 import 'package:tastetogether/widgets/search/filter_sheet.dart';
@@ -38,31 +38,20 @@ class SearchResults extends StatelessWidget {
     ),
   );
 
-  static const _colors = [
+  static const colors = [
     AppColors.fieldBorder, // #D2B7A3
     AppColors.photoPlaceholder3, // #C9A892
     AppColors.photoPlaceholder2, // #DCC5B3
     AppColors.photoPlaceholder1, // #E2CDBD
   ];
 
-  void _open(SearchResult r) {
-    if (r.isDish) {
-      // TODO: API aane par dish id se details fetch hongi
-      Get.toNamed(AppRoutes.dishDetails, arguments: Dish(
-            name: r.name,
-            restaurantName: r.secondary,
-            rating: r.rating,
-            ratingCount: r.count,
-          ));
-    } else {
-      Get.toNamed(AppRoutes.restaurantDetails, arguments: Restaurant(
-            name: r.name,
-            cuisine: r.secondary,
-            area: '',
-            rating: r.rating,
-            reviewCount: r.count,
-            distanceKm: r.distanceKm,
-          ));
+  void open(SearchResult r) {
+    final dish = r.dish;
+    final restaurant = r.restaurant;
+    if (dish != null) {
+      Get.to(() => DishDetails(dish: dish));
+    } else if (restaurant != null) {
+      Get.to(() => ResturantDetails(restaurant: restaurant));
     }
   }
 
@@ -152,6 +141,11 @@ class SearchResults extends StatelessWidget {
             Expanded(
               child: Obx(() {
                 final list = controller.filtered;
+                if (list.isEmpty && controller.isLoading.value) {
+                  return const Center(
+                    child: CircularProgressIndicator(color: AppColors.primary),
+                  );
+                }
                 if (list.isEmpty) {
                   return Center(
                     child: Text(
@@ -173,8 +167,8 @@ class SearchResults extends StatelessWidget {
                     subtitle: list[i].subtitle,
                     rating: list[i].rating,
                     countLabel: list[i].countLabel,
-                    placeholderColor: _colors[i % _colors.length],
-                    onTap: () => _open(list[i]),
+                    placeholderColor: colors[i % colors.length],
+                    onTap: () => open(list[i]),
                   ),
                 );
               }),

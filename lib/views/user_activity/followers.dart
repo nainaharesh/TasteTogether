@@ -1,11 +1,14 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:tastetogether/models/profile_model.dart';
+import 'package:tastetogether/viewmodels/followers.dart';
+
+import 'package:tastetogether/views/user_activity/public_profile.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tastetogether/models/profile_model.dart';
-import 'package:tastetogether/routes/app_routes.dart';
+
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/viewmodels/user_activity_models/followers_viewmodel/followers_view_model.dart';
+
 import 'package:tastetogether/widgets/common/app_back_button.dart';
 import 'package:tastetogether/widgets/common/empty_state.dart';
 import 'package:tastetogether/widgets/explore/custom_serachfield.dart';
@@ -87,7 +90,7 @@ class Followers extends StatelessWidget {
                   person: list[i],
                   // TODO: us banday ka profile API se (username/id se)
                   onTap: () =>
-                      Get.toNamed(AppRoutes.publicProfile, arguments: dummyPublicProfile),
+                      Get.to(() => PublicProfile(profile: dummyPublicProfile)),
                   onToggleFollow: () => controller.toggleFollow(list[i]),
                 ),
               );

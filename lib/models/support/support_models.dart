@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 /// One question + answer in the "Frequently asked" list.
 /// The texts currently come from the design (see SupportController).
 class FaqModel {
@@ -21,7 +22,7 @@ class SupportRequestModel {
 
   const SupportRequestModel({required this.message});
 
-// Map<String, dynamic> toJson() {
-//   // TODO(backend): map the real keys here
-// }
+  // Map<String, dynamic> toJson() {
+  //   // TODO(backend): map the real keys here
+  // }
 }
