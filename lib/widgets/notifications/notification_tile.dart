@@ -1,8 +1,10 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tastetogether/models/notification_model.dart';
+//import 'package:tastetogether/models/notification_model.dart';
+import 'package:tastetogether/models/user_activity/notification_model.dart';
 import 'package:tastetogether/theme/appcolors.dart';
+
 import 'package:tastetogether/widgets/common/user_avatar.dart';
 
 /// Notifications ki aik row: avatar + "**username** message" + time (+ unread dot) + thumbnail

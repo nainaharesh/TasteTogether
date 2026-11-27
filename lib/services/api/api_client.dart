@@ -1,47 +1,75 @@
-// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:tastetogether/services/api/api_endpoints.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:tastetogether/services/api/api_endpoints.dart';
 import 'package:tastetogether/services/api/api_exception.dart';
 import 'package:tastetogether/services/api/api_headers.dart';
-import 'package:tastetogether/services/token_storage.dart';
-
-/// 4 methods of http e.g. get, post, patch, delete.
-/// Token, headers, timeout and errors handle here
+import 'package:tastetogether/services/api/token_storage.dart';
 
 class ApiClient {
-  // Vercel ka pehla (cold start) response slow ho sakta hai, is liye 30s
-  static const requestTimeout = Duration(seconds: 30);
+  static const Duration requestTimeout = Duration(seconds: 30);
 
-  /// Token expire / galat ho (401) to ye chalta hai.
-  /// AuthController isay set karta hai: token hata kar Welcome par bhejta hai.
+  // Called when an authenticated request receives 401.
   static void Function()? onUnauthorized;
 
+  // GET Request
   static Future<dynamic> get(
     String path, {
     Map<String, String>? query,
     bool auth = true,
-  }) => sendRequest('GET', path, query: query, auth: auth);
+  }) {
+    return sendRequest(
+      'GET',
+      path,
+      query: query,
+      auth: auth,
+    );
+  }
 
+  // POST Request
   static Future<dynamic> post(
     String path, {
     Map<String, dynamic>? body,
     bool auth = true,
-  }) => sendRequest('POST', path, body: body, auth: auth);
+  }) {
+    return sendRequest(
+      'POST',
+      path,
+      body: body,
+      auth: auth,
+    );
+  }
 
+  // PATCH Request
   static Future<dynamic> patch(
     String path, {
     Map<String, dynamic>? body,
     bool auth = true,
-  }) => sendRequest('PATCH', path, body: body, auth: auth);
+  }) {
+    return sendRequest(
+      'PATCH',
+      path,
+      body: body,
+      auth: auth,
+    );
+  }
 
-  static Future<dynamic> delete(String path, {bool auth = true}) =>
-      sendRequest('DELETE', path, auth: auth);
+  // DELETE Request
+  static Future<dynamic> delete(
+    String path, {
+    bool auth = true,
+  }) {
+    return sendRequest(
+      'DELETE',
+      path,
+      auth: auth,
+    );
+  }
 
-  // ---------------------------------------------------------------------------
-
+  // Main request handler
   static Future<dynamic> sendRequest(
     String method,
     String path, {
@@ -49,48 +77,77 @@ class ApiClient {
     Map<String, dynamic>? body,
     required bool auth,
   }) async {
-    final uri = Uri.parse('${ApiEndpoints.baseUrl}$path')
-        .replace(queryParameters: query);
+    final uri = Uri.parse(
+      '${ApiEndpoints.baseUrl}$path',
+    ).replace(queryParameters: query);
+
+    final headers = ApiHeaders.headerWithAndContentTypeJson(
+      includeAuth: auth,
+      token: auth ? TokenStorage.token : null,
+    );
 
     final request = http.Request(method, uri)
-      ..headers.addAll(
-        ApiHeaders.build(token: auth ? TokenStorage.token : null),
-      );
-    if (body != null) request.body = jsonEncode(body);
+      ..headers.addAll(headers);
+
+    if (body != null) {
+      request.body = jsonEncode(body);
+    }
 
     try {
-      final streamed = await request.send().timeout(requestTimeout);
-      final response = await http.Response.fromStream(streamed);
-      return handle(response, auth: auth);
+      final streamedResponse = await request
+          .send()
+          .timeout(requestTimeout);
+
+      final response = await http.Response
+          .fromStream(streamedResponse)
+          .timeout(requestTimeout);
+
+      return handleResponse(response, auth: auth);
     } on TimeoutException {
       throw ApiException(
-        'Server jawab nahi de raha. Dobara try karein.',
+        'Server response time out. Please try again.',
         isNetworkError: true,
       );
     } on http.ClientException {
       throw ApiException(
-        'Internet nahi hai. Connection check karein.',
+        'Internet connection error. Please check your connection.',
         isNetworkError: true,
       );
     }
   }
 
-  static dynamic handle(http.Response response, {required bool auth}) {
-    final code = response.statusCode;
-    // bodyBytes + utf8: Urdu / special characters kabhi kharab na hon
-    final text = utf8.decode(response.bodyBytes, allowMalformed: true);
-    final data = text.isEmpty ? null : decode(text);
+  // Response handling
+  static dynamic handleResponse(
+    http.Response response, {
+    required bool auth,
+  }) {
+    final statusCode = response.statusCode;
 
-    if (code >= 200 && code < 300) return data;
+    final responseBody = utf8.decode(
+      response.bodyBytes,
+      allowMalformed: true,
+    );
 
-    // Login / signup (auth: false) par 401 ka matlab galat password hai,
-    // "session khatam" nahi. Is liye callback sirf auth wali requests par.
-    if (code == 401 && auth) onUnauthorized?.call();
+    final data = responseBody.isEmpty
+        ? null
+        : decodeResponse(responseBody);
 
-    throw ApiException(errorMessage(data, code), statusCode: code);
+    if (statusCode >= 200 && statusCode < 300) {
+      return data;
+    }
+
+    if (statusCode == 401 && auth) {
+      onUnauthorized?.call();
+    }
+
+    throw ApiException(
+      errorMessage(data, statusCode),
+      statusCode: statusCode,
+    );
   }
 
-  static dynamic decode(String body) {
+  // JSON decoding
+  static dynamic decodeResponse(String body) {
     try {
       return jsonDecode(body);
     } catch (_) {
@@ -98,36 +155,58 @@ class ApiClient {
     }
   }
 
-  /// Server ka message pehle (error / message / errors), warna status code se.
-  static String errorMessage(dynamic data, int code) {
-    final fromServer = extractMessage(data);
-    if (fromServer != null && fromServer.trim().isNotEmpty) return fromServer;
+  // Extract error message
+  static String errorMessage(dynamic data, int statusCode) {
+    final message = extractMessage(data);
 
-    if (code == 400 || code == 422) return 'Di gayi maloomat check karein.';
-    if (code == 401) return 'Email ya password galat hai.';
-    if (code == 403) return 'Aapko is ki ijazat nahi.';
-    if (code == 404) return 'Ye cheez nahi mili.';
-    if (code == 409) return 'Ye pehle se maujood hai.';
-    if (code == 429) return 'Bohat zyada koshishein. Thori dair baad try karein.';
-    if (code >= 500) return 'Server mein masla hai. Thori dair baad try karein.';
-    return 'Kuch galat ho gaya ($code). Dobara try karein.';
+    if (message != null && message.isNotEmpty) {
+      return message;
+    }
+
+    switch (statusCode) {
+      case 400:
+        return 'Invalid request. Please check your input.';
+      case 401:
+        return 'Unauthorized. Please login again.';
+      case 403:
+        return 'You do not have permission to perform this action.';
+      case 404:
+        return 'Requested resource not found.';
+      case 422:
+        return 'Validation failed. Please check your input.';
+      case 500:
+      case 502:
+      case 503:
+        return 'Server error. Please try again later.';
+      default:
+        return 'Something went wrong. Please try again.';
+    }
   }
 
-  /// Backend kabhi {error: "..."}, kabhi {message: "..."}, kabhi list / map
-  /// bhejta hai. Sab mein se pehla samajh aane wala text nikalta hai.
+  // Extract message from API response
   static String? extractMessage(dynamic data) {
-    if (data == null) return null;
-    if (data is String) return data;
-    if (data is List) {
-      final parts = data.map(extractMessage).whereType<String>().toList();
-      return parts.isEmpty ? null : parts.join('\n');
-    }
-    if (data is Map) {
-      for (final key in ['error', 'message', 'errors', 'detail']) {
-        final found = extractMessage(data[key]);
-        if (found != null && found.trim().isNotEmpty) return found;
+    if (data is! Map) return null;
+
+    final error = data['error'];
+
+    if (error is Map) {
+      final message = error['message'];
+
+      if (message is String) {
+        return message;
       }
     }
+
+    if (error is String) {
+      return error;
+    }
+
+    final message = data['message'];
+
+    if (message is String) {
+      return message;
+    }
+
     return null;
   }
 }

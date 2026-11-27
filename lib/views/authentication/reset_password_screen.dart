@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../theme/appcolors.dart';
-import 'package:tastetogether/viewmodels/auth_controller.dart';
-import '../../widgets/auth/auth_footer_link.dart';
-import '../../widgets/auth/auth_page_layout.dart';
-import '../../widgets/custom_button.dart';
-import '../../widgets/custom_text_field.dart';
+import 'package:tastetogether/theme/appcolors.dart';
+import 'package:tastetogether/viewmodels/authentication/auth_viewmodel.dart';
+import 'package:tastetogether/widgets/auth/auth_footer_link.dart';
+import 'package:tastetogether/widgets/auth/auth_page_layout.dart';
+import 'package:tastetogether/widgets/common/custom_button.dart';
+import 'package:tastetogether/widgets/common/custom_text_field.dart';
 import 'login_view.dart';
 
-/// Reset Password: reset code + naya password. Forgot Password ke
-/// "Check your inbox" view se khulti hai.
-/// NOTE: design mein iska artboard nahi hai. Forgot Password wali hi styling
-/// (circle icon, 32/40 title, 52 high fields / button) use hui hai.
+
+/// Reset Password screen with a reset code and new password fields.
+/// Opened from the "Check your inbox" view on the Forgot Password screen.
+/// The design follows the Forgot Password screen styling
+/// (circle icon, 32/40 title, and 52px high fields and button).
 class ResetPasswordScreen extends StatelessWidget {
   const ResetPasswordScreen({super.key});
 
@@ -94,7 +94,7 @@ class ResetPasswordScreen extends StatelessWidget {
                     hint: 'Re-enter your password',
                     prefixIcon: Icons.lock_outline,
                     controller: controller.resetConfirmController,
-                    validator: controller.validateResetConfirm,
+                    validator: controller.validateConfirmPassword,
                     isPassword: true,
                     textInputAction: TextInputAction.done,
                     onFieldSubmitted: (_) => controller.resetPassword(),
@@ -102,7 +102,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 ],
               ),
             ),
-            // Obx: sirf button isLoading par dobara bante hain
+            // Rebuilds only the button when the loading state changes.
             Obx(
               () => CustomButton(
                 text: 'Reset password',

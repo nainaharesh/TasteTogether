@@ -1,7 +1,9 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tastetogether/widgets/explore/food_category_chip.dart';
+
+import '../explore/food_category_chip.dart';
+
 
 /// Horizontal scroll hone wali chips ki row (Explore, Search, Saved teeno mein)
 class ChipRow extends StatelessWidget {

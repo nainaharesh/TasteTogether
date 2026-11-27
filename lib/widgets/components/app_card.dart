@@ -1,8 +1,8 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tastetogether/theme/appcolors.dart';
 
-import '../../theme/appcolors.dart';
 
 /// White card with a thin beige border and 16px corners.
 /// Used for the Settings groups and the FAQ list.

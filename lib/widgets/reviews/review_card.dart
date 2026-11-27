@@ -1,12 +1,15 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tastetogether/models/review_model.dart';
+import 'package:tastetogether/models/main_application/review_model.dart';
+
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/utils/helpers.dart';
 import 'package:tastetogether/widgets/common/star_row.dart';
 import 'package:tastetogether/widgets/common/user_avatar.dart';
 import 'package:tastetogether/widgets/home_feed/photo_placeholder.dart';
+
+
 
 /// Customer review card (Restaurant Details aur Dish Details dono me)
 class ReviewCard extends StatelessWidget {

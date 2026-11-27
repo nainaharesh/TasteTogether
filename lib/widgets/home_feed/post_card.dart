@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/utils/app_assets.dart';
-import 'package:tastetogether/widgets/home_feed/photo_placeholder.dart';
+
+import 'photo_placeholder.dart';
+
 
 class PostCard extends StatelessWidget {
   const PostCard({

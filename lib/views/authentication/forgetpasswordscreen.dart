@@ -1,17 +1,14 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
-import '../../theme/appcolors.dart';
-
-import 'package:tastetogether/viewmodels/auth_controller.dart';
-import '../../widgets/auth/auth_footer_link.dart';
-import '../../widgets/auth/auth_page_layout.dart';
-import '../../widgets/custom_button.dart';
-import '../../widgets/custom_text_field.dart';
+import 'package:tastetogether/theme/appcolors.dart';
+import 'package:tastetogether/widgets/auth/auth_footer_link.dart';
+import 'package:tastetogether/widgets/auth/auth_page_layout.dart';
+import 'package:tastetogether/viewmodels/authentication/auth_viewmodel.dart';
+import 'package:tastetogether/widgets/common/custom_button.dart';
+import 'package:tastetogether/widgets/common/custom_text_field.dart';
 import 'reset_password_screen.dart';
 
 /// Screen 4 of 4 - "13 · Forgot Password".
@@ -198,7 +195,8 @@ class ForgotPasswordScreen extends StatelessWidget {
         ),
         Center(
           child: TextButton(
-            onPressed: controller.resetForgotPasswordState,
+            onPressed: controller.sendResetLink,
+          //  onPressed: controller.resetForgotPasswordState,
             style: TextButton.styleFrom(minimumSize: Size(0, 44.h)),
             child: Text(
               "Didn't get it? Send again",

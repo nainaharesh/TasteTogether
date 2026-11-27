@@ -3,7 +3,7 @@
 /// assets/icons/ ke saare PNG ek jagah. Naam yahan se hi use karo (typo na ho).
 /// Sizes @2x export hain: 48px file = 24 logical, 44px = 22, 104px = 52.
 class AppAssets {
-  AppAssets._();
+  
 
   static const String _dir = 'assets/icons/';
 

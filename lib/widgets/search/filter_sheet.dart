@@ -2,9 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tastetogether/models/search_filters_model.dart';
+import 'package:tastetogether/models/main_application/search_filters_model.dart';
+
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/widgets/common/chip_row.dart';
+
+
 
 /// Filters bottom sheet. Explore ka filter button poora sheet kholta hai,
 /// Search ka "Best match" sirf Sort wala hissa (sortOnly: true).

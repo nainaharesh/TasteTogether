@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tastetogether/services/token_storage.dart';
+import 'package:tastetogether/services/api/token_storage.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/viewmodels/auth_controller.dart';
-
+import 'package:tastetogether/viewmodels/authentication/auth_viewmodel.dart';
 import 'package:tastetogether/views/authentication/welcomescreen.dart';
 import 'package:tastetogether/views/main_application/bottom_navbar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await TokenStorage.init();
-  // Login / logout / 401 poori app mein isi se chalta hai
-  final auth = Get.put(AuthController(), permanent: true);
+
+  // Login, logout, and 401 handling across the app
+  Get.put(AuthController(), permanent: true);
+
   runApp(const MyApp());
-  // Token ho to profile background mein load (screen ka intezar nahi)
-  auth.loadProfile();
 }
 
 class MyApp extends StatelessWidget {
@@ -31,13 +31,17 @@ class MyApp extends StatelessWidget {
       builder: (context, child) => GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'TasteTogether',
-        // Design mein splash nahi: token hai to seedha Home, warna Welcome
-        home: TokenStorage.hasToken ? BottomNavbarScreen() : const WelcomeScreen(),
+
+        // Design mein splash nahi: token hai to Home, warna Welcome
+        home: TokenStorage.hasToken
+            ? BottomNavbarScreen()
+            : const WelcomeScreen(),
 
         // Tablet / web par width 480 tak, text scale 0.9 - 1.2
         builder: (context, child) {
           const maxWidth = 480.0;
           final mq = MediaQuery.of(context);
+
           final data = mq.copyWith(
             size: Size(mq.size.width.clamp(0, maxWidth), mq.size.height),
             textScaler: mq.textScaler.clamp(
@@ -45,6 +49,7 @@ class MyApp extends StatelessWidget {
               maxScaleFactor: 1.2,
             ),
           );
+
           ScreenUtil.configure(data: data);
 
           return GestureDetector(

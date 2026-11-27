@@ -1,9 +1,10 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:tastetogether/models/main_application/dish_model.dart';
 import 'package:tastetogether/views/main_application/dish_details.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tastetogether/models/dish_model.dart';
+
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/widgets/common/app_back_button.dart';
 import 'package:tastetogether/widgets/common/result_tile.dart';

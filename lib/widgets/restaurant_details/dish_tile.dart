@@ -1,9 +1,12 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tastetogether/models/dish_model.dart';
+//import 'package:tastetogether/models/dish_model.dart';
+import 'package:tastetogether/models/main_application/dish_model.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/widgets/home_feed/photo_placeholder.dart';
+
+import '../home_feed/photo_placeholder.dart';
+
 
 /// Restaurant Details ke "Popular dishes" ka card (148 wide, photo 112)
 class DishTile extends StatelessWidget {

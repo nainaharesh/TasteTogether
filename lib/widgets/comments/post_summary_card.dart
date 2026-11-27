@@ -1,7 +1,8 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tastetogether/models/post_models.dart';
+import 'package:tastetogether/models/main_application/post_models.dart';
+
 import 'package:tastetogether/theme/appcolors.dart';
 
 /// Comments ke upar wala "amina.eats reviewed Charred Lamb Kofta" card

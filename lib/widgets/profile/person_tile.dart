@@ -1,10 +1,13 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tastetogether/models/person_model.dart';
+import 'package:tastetogether/models/user_activity/person_model.dart';
+
 import 'package:tastetogether/theme/appcolors.dart';
+
 import 'package:tastetogether/widgets/common/user_avatar.dart';
-import 'package:tastetogether/widgets/profile/follow_button.dart';
+
+import 'follow_button.dart';
 
 /// Followers / Following list ki row: avatar + naam/username + Follow button
 class PersonTile extends StatelessWidget {

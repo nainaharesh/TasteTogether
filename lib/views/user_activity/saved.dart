@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
-import 'package:tastetogether/viewmodels/main_application_models_home_feed_viewmodel_bottomnavbar_view_model.dart';
-import 'package:tastetogether/viewmodels/saved_view_model.dart';
+import 'package:tastetogether/viewmodels/main_application/main_application_models_home_feed_viewmodel_bottomnavbar_view_model.dart';
+import 'package:tastetogether/viewmodels/user_activity/saved_view_model.dart';
 import 'package:tastetogether/views/main_application/resturant_details.dart';
 import 'package:tastetogether/views/main_application/dish_details.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

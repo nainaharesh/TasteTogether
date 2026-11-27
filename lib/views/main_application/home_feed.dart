@@ -1,7 +1,8 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
-import 'package:tastetogether/viewmodels/main_application_models_home_feed_viewmodel_tabbar_view_model.dart';
-import 'package:tastetogether/viewmodels/notification_viewmodel.dart';
+import 'package:tastetogether/viewmodels/main_application/homefeed_tabbar_viewmodel.dart';
+import 'package:tastetogether/viewmodels/user_activity/notification_viewmodel.dart';
+
 import 'package:tastetogether/views/main_application/search_results.dart';
 import 'package:tastetogether/views/main_application/create_review.dart';
 import 'package:tastetogether/views/user_activity/notifications.dart';
