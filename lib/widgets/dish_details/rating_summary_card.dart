@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/widgets/common/star_row.dart';
+
+import '../common/star_row.dart';
+
 
 /// Badi rating (4.7) + stars + 5 se 1 tak ke bars
 class RatingSummaryCard extends StatelessWidget {

@@ -1,11 +1,12 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
-import 'package:tastetogether/viewmodels/main_application_models_home_feed_viewmodel_bottomnavbar_view_model.dart';
-import 'package:tastetogether/viewmodels/profile_view_model.dart';
-import 'package:tastetogether/viewmodels/saved_view_model.dart';
+import 'package:tastetogether/viewmodels/main_application/main_application_models_home_feed_viewmodel_bottomnavbar_view_model.dart';
+import 'package:tastetogether/viewmodels/user_activity/profile_view_model.dart';
+import 'package:tastetogether/viewmodels/user_activity/saved_view_model.dart';
+
 import 'package:tastetogether/views/main_application/resturant_details.dart';
-import 'package:tastetogether/views/profile_screen/settings_screen.dart';
-import 'package:tastetogether/views/profile_screen/edit_profile_screen.dart';
+import 'package:tastetogether/views/user_activity/settings_screen.dart';
+import 'package:tastetogether/views/user_activity/edit_profile_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 //import 'package:tastetogether/viewmodels/user_activity_models/saved_viewmodel/saved_view_model.dart';

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:tastetogether/theme/appcolors.dart';
 
-import '../../theme/appcolors.dart';
 
 /// Shared frame of Edit Profile, Settings and Help and support:
 /// back arrow + page title at the top, 16px side padding, and scrolling.

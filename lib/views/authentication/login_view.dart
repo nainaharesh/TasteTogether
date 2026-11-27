@@ -1,20 +1,17 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:tastetogether/viewmodels/authentication/auth_viewmodel.dart';
 import 'package:tastetogether/views/authentication/forgetpasswordscreen.dart';
 import 'package:tastetogether/views/authentication/signupscreen.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-
-import 'package:tastetogether/viewmodels/auth_controller.dart';
-
-import '../../widgets/app_logo.dart';
-import '../../widgets/auth/auth_footer_link.dart';
-import '../../widgets/auth/auth_page_layout.dart';
-import '../../widgets/custom_button.dart';
-import '../../widgets/custom_text_field.dart';
+import 'package:tastetogether/widgets/auth/auth_footer_link.dart';
+import 'package:tastetogether/widgets/auth/auth_page_layout.dart';
+import 'package:tastetogether/widgets/common/app_logo.dart';
+import 'package:tastetogether/widgets/common/custom_button.dart';
+import 'package:tastetogether/widgets/common/custom_text_field.dart';
 
 /// Screen 2 of 4 - "02 · Login".
 class LoginScreen extends StatelessWidget {
@@ -120,7 +117,7 @@ class LoginScreen extends StatelessWidget {
         AuthFooterLink(
           question: 'New to TasteTogether?',
           linkText: 'Sign up',
-          // offNamed = replace this screen (so Back from Sign up goes to Welcome)
+          // Replaces the login screen so the Back button does not return to Login.
           onTap: () => Get.off(() => SignupScreen()),
         ),
       ],

@@ -1,7 +1,11 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tastetogether/widgets/common/outlined_wide_button.dart';
+
+import '../common/outlined_wide_button.dart';
+
+
+
 
 /// Follow (filled) <-> Following (outlined) button.
 /// compact: false = poori width 48 high (profile), true = 104 x 44 (followers list)

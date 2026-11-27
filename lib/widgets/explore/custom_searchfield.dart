@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 
 class SearchTextField extends StatelessWidget {
-  final String hintText;
+final String hintText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSubmitted;
 
   const SearchTextField({
     super.key,
@@ -16,6 +17,7 @@ class SearchTextField extends StatelessWidget {
     this.suffixIcon,
     this.controller,
     this.onChanged,
+    this.onSubmitted,
   });
 
   @override

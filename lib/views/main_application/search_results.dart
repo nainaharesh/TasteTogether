@@ -1,12 +1,14 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
-import 'package:tastetogether/viewmodels/search_results_view_model.dart';
+import 'package:tastetogether/models/main_application/search_filters_model.dart';
+import 'package:tastetogether/models/main_application/search_result_model.dart';
+import 'package:tastetogether/viewmodels/main_application/search_results_view_model.dart';
+//import 'package:tastetogether/viewmodels/search_results_view_model.dart';
 import 'package:tastetogether/views/main_application/resturant_details.dart';
 import 'package:tastetogether/views/main_application/dish_details.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tastetogether/models/search_result_model.dart';
-import 'package:tastetogether/models/search_filters_model.dart';
+
 import 'package:tastetogether/theme/appcolors.dart';
 //import 'package:tastetogether/viewmodels/main_application_models/search_results_viewmodel/search_results_view_model.dart';
 import 'package:tastetogether/widgets/common/chip_row.dart';

@@ -1,16 +1,17 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
-import 'package:tastetogether/viewmodels/main_application_models_explore_viewmodel_explore_view_model.dart';
+import 'package:tastetogether/models/main_application/dish_model.dart';
+
+import 'package:tastetogether/models/main_application/search_filters_model.dart';
+import 'package:tastetogether/viewmodels/main_application/explore_viewmodel.dart';
 import 'package:tastetogether/views/main_application/resturant_details.dart';
 import 'package:tastetogether/views/main_application/search_results.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tastetogether/models/search_filters_model.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-//import 'package:tastetogether/viewmodels/main_application_models/explore_viewmodel/explore_view_model.dart';
+import 'package:tastetogether/widgets/explore/custom_searchfield.dart';
 import 'package:tastetogether/widgets/search/filter_sheet.dart';
 import 'package:tastetogether/widgets/common/chip_row.dart';
-import 'package:tastetogether/widgets/explore/custom_serachfield.dart';
 import 'package:tastetogether/widgets/explore/dish_card.dart';
 import 'package:tastetogether/widgets/explore/nearby_tile.dart';
 import 'package:tastetogether/widgets/explore/resturant_card.dart';
@@ -168,17 +169,37 @@ class Explore extends StatelessWidget {
                               constraints: BoxConstraints.tightFor(
                                 width: tileWidth,
                               ),
-                              child: DishCard(
-                                dish: dish,
-                                placeholderColor: AppColors.photoPlaceholder2,
-                                onTap: () => Get.to(
-                                  () => ResturantDetails(
-                                    restaurant: controller.restaurantOfDish(
-                                      dish,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              child: 
+                              DishCard(
+  dish: Dish.fromJson({
+    'id': dish.id,
+    'restaurantId': dish.restaurantId,
+    'name': dish.name,
+    'photoUrl': dish.photoUrl,
+    'priceCents': dish.priceCents,
+    'avgRating': dish.avgRating,
+    'reviewCount': dish.reviewCount,
+    'isSaved': dish.isSaved,
+    'restaurantName': dish.restaurantName,
+  }),
+  placeholderColor: AppColors.photoPlaceholder2,
+  onTap: () => Get.to(
+    () => ResturantDetails(
+      restaurant: controller.restaurantOfDish(dish),
+    ),
+  ),
+),
+                              //DishCard(
+                              //   dish: dish,
+                              //   placeholderColor: AppColors.photoPlaceholder2,
+                              //   onTap: () => Get.to(
+                              //     () => ResturantDetails(
+                              //       restaurant: controller.restaurantOfDish(
+                              //         dish,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                             ),
                         ],
                       ),

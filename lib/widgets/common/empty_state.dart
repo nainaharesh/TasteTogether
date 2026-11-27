@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/widgets/common/outlined_wide_button.dart';
+
+import 'outlined_wide_button.dart';
+
 
 /// "Nothing saved yet" jaisi khali screen: gol icon + title + message + button
 class EmptyState extends StatelessWidget {

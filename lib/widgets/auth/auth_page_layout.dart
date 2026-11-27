@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:tastetogether/theme/appcolors.dart';
 
-import '../../theme/appcolors.dart';
 
 /// Shared frame of Login, Sign up and Forgot password:
 /// background, safe area, 24px side padding, back arrow, and scrolling.

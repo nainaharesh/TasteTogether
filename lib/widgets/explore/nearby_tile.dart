@@ -1,9 +1,9 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tastetogether/models/resturant_model.dart';
+//import 'package:tastetogether/models/resturant_model.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-
+import 'package:tastetogether/models/main_application/resturant_model.dart';
 class NearbyTile extends StatelessWidget {
   final Restaurant restaurant;
   final VoidCallback? onTap;

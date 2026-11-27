@@ -1,14 +1,38 @@
-// ignore_for_file: deprecated_member_use
-class ApiHeaders {
-  static const Map<String, String> defaultHeaders = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-  };
 
-  static Map<String, String> build({String? token}) {
+import 'package:tastetogether/services/api/token_storage.dart';
+
+class ApiHeaders {
+  // Headers without authentication
+  static Map<String, String> headerWithContentTypeJsonOnly() {
     return {
-      ...defaultHeaders,
-      if (token != null && token.isNotEmpty) 'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
     };
+  }
+
+  // Headers with optional Bearer token
+  static Map<String, String> headerWithAndContentTypeJson({
+    bool includeAuth = true,
+    String? token,
+  }) {
+    final headers = headerWithContentTypeJsonOnly();
+
+    if (includeAuth) {
+      final savedToken = token ?? TokenStorage.token;
+
+      if (savedToken != null && savedToken.isNotEmpty) {
+        headers['Authorization'] = 'Bearer $savedToken';
+      }
+    }
+
+    return headers;
+  }
+
+  // General header builder used by ApiClient
+  static Map<String, String> build({String? token}) {
+    return headerWithAndContentTypeJson(
+      includeAuth: token != null,
+      token: token,
+    );
   }
 }

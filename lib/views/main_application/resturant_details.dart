@@ -1,13 +1,14 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
-import 'package:tastetogether/viewmodels/restaurant_details_view_model.dart';
+import 'package:tastetogether/viewmodels/main_application/restaurant_details_view_model.dart';
+//import 'package:tastetogether/viewmodels/restaurant_details_view_model.dart';
 import 'package:tastetogether/views/main_application/all_dishes.dart';
 import 'package:tastetogether/views/main_application/create_review.dart';
 import 'package:tastetogether/views/main_application/dish_details.dart';
 import 'package:tastetogether/views/main_application/all_reviews.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tastetogether/models/resturant_model.dart';
+import 'package:tastetogether/models/main_application/resturant_model.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 //import 'package:tastetogether/viewmodels/main_application_models/restaurant_details_viewmodel/restaurant_details_view_model.dart';
 import 'package:tastetogether/widgets/common/bottom_action_bar.dart';

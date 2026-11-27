@@ -1,12 +1,10 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tastetogether/models/profile_model.dart';
+
+import 'package:tastetogether/models/user_activity/profile_model.dart';
 import 'package:tastetogether/theme/appcolors.dart';
 
-/// Profile ka neeche wala hissa: "My reviews" tab + 3 column photo grid.
-/// Profile aur Other user's profile dono yehi use karte hain.
-/// Grid khud scroll nahi karta, screen ka scroll use hota hai.
 class ReviewsSection extends StatelessWidget {
   const ReviewsSection({
     super.key,

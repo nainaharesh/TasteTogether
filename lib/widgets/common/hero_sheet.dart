@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tastetogether/theme/appcolors.dart';
-import 'package:tastetogether/widgets/home_feed/photo_placeholder.dart';
+
+import '../home_feed/photo_placeholder.dart';
+
 
 /// Details screens ka common layout: upar 280 ki photo, uske upar back/save
 /// buttons, aur neeche rounded sheet (24 radius) jo photo par 24 chadhti hai.

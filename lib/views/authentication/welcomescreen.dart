@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../theme/appcolors.dart';
-import '../../widgets/app_logo.dart';
+import '../../widgets/common/app_logo.dart';
 import '../../widgets/auth/auth_footer_link.dart';
-import '../../widgets/custom_button.dart';
+import '../../widgets/common/custom_button.dart';
 
 import 'package:tastetogether/views/authentication/login_view.dart';
 import 'package:tastetogether/views/authentication/signupscreen.dart';

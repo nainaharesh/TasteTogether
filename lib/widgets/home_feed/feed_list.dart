@@ -1,16 +1,19 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:tastetogether/models/main_application/post_models.dart';
+import 'package:tastetogether/models/user_activity/profile_model.dart';
 import 'package:tastetogether/views/main_application/comments.dart';
 import 'package:tastetogether/views/user_activity/public_profile.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:tastetogether/models/post_models.dart';
-import 'package:tastetogether/models/profile_model.dart';
+
 import 'package:tastetogether/theme/appcolors.dart';
 import 'package:tastetogether/utils/helpers.dart';
-import 'package:tastetogether/widgets/common/action_sheet.dart';
-import 'package:tastetogether/widgets/home_feed/post_card.dart';
+
+import '../common/action_sheet.dart';
+import 'post_card.dart';
+
 
 class FeedList extends StatelessWidget {
   const FeedList({
